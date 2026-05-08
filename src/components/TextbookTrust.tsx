@@ -1,4 +1,5 @@
 import Reveal from "./Reveal";
+import BackgroundPattern from "./BackgroundPattern";
 
 const stats = [
   { label: "누적 판매 부수", value: "12,400+", caption: "전기기능사 단권 기준" },
@@ -36,8 +37,11 @@ const reasons = [
 
 export default function TextbookTrust() {
   return (
-    <section className="bg-zinc-900 text-white">
-      <div className="mx-auto max-w-6xl px-6 py-20">
+    <section className="relative overflow-hidden bg-zinc-900 text-white">
+      <BackgroundPattern variant="circuit" color="#fbbf24" opacity={0.07} />
+      <div className="pointer-events-none absolute -left-24 top-1/4 h-72 w-72 rounded-full bg-amber-500/10 blur-3xl" />
+      <div className="pointer-events-none absolute -right-24 bottom-1/4 h-80 w-80 rounded-full bg-orange-500/10 blur-3xl" />
+      <div className="relative mx-auto max-w-6xl px-6 py-20">
         <Reveal>
           <div className="text-center">
             <span className="inline-block rounded-full bg-amber-400 px-3 py-1 text-xs font-bold tracking-wide text-amber-950">

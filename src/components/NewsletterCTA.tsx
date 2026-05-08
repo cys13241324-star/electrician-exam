@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Reveal from "./Reveal";
+import BackgroundPattern from "./BackgroundPattern";
 
 const PERKS = [
   { emoji: "📘", text: "교재 출시 시 가장 먼저 알림" },
@@ -35,6 +36,7 @@ export default function NewsletterCTA() {
       {/* Decorative orbs */}
       <div className="pointer-events-none absolute -left-20 top-0 h-72 w-72 rounded-full bg-blue-400/20 blur-3xl" />
       <div className="pointer-events-none absolute -right-20 bottom-0 h-80 w-80 rounded-full bg-purple-400/20 blur-3xl" />
+      <BackgroundPattern variant="grid" color="#ffffff" opacity={0.06} />
 
       <div className="relative mx-auto max-w-5xl px-6 py-20">
         <Reveal>
