@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import HeroSlider, { type HeroSlide } from "@/components/HeroSlider";
@@ -116,6 +116,18 @@ const stats = [
 export default function Home() {
   const [activeId, setActiveId] = useState<string | null>(null);
   const active = features.find((f) => f.id === activeId);
+
+  // 홈 진입 시 항상 최상단부터 보이도록 (브라우저 scroll restoration 우회)
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+    // 해시가 없을 때만 강제로 top
+    if (!window.location.hash) {
+      window.scrollTo(0, 0);
+    }
+  }, []);
 
   const slides: HeroSlide[] = useMemo(
     () => [
