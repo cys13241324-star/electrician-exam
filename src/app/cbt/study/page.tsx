@@ -1,4 +1,12 @@
+import type { Metadata } from "next";
 import Header from "@/components/Header";
+
+export const metadata: Metadata = {
+  title: "과목별 학습 — 전기이론·전기기기·전기설비",
+  description:
+    "원하는 범위만 골라 응시. 전기이론·전기기기·전기설비 3과목 × 28개 하위 토픽으로 세분화된 맞춤 학습.",
+};
+
 import Footer from "@/components/Footer";
 import SubTabs from "@/components/cbt/SubTabs";
 import StudyBrowser from "@/components/cbt/StudyBrowser";

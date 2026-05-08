@@ -64,6 +64,24 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "EducationalOrganization",
+              name: "addto 온라인 — 전기기능사 학습",
+              url: "https://electrician-exam.vercel.app",
+              logo: "https://electrician-exam.vercel.app/addto-bi.png",
+              sameAs: [],
+              hasCredential: {
+                "@type": "EducationalOccupationalCredential",
+                credentialCategory: "전기기능사 필기",
+                educationalLevel: "기능사",
+              },
+            }),
+          }}
+        />
         <ScrollProgress />
         <TextbookBanner />
         {children}

@@ -1,5 +1,13 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import Header from "@/components/Header";
+
+export const metadata: Metadata = {
+  title: "이론 시뮬레이터",
+  description:
+    "전기력선·자기력·RLC 공진·회전 자계까지, 9개의 인터랙티브 시뮬레이터로 핵심 원리를 직접 체험합니다.",
+};
+
 import Footer from "@/components/Footer";
 import Reveal from "@/components/Reveal";
 import BackgroundPattern from "@/components/BackgroundPattern";

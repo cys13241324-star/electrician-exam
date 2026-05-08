@@ -10,10 +10,12 @@ const colService = [
 ];
 
 const colSupport = [
+  { name: "시험 일정", href: "/schedule" },
+  { name: "합격 인증 갤러리", href: "/gallery" },
+  { name: "블로그 / 학습 팁", href: "/blog" },
+  { name: "오답 노트", href: "/cbt/wrong-notes" },
   { name: "자주 묻는 질문", href: "/#faq" },
   { name: "1:1 문의", href: "#" },
-  { name: "공지사항", href: "#" },
-  { name: "학습 게시판", href: "#" },
 ];
 
 const colLegal = [

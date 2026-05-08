@@ -1,5 +1,13 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import Header from "@/components/Header";
+
+export const metadata: Metadata = {
+  title: "CBT 모의고사",
+  description:
+    "전기기능사 CBT 모의고사 5회차. 실제 시험 환경 그대로, 60문항 60분, 자동 채점과 과목별 분석.",
+};
+
 import Footer from "@/components/Footer";
 import SubTabs from "@/components/cbt/SubTabs";
 import TextbookFloatingPopup from "@/components/TextbookFloatingPopup";
