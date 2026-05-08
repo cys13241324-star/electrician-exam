@@ -6,6 +6,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import HeroSlider, { type HeroSlide } from "@/components/HeroSlider";
 import HowItWorks from "@/components/HowItWorks";
+import ElectricExtras from "@/components/ElectricExtras";
 import Testimonials from "@/components/Testimonials";
 import Faq from "@/components/Faq";
 import FeaturePreviewModal, {
@@ -109,6 +110,25 @@ export default function Home() {
 
   const slides: HeroSlide[] = useMemo(
     () => [
+      {
+        id: "textbook",
+        badge: "독끝 전기기능사 필기 · 합격을 책임지는 단 하나의 교재",
+        badgeTone: "available",
+        title: "독끝 전기기능사 필기!",
+        highlight: "빅데이터 기반 고적중 기출문제.",
+        description:
+          "최근 출제 경향을 빅데이터로 분석해 적중률을 끌어올린 교재. 합격까지 가장 빠른 길은, 가장 잘 정리된 책에서 시작합니다.",
+        bgClass: "from-zinc-900 via-zinc-800 to-amber-900",
+        decoColor: "#f59e0b",
+        primary: {
+          label: "교재 구매하러 가기 (준비중)",
+          onClick: () => {
+            /* 비활성 — 출시 후 연결 */
+          },
+        },
+        secondary: { label: "학습 로드맵 보기", href: "#how" },
+        emoji: "📘",
+      },
       {
         id: "cbt",
         badge: "CBT 모의고사 · 이용 가능",
@@ -285,6 +305,8 @@ export default function Home() {
           })}
         </div>
       </section>
+
+      <ElectricExtras />
 
       <section className="border-y border-zinc-100 bg-zinc-50">
         <div className="mx-auto grid max-w-6xl grid-cols-2 gap-6 px-6 py-12 sm:grid-cols-4">
