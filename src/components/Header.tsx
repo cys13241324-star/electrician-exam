@@ -2,7 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import SearchModal from "./SearchModal";
 
 const categories = [
   { name: "공기업", href: "https://www.addto.co.kr/", external: true },
@@ -21,6 +22,18 @@ const utilityLinks = [
 
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+
+  useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        setSearchOpen(true);
+      }
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
 
   return (
     <header className="sticky top-0 z-40 border-b border-zinc-200 bg-white">
@@ -75,6 +88,15 @@ export default function Header() {
 
         {/* Right CTAs (desktop) */}
         <div className="hidden items-center gap-2 lg:flex">
+          <button
+            type="button"
+            onClick={() => setSearchOpen(true)}
+            aria-label="검색"
+            title="검색 (Ctrl+K)"
+            className="flex h-10 w-10 items-center justify-center rounded-md border border-zinc-200 text-zinc-600 transition hover:border-zinc-300 hover:bg-zinc-50 hover:text-zinc-900"
+          >
+            <span aria-hidden="true">🔍</span>
+          </button>
           <Link
             href="/cbt"
             className="rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700"
@@ -154,6 +176,8 @@ export default function Header() {
           </nav>
         </div>
       )}
+
+      {searchOpen && <SearchModal onClose={() => setSearchOpen(false)} />}
     </header>
   );
 }

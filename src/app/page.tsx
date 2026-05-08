@@ -13,6 +13,9 @@ import ElectricExtras from "@/components/ElectricExtras";
 import Testimonials from "@/components/Testimonials";
 import Faq from "@/components/Faq";
 import TextbookFloatingPopup from "@/components/TextbookFloatingPopup";
+import StudyPlan from "@/components/StudyPlan";
+import TextbookTrust from "@/components/TextbookTrust";
+import FreeResources from "@/components/FreeResources";
 import FeaturePreviewModal, {
   type FeaturePreview,
 } from "@/components/FeaturePreviewModal";
@@ -319,6 +322,10 @@ export default function Home() {
 
       <CbtSpotlight />
 
+      <TextbookTrust />
+
+      <StudyPlan />
+
       <ElectricExtras />
 
       <section className="border-y border-zinc-100 bg-zinc-50">
@@ -335,6 +342,8 @@ export default function Home() {
           ))}
         </div>
       </section>
+
+      <FreeResources />
 
       <Testimonials />
 
