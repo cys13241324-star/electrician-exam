@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>차단기 동작 시뮬레이터</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  body { background:#f8fafc; font-family:'Pretendard',system-ui,sans-serif; }
+  .panel { background:#fff; border-radius:12px; box-shadow:0 4px 6px -1px rgb(0 0 0 / 0.08); }
+  canvas { background:#fff; border-radius:8px; }
+  input[type=range]{accent-color:#dc2626;}
+</style>
+</head>
+<body class="p-4 md:p-8">
+  <div class="max-w-6xl mx-auto">
+    <header class="mb-6 text-center">
+      <h1 class="text-3xl font-bold text-slate-800">🛡️ 차단기 동작 시뮬레이터</h1>
+      <p class="text-slate-600 mt-2">정격·과부하·단락 상황에서 차단기가 어떻게 응답하는지 살펴보세요.</p>
+    </header>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div class="lg:col-span-2 panel p-6">
+        <div class="flex justify-between items-center mb-3">
+          <span class="text-sm font-semibold text-slate-600">전류 파형 (시간-전류 곡선)</span>
+          <button id="restart" class="text-xs bg-blue-600 text-white px-3 py-1.5 rounded font-semibold hover:bg-blue-700">시뮬레이션 재시작</button>
+        </div>
+        <canvas id="cv" width="800" height="380" class="w-full border border-slate-100"></canvas>
+
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-5 text-center">
+          <div class="bg-blue-50 rounded-lg p-3"><div class="text-xs text-blue-700">현재 전류 I</div><div id="iCur" class="text-lg font-bold text-blue-900">-</div></div>
+          <div class="bg-amber-50 rounded-lg p-3"><div class="text-xs text-amber-700">정격 대비 배수</div><div id="ratio" class="text-lg font-bold text-amber-900">-</div></div>
+          <div class="bg-rose-50 rounded-lg p-3"><div class="text-xs text-rose-700">트립 시간 t</div><div id="tripTime" class="text-lg font-bold text-rose-900">-</div></div>
+          <div class="bg-emerald-50 rounded-lg p-3"><div class="text-xs text-emerald-700">차단기 상태</div><div id="state" class="text-lg font-bold text-emerald-900">정상</div></div>
+        </div>
+      </div>
+
+      <div class="panel p-6 space-y-4">
+        <h2 class="font-bold text-slate-800">시나리오</h2>
+        <div class="space-y-2 text-sm">
+          <label class="flex items-center gap-2"><input type="radio" name="sc" value="normal" checked> 정상 운전 (1.0×)</label>
+          <label class="flex items-center gap-2"><input type="radio" name="sc" value="overload"> 과부하 (1.5×)</label>
+          <label class="flex items-center gap-2"><input type="radio" name="sc" value="heavy"> 중과부하 (3×)</label>
+          <label class="flex items-center gap-2"><input type="radio" name="sc" value="short"> 단락 (15×)</label>
+        </div>
+        <div>
+          <label class="text-sm flex justify-between"><span>정격 전류 I<sub>n</sub></span><span id="inVal" class="font-mono">20</span> A</label>
+          <input type="range" id="in" min="5" max="100" value="20" class="w-full">
+        </div>
+        <div>
+          <label class="text-sm flex justify-between"><span>차단기 종류</span></label>
+          <select id="kind" class="w-full mt-1 rounded border border-slate-300 px-2 py-1 text-sm">
+            <option value="mccb">MCCB (배선용)</option>
+            <option value="elcb">ELCB (누전)</option>
+            <option value="fuse">퓨즈</option>
+          </select>
+        </div>
+
+        <div class="bg-slate-50 rounded-lg p-3 text-xs text-slate-600 space-y-1">
+          <p><strong>역시간 특성:</strong> t ≈ K/(I/I<sub>n</sub>)²</p>
+          <p>전류가 클수록 트립 시간이 짧아짐</p>
+          <p>단락 시: 즉시 차단 (≤ 0.02s)</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+const $ = id => document.getElementById(id);
+const cv = $("cv"), ctx = cv.getContext("2d");
+const W = cv.width, H = cv.height;
+
+let trace = [];          // {t, i}
+let startTime = null;
+let tripped = false;
+let tripT = null;
+
+document.querySelectorAll('input[name="sc"]').forEach(r => r.addEventListener("change", restart));
+$("in").addEventListener("input", () => { $("inVal").textContent=$("in").value; });
+$("kind").addEventListener("change", restart);
+$("restart").addEventListener("click", restart);
+
+function restart(){
+  trace = []; startTime = null; tripped = false; tripT = null;
+}
+
+function getMultiplier(){
+  return +document.querySelector('input[name="sc"]:checked').value === undefined ? 1 :
+    ({normal:1, overload:1.5, heavy:3, short:15})[document.querySelector('input[name="sc"]:checked').value];
+}
+
+function tripTimeFor(ratio, kind){
+  // inverse-time approximation: t = K/(ratio^2 - 1)
+  if (ratio <= 1.05) return Infinity;
+  let K = 60; // mccb
+  if (kind === "fuse") K = 30;
+  if (kind === "elcb") K = 0.03; // very fast for ground fault simulation
+  if (ratio >= 8) return 0.02;
+  return K / (ratio*ratio - 1);
+}
+
+function loop(now){
+  if (startTime === null) startTime = now;
+  const elapsed = (now - startTime)/1000;
+  const In = +$("in").value;
+  const mult = getMultiplier();
+  const kind = $("kind").value;
+  let I = In * mult;
+  // small noise
+  I += Math.sin(elapsed*8)*In*0.02;
+
+  if (!tripped) {
+    const tt = tripTimeFor(mult, kind);
+    if (elapsed >= tt) {
+      tripped = true; tripT = elapsed;
+    }
+  }
+
+  const displayI = tripped ? 0 : I;
+  trace.push({t: elapsed, i: displayI});
+  if (trace.length > 600) trace.shift();
+
+  $("iCur").textContent = displayI.toFixed(1)+" A";
+  $("ratio").textContent = mult.toFixed(2)+"×";
+  const tt = tripTimeFor(mult, kind);
+  $("tripTime").textContent = isFinite(tt) ? tt.toFixed(2)+" s" : "트립 안 함";
+  $("state").textContent = tripped ? "트립됨" : (mult > 1.05 ? "과전류 감지" : "정상");
+  $("state").className = "text-lg font-bold " + (tripped ? "text-rose-700" : (mult>1.05 ? "text-amber-700" : "text-emerald-700"));
+
+  draw(In, mult, tt);
+  requestAnimationFrame(loop);
+}
+
+function draw(In, mult, tt){
+  ctx.clearRect(0,0,W,H);
+  const padL=70, padB=40, padT=20, padR=20;
+  const plotW = W - padL - padR, plotH = H - padT - padB;
+  ctx.strokeStyle="#cbd5e1"; ctx.strokeRect(padL, padT, plotW, plotH);
+
+  const tMax = 5; // 5 seconds visible
+  const iMax = Math.max(In*4, In*mult*1.2);
+
+  // grid + ticks
+  ctx.fillStyle = "#94a3b8"; ctx.font = "11px sans-serif"; ctx.textAlign="center";
+  for(let t=0;t<=5;t++){
+    const x = padL + (t/tMax)*plotW;
+    ctx.fillText(t+"s", x, H-padB+15);
+    ctx.beginPath(); ctx.moveTo(x, padT); ctx.lineTo(x, padT+plotH); ctx.strokeStyle="#f1f5f9"; ctx.stroke();
+  }
+  ctx.textAlign="right";
+  for(let t=0;t<=4;t++){
+    const y = padT + plotH - (t/4)*plotH;
+    ctx.fillText(((t/4)*iMax).toFixed(0)+"A", padL-5, y+4);
+    ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(padL+plotW, y); ctx.strokeStyle="#f1f5f9"; ctx.stroke();
+  }
+
+  // rated current line
+  const yIn = padT + plotH - (In/iMax)*plotH;
+  ctx.strokeStyle = "#10b981"; ctx.setLineDash([4,3]); ctx.lineWidth=1.5;
+  ctx.beginPath(); ctx.moveTo(padL, yIn); ctx.lineTo(padL+plotW, yIn); ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle="#10b981"; ctx.textAlign="left"; ctx.fillText("정격 In", padL+plotW-50, yIn-4);
+
+  // trip threshold (1.13 * In) for reference
+  const trip = padT + plotH - (In*1.13/iMax)*plotH;
+  ctx.strokeStyle = "#fbbf24"; ctx.setLineDash([4,3]);
+  ctx.beginPath(); ctx.moveTo(padL, trip); ctx.lineTo(padL+plotW, trip); ctx.stroke();
+  ctx.setLineDash([]);
+
+  // current waveform
+  ctx.strokeStyle = "#2563eb"; ctx.lineWidth=2;
+  ctx.beginPath();
+  trace.forEach((p,i) => {
+    const x = padL + (p.t/tMax)*plotW;
+    const y = padT + plotH - (p.i/iMax)*plotH;
+    if (x > padL+plotW) return;
+    if (i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+  });
+  ctx.stroke();
+
+  // trip marker
+  if (tripT !== null) {
+    const xt = padL + (tripT/tMax)*plotW;
+    ctx.strokeStyle = "#dc2626"; ctx.lineWidth=2; ctx.setLineDash([6,4]);
+    ctx.beginPath(); ctx.moveTo(xt, padT); ctx.lineTo(xt, padT+plotH); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = "#dc2626"; ctx.textAlign = "center"; ctx.font="bold 12px sans-serif";
+    ctx.fillText("⚡ 트립", xt, padT+14);
+  }
+
+  // legend
+  ctx.fillStyle = "#475569"; ctx.font="12px sans-serif"; ctx.textAlign="left";
+  ctx.fillStyle = "#2563eb"; ctx.fillRect(padL+10, padT+10, 14, 4); ctx.fillStyle="#475569"; ctx.fillText("측정 전류", padL+30, padT+15);
+  ctx.fillStyle = "#10b981"; ctx.fillRect(padL+130, padT+10, 14, 4); ctx.fillStyle="#475569"; ctx.fillText("정격 In", padL+150, padT+15);
+  ctx.fillStyle = "#fbbf24"; ctx.fillRect(padL+220, padT+10, 14, 4); ctx.fillStyle="#475569"; ctx.fillText("트립 임계", padL+240, padT+15);
+}
+
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>

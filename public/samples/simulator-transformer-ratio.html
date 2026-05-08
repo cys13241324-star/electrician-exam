@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>변압기 권수비 시뮬레이터</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  body { background:#f8fafc; font-family:'Pretendard',system-ui,sans-serif; }
+  .panel { background:#fff; border-radius:12px; box-shadow:0 4px 6px -1px rgb(0 0 0 / 0.08); }
+  input[type=range]{accent-color:#7c3aed;}
+</style>
+</head>
+<body class="p-4 md:p-8">
+  <div class="max-w-6xl mx-auto">
+    <header class="mb-6 text-center">
+      <h1 class="text-3xl font-bold text-slate-800">🔁 변압기 권수비 시뮬레이터</h1>
+      <p class="text-slate-600 mt-2">권수비 \(a = N_1/N_2\)에 따라 변압비, 전류비, 임피던스비가 어떻게 변하는지 확인하세요.</p>
+    </header>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div class="lg:col-span-2 panel p-6">
+        <svg id="trans" viewBox="0 0 600 320" class="w-full h-auto bg-white rounded-lg border border-slate-100"></svg>
+
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-5 text-center">
+          <div class="bg-violet-50 rounded-lg p-3"><div class="text-xs text-violet-700">권수비 a</div><div id="ratio" class="text-lg font-bold text-violet-900">-</div></div>
+          <div class="bg-blue-50 rounded-lg p-3"><div class="text-xs text-blue-700">2차 전압 V₂</div><div id="v2" class="text-lg font-bold text-blue-900">-</div></div>
+          <div class="bg-emerald-50 rounded-lg p-3"><div class="text-xs text-emerald-700">2차 전류 I₂</div><div id="i2" class="text-lg font-bold text-emerald-900">-</div></div>
+          <div class="bg-amber-50 rounded-lg p-3"><div class="text-xs text-amber-700">전력 P</div><div id="power" class="text-lg font-bold text-amber-900">-</div></div>
+        </div>
+      </div>
+
+      <div class="panel p-6 space-y-4">
+        <h2 class="font-bold text-slate-800">변수 조절</h2>
+        <div>
+          <label class="text-sm flex justify-between"><span>1차 권수 N₁</span><span id="n1Val" class="font-mono">200</span> 회</label>
+          <input type="range" id="n1" min="50" max="1000" step="10" value="200" class="w-full">
+        </div>
+        <div>
+          <label class="text-sm flex justify-between"><span>2차 권수 N₂</span><span id="n2Val" class="font-mono">100</span> 회</label>
+          <input type="range" id="n2" min="50" max="1000" step="10" value="100" class="w-full">
+        </div>
+        <div>
+          <label class="text-sm flex justify-between"><span>1차 전압 V₁</span><span id="v1Val" class="font-mono">220</span> V</label>
+          <input type="range" id="v1" min="10" max="500" step="10" value="220" class="w-full">
+        </div>
+        <div>
+          <label class="text-sm flex justify-between"><span>부하 저항 R</span><span id="rVal" class="font-mono">10</span> Ω</label>
+          <input type="range" id="r" min="1" max="100" value="10" class="w-full">
+        </div>
+
+        <div class="bg-slate-50 rounded-lg p-3 text-xs text-slate-600 space-y-1">
+          <p><strong>변압비:</strong> V₂/V₁ = N₂/N₁</p>
+          <p><strong>전류비:</strong> I₂/I₁ = N₁/N₂</p>
+          <p><strong>임피던스비:</strong> Z₁/Z₂ = a²</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel p-6 mt-6 grid grid-cols-2 gap-4 text-center">
+      <div class="bg-blue-50 rounded-lg p-4">
+        <div class="text-sm font-semibold text-blue-900">1차측 (입력)</div>
+        <div class="mt-2 text-xs text-blue-800">전압 <span id="d_v1" class="font-bold">-</span> · 전류 <span id="d_i1" class="font-bold">-</span></div>
+      </div>
+      <div class="bg-emerald-50 rounded-lg p-4">
+        <div class="text-sm font-semibold text-emerald-900">2차측 (출력)</div>
+        <div class="mt-2 text-xs text-emerald-800">전압 <span id="d_v2" class="font-bold">-</span> · 전류 <span id="d_i2" class="font-bold">-</span></div>
+      </div>
+    </div>
+  </div>
+
+<script>
+const $ = id => document.getElementById(id);
+["n1","n2","v1","r"].forEach(id => $(id).addEventListener("input", render));
+
+function render() {
+  const N1=+$("n1").value, N2=+$("n2").value, V1=+$("v1").value, R=+$("r").value;
+  $("n1Val").textContent=N1; $("n2Val").textContent=N2; $("v1Val").textContent=V1; $("rVal").textContent=R;
+  const a = N1/N2;
+  const V2 = V1 / a;
+  const I2 = V2 / R;
+  const I1 = I2 / a;
+  const P = V2 * I2;
+  $("ratio").textContent = a.toFixed(2);
+  $("v2").textContent = V2.toFixed(1)+" V";
+  $("i2").textContent = I2.toFixed(2)+" A";
+  $("power").textContent = P.toFixed(1)+" W";
+  $("d_v1").textContent = V1+" V"; $("d_i1").textContent = I1.toFixed(2)+" A";
+  $("d_v2").textContent = V2.toFixed(1)+" V"; $("d_i2").textContent = I2.toFixed(2)+" A";
+  draw(N1,N2);
+}
+
+function draw(N1,N2) {
+  const svg = $("trans");
+  // 철심 (가운데 사각형)
+  let s = `<rect x="240" y="60" width="120" height="200" fill="#475569" rx="6"/><rect x="252" y="72" width="96" height="176" fill="#94a3b8" rx="4"/>`;
+  // 1차 코일 (왼쪽)
+  const turnsL = Math.min(20, Math.max(4, Math.round(N1/50)));
+  for(let i=0;i<turnsL;i++){
+    const y = 80 + i*(200/turnsL);
+    s += `<ellipse cx="220" cy="${y}" rx="35" ry="6" fill="none" stroke="#2563eb" stroke-width="2"/>`;
+  }
+  // 2차 코일 (오른쪽)
+  const turnsR = Math.min(20, Math.max(4, Math.round(N2/50)));
+  for(let i=0;i<turnsR;i++){
+    const y = 80 + i*(200/turnsR);
+    s += `<ellipse cx="380" cy="${y}" rx="35" ry="6" fill="none" stroke="#10b981" stroke-width="2"/>`;
+  }
+  // 입력 (왼쪽)
+  s += `<line x1="120" y1="100" x2="185" y2="100" stroke="#0f172a" stroke-width="2"/>`;
+  s += `<line x1="120" y1="240" x2="185" y2="240" stroke="#0f172a" stroke-width="2"/>`;
+  s += `<circle cx="100" cy="170" r="22" fill="none" stroke="#2563eb" stroke-width="2"/>`;
+  s += `<text x="100" y="174" text-anchor="middle" font-size="14" font-weight="bold" fill="#2563eb">V₁</text>`;
+  s += `<line x1="100" y1="148" x2="120" y2="100" stroke="#0f172a" stroke-width="2"/>`;
+  s += `<line x1="100" y1="192" x2="120" y2="240" stroke="#0f172a" stroke-width="2"/>`;
+  // 출력 (오른쪽)
+  s += `<line x1="415" y1="100" x2="480" y2="100" stroke="#0f172a" stroke-width="2"/>`;
+  s += `<line x1="415" y1="240" x2="480" y2="240" stroke="#0f172a" stroke-width="2"/>`;
+  s += `<rect x="490" y="155" width="40" height="30" fill="white" stroke="#10b981" stroke-width="2" rx="3"/>`;
+  s += `<text x="510" y="175" text-anchor="middle" font-size="12" font-weight="bold" fill="#10b981">R</text>`;
+  s += `<line x1="490" y1="170" x2="480" y2="100" stroke="#0f172a" stroke-width="2"/>`;
+  s += `<line x1="490" y1="170" x2="480" y2="240" stroke="#0f172a" stroke-width="2"/>`;
+  // 라벨
+  s += `<text x="220" y="50" text-anchor="middle" font-size="13" font-weight="bold" fill="#2563eb">N₁ = ${N1}</text>`;
+  s += `<text x="380" y="50" text-anchor="middle" font-size="13" font-weight="bold" fill="#10b981">N₂ = ${N2}</text>`;
+  s += `<text x="300" y="290" text-anchor="middle" font-size="12" fill="#64748b">철심 (Iron Core)</text>`;
+  svg.innerHTML = s;
+}
+render();
+</script>
+</body>
+</html>

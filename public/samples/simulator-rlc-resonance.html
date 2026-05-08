@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RLC 공진 시뮬레이터</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  body { background:#f8fafc; font-family:'Pretendard',system-ui,sans-serif; }
+  .panel { background:#fff; border-radius:12px; box-shadow:0 4px 6px -1px rgb(0 0 0 / 0.08); }
+  canvas { background:#fff; border-radius:8px; }
+  input[type=range]{accent-color:#2563eb;}
+</style>
+</head>
+<body class="p-4 md:p-8">
+  <div class="max-w-6xl mx-auto">
+    <header class="mb-6 text-center">
+      <h1 class="text-3xl font-bold text-slate-800">📈 RLC 공진 회로 시뮬레이터</h1>
+      <p class="text-slate-600 mt-2">주파수에 따른 임피던스와 전류의 변화, 공진점에서의 응답을 관찰하세요.</p>
+    </header>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div class="lg:col-span-2 panel p-6">
+        <canvas id="cv" width="800" height="380" class="w-full border border-slate-100"></canvas>
+
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-5 text-center">
+          <div class="bg-rose-50 rounded-lg p-3"><div class="text-xs text-rose-700">공진 주파수 f₀</div><div id="f0" class="text-lg font-bold text-rose-900">-</div></div>
+          <div class="bg-blue-50 rounded-lg p-3"><div class="text-xs text-blue-700">현재 임피던스 |Z|</div><div id="z" class="text-lg font-bold text-blue-900">-</div></div>
+          <div class="bg-emerald-50 rounded-lg p-3"><div class="text-xs text-emerald-700">현재 전류 I</div><div id="iCur" class="text-lg font-bold text-emerald-900">-</div></div>
+          <div class="bg-amber-50 rounded-lg p-3"><div class="text-xs text-amber-700">Q 인자</div><div id="qFactor" class="text-lg font-bold text-amber-900">-</div></div>
+        </div>
+      </div>
+
+      <div class="panel p-6 space-y-4">
+        <h2 class="font-bold text-slate-800">변수 조절</h2>
+        <div>
+          <label class="text-sm flex justify-between"><span>저항 R</span><span id="rVal" class="font-mono">10</span> Ω</label>
+          <input type="range" id="r" min="1" max="50" value="10" class="w-full">
+        </div>
+        <div>
+          <label class="text-sm flex justify-between"><span>인덕턴스 L</span><span id="lVal" class="font-mono">10</span> mH</label>
+          <input type="range" id="l" min="1" max="100" value="10" class="w-full">
+        </div>
+        <div>
+          <label class="text-sm flex justify-between"><span>커패시턴스 C</span><span id="cVal" class="font-mono">10</span> μF</label>
+          <input type="range" id="c" min="1" max="100" value="10" class="w-full">
+        </div>
+        <div>
+          <label class="text-sm flex justify-between"><span>구동 주파수 f</span><span id="fVal" class="font-mono">500</span> Hz</label>
+          <input type="range" id="f" min="50" max="3000" step="10" value="500" class="w-full">
+        </div>
+        <div>
+          <label class="text-sm flex justify-between"><span>입력 전압 V</span><span id="vVal" class="font-mono">10</span> V</label>
+          <input type="range" id="v" min="1" max="50" value="10" class="w-full">
+        </div>
+
+        <div class="bg-slate-50 rounded-lg p-3 text-xs text-slate-600 space-y-1">
+          <p>공진: \(f_0 = \frac{1}{2\pi\sqrt{LC}}\)</p>
+          <p>공진점에서 X<sub>L</sub>=X<sub>C</sub>, |Z|=R로 최소</p>
+          <p>Q = (1/R)·√(L/C)</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+const $ = id => document.getElementById(id);
+const cv = $("cv"), ctx = cv.getContext("2d");
+["r","l","c","f","v"].forEach(id => $(id).addEventListener("input", render));
+
+function render() {
+  const R=+$("r").value, L=+$("l").value/1000, C=+$("c").value*1e-6, fHz=+$("f").value, V=+$("v").value;
+  $("rVal").textContent=R; $("lVal").textContent=$("l").value; $("cVal").textContent=$("c").value; $("fVal").textContent=fHz; $("vVal").textContent=V;
+  const omega = 2*Math.PI*fHz;
+  const Xl = omega*L, Xc = 1/(omega*C);
+  const Z = Math.sqrt(R*R + (Xl-Xc)*(Xl-Xc));
+  const I = V/Z;
+  const f0 = 1/(2*Math.PI*Math.sqrt(L*C));
+  const Q = (1/R)*Math.sqrt(L/C);
+  $("f0").textContent = f0.toFixed(1)+" Hz";
+  $("z").textContent = Z.toFixed(2)+" Ω";
+  $("iCur").textContent = I.toFixed(3)+" A";
+  $("qFactor").textContent = Q.toFixed(2);
+  drawPlot(R,L,C,fHz,V,f0);
+}
+
+function drawPlot(R,L,C,fHz,V,f0) {
+  const W = cv.width, H = cv.height;
+  ctx.clearRect(0,0,W,H);
+  // axes
+  const padL = 60, padB = 40, padT = 20, padR = 20;
+  const plotW = W - padL - padR, plotH = H - padT - padB;
+  ctx.strokeStyle = "#cbd5e1"; ctx.lineWidth = 1;
+  ctx.strokeRect(padL, padT, plotW, plotH);
+
+  // sweep frequency 0 to 3*f0
+  const fMax = Math.max(fHz*1.2, f0*3);
+  const points = [];
+  let iMaxAbs = 0;
+  for(let i=0;i<=200;i++){
+    const f = (i/200)*fMax + 1;
+    const w = 2*Math.PI*f;
+    const Z = Math.sqrt(R*R + (w*L - 1/(w*C))**2);
+    const I = V/Z;
+    points.push({f, I, Z});
+    if (I > iMaxAbs) iMaxAbs = I;
+  }
+  // ticks
+  ctx.fillStyle = "#64748b"; ctx.font = "11px sans-serif"; ctx.textAlign = "center";
+  for(let t=0;t<=4;t++){
+    const x = padL + (t/4)*plotW;
+    const fLabel = Math.round((t/4)*fMax);
+    ctx.fillText(fLabel+" Hz", x, H-padB+15);
+    ctx.beginPath(); ctx.moveTo(x, padT); ctx.lineTo(x, padT+plotH); ctx.strokeStyle="#f1f5f9"; ctx.stroke();
+  }
+  ctx.textAlign = "right";
+  for(let t=0;t<=4;t++){
+    const y = padT + plotH - (t/4)*plotH;
+    const iLabel = ((t/4)*iMaxAbs).toFixed(2);
+    ctx.fillText(iLabel+" A", padL-5, y+4);
+    ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(padL+plotW, y); ctx.strokeStyle="#f1f5f9"; ctx.stroke();
+  }
+
+  // current curve (green)
+  ctx.strokeStyle = "#10b981"; ctx.lineWidth = 2.5;
+  ctx.beginPath();
+  points.forEach((p,i)=>{
+    const x = padL + (p.f/fMax)*plotW;
+    const y = padT + plotH - (p.I/iMaxAbs)*plotH;
+    if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+  });
+  ctx.stroke();
+
+  // resonance line
+  const xRes = padL + (f0/fMax)*plotW;
+  ctx.strokeStyle = "#dc2626"; ctx.setLineDash([4,3]);
+  ctx.beginPath(); ctx.moveTo(xRes, padT); ctx.lineTo(xRes, padT+plotH); ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle = "#dc2626"; ctx.textAlign = "left";
+  ctx.fillText("f₀", xRes+4, padT+12);
+
+  // current frequency marker (blue)
+  const xCur = padL + (fHz/fMax)*plotW;
+  const wCur = 2*Math.PI*fHz;
+  const Zcur = Math.sqrt(R*R + (wCur*L - 1/(wCur*C))**2);
+  const Icur = V/Zcur;
+  const yCur = padT + plotH - (Icur/iMaxAbs)*plotH;
+  ctx.fillStyle = "#2563eb";
+  ctx.beginPath(); ctx.arc(xCur, yCur, 6, 0, Math.PI*2); ctx.fill();
+  ctx.strokeStyle = "#2563eb"; ctx.lineWidth = 1.5; ctx.setLineDash([3,3]);
+  ctx.beginPath(); ctx.moveTo(xCur, yCur); ctx.lineTo(xCur, padT+plotH); ctx.stroke();
+  ctx.setLineDash([]);
+
+  // legend
+  ctx.fillStyle = "#10b981"; ctx.fillRect(padL+10, padT+10, 14, 4);
+  ctx.fillStyle = "#475569"; ctx.textAlign = "left"; ctx.font = "12px sans-serif";
+  ctx.fillText("전류 I(f) [A]", padL+30, padT+15);
+}
+
+render();
+</script>
+</body>
+</html>

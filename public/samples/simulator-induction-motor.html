@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>유도전동기 회전 자계 시뮬레이터</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  body { background:#f8fafc; font-family:'Pretendard',system-ui,sans-serif; }
+  .panel { background:#fff; border-radius:12px; box-shadow:0 4px 6px -1px rgb(0 0 0 / 0.08); }
+  canvas { background:#fff; border-radius:8px; }
+  input[type=range]{accent-color:#7c3aed;}
+</style>
+</head>
+<body class="p-4 md:p-8">
+  <div class="max-w-6xl mx-auto">
+    <header class="mb-6 text-center">
+      <h1 class="text-3xl font-bold text-slate-800">🌀 유도전동기 회전 자계</h1>
+      <p class="text-slate-600 mt-2">3상 코일이 만드는 회전 자계와 회전자의 슬립을 동시에 관찰하세요.</p>
+    </header>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div class="lg:col-span-2 panel p-6">
+        <canvas id="cv" width="800" height="430" class="w-full border border-slate-100"></canvas>
+
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-5 text-center">
+          <div class="bg-violet-50 rounded-lg p-3"><div class="text-xs text-violet-700">동기 속도 N<sub>s</sub></div><div id="ns" class="text-lg font-bold text-violet-900">-</div></div>
+          <div class="bg-blue-50 rounded-lg p-3"><div class="text-xs text-blue-700">회전자 속도 N</div><div id="n" class="text-lg font-bold text-blue-900">-</div></div>
+          <div class="bg-emerald-50 rounded-lg p-3"><div class="text-xs text-emerald-700">슬립 s</div><div id="s" class="text-lg font-bold text-emerald-900">-</div></div>
+          <div class="bg-amber-50 rounded-lg p-3"><div class="text-xs text-amber-700">상대 토크</div><div id="trq" class="text-lg font-bold text-amber-900">-</div></div>
+        </div>
+      </div>
+
+      <div class="panel p-6 space-y-4">
+        <h2 class="font-bold text-slate-800">변수 조절</h2>
+        <div>
+          <label class="text-sm flex justify-between"><span>전원 주파수 f</span><span id="fVal" class="font-mono">60</span> Hz</label>
+          <input type="range" id="f" min="30" max="120" value="60" class="w-full">
+        </div>
+        <div>
+          <label class="text-sm flex justify-between"><span>극수 P</span><span id="pVal" class="font-mono">4</span> 극</label>
+          <input type="range" id="p" min="2" max="12" step="2" value="4" class="w-full">
+        </div>
+        <div>
+          <label class="text-sm flex justify-between"><span>슬립 s</span><span id="slipVal" class="font-mono">0.04</span></label>
+          <input type="range" id="slip" min="0" max="100" value="4" class="w-full">
+        </div>
+
+        <div class="bg-slate-50 rounded-lg p-3 text-xs text-slate-600 space-y-1">
+          <p>동기 속도: N<sub>s</sub> = 120f/P</p>
+          <p>회전자 속도: N = N<sub>s</sub>(1−s)</p>
+          <p>슬립이 0이면 토크도 0 → 약간의 슬립 필요</p>
+          <p>상대 토크 ∝ s/(s²+a²) 형태로 근사</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+const $ = id => document.getElementById(id);
+const cv = $("cv"), ctx = cv.getContext("2d");
+const W = cv.width, H = cv.height;
+let lastTime = performance.now();
+let phaseT = 0;
+let rotorAngle = 0;
+
+function loop(now){
+  const dt = Math.min(0.05, (now-lastTime)/1000);
+  lastTime = now;
+  const f = +$("f").value, P = +$("p").value, slip = +$("slip").value/100;
+  $("fVal").textContent = f; $("pVal").textContent = P; $("slipVal").textContent = slip.toFixed(2);
+  const Ns = 120*f/P;
+  const N = Ns*(1-slip);
+  const omegaSync = (Ns/60) * 2*Math.PI;
+  const omegaRotor = (N/60) * 2*Math.PI;
+  phaseT += dt;
+  rotorAngle += omegaRotor * dt;
+  // torque ~ slip / (slip^2 + a^2)
+  const a = 0.05;
+  const T = slip / (slip*slip + a*a);
+  const Tmax = 1/(2*a); // peak around s=a
+  const torqueRel = (T/Tmax).toFixed(2);
+
+  $("ns").textContent = Ns+" rpm";
+  $("n").textContent = N.toFixed(0)+" rpm";
+  $("s").textContent = slip.toFixed(3);
+  $("trq").textContent = torqueRel;
+
+  draw(f, P, slip, omegaSync, phaseT, rotorAngle);
+  requestAnimationFrame(loop);
+}
+
+function draw(f, P, slip, omegaSync, t, rotorAngle){
+  ctx.clearRect(0,0,W,H);
+  // Left: stator + rotating field
+  const cx = 240, cy = 215, R = 140;
+  // stator coils (3 phases at 120°)
+  const omegaT = omegaSync * t;
+  const phases = [
+    {ang: -Math.PI/2, color: "#dc2626", label: "A", phase: 0},
+    {ang: -Math.PI/2 + 2*Math.PI/3, color: "#10b981", label: "B", phase: 2*Math.PI/3},
+    {ang: -Math.PI/2 + 4*Math.PI/3, color: "#2563eb", label: "C", phase: 4*Math.PI/3},
+  ];
+  // outer ring (stator core)
+  ctx.strokeStyle = "#94a3b8"; ctx.lineWidth = 18;
+  ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI*2); ctx.stroke();
+  ctx.strokeStyle = "#cbd5e1"; ctx.lineWidth = 1;
+
+  // each phase coil represented as colored arc
+  phases.forEach(ph => {
+    const cur = Math.cos(omegaT - ph.phase);
+    const op = 0.3 + 0.7*Math.abs(cur);
+    ctx.strokeStyle = ph.color; ctx.globalAlpha = op; ctx.lineWidth = 14;
+    ctx.beginPath();
+    ctx.arc(cx, cy, R, ph.ang - Math.PI/8, ph.ang + Math.PI/8);
+    ctx.stroke();
+    ctx.globalAlpha = 1;
+    const lx = cx + (R+30)*Math.cos(ph.ang);
+    const ly = cy + (R+30)*Math.sin(ph.ang);
+    ctx.fillStyle = ph.color; ctx.font = "bold 14px sans-serif"; ctx.textAlign="center";
+    ctx.fillText(ph.label, lx, ly+5);
+  });
+
+  // resulting field vector (rotates at sync speed)
+  const fieldLen = R - 30;
+  const fx = cx + fieldLen*Math.cos(omegaT - Math.PI/2);
+  const fy = cy + fieldLen*Math.sin(omegaT - Math.PI/2);
+  ctx.strokeStyle = "#7c3aed"; ctx.lineWidth = 4;
+  ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(fx, fy); ctx.stroke();
+  // arrow head
+  const ang = Math.atan2(fy-cy, fx-cx);
+  ctx.beginPath();
+  ctx.moveTo(fx, fy);
+  ctx.lineTo(fx - 12*Math.cos(ang - Math.PI/6), fy - 12*Math.sin(ang - Math.PI/6));
+  ctx.moveTo(fx, fy);
+  ctx.lineTo(fx - 12*Math.cos(ang + Math.PI/6), fy - 12*Math.sin(ang + Math.PI/6));
+  ctx.stroke();
+
+  // rotor (lags by slip)
+  ctx.fillStyle = "#475569";
+  ctx.save();
+  ctx.translate(cx, cy);
+  ctx.rotate(rotorAngle);
+  ctx.fillRect(-50, -10, 100, 20);
+  ctx.fillStyle = "#94a3b8";
+  ctx.fillRect(-44, -7, 88, 14);
+  ctx.restore();
+  ctx.fillStyle = "#0f172a"; ctx.beginPath(); ctx.arc(cx,cy,8,0,Math.PI*2); ctx.fill();
+
+  ctx.fillStyle = "#475569"; ctx.textAlign="center"; ctx.font = "12px sans-serif";
+  ctx.fillText("● 회전 자계 (보라)  ▬ 회전자 (회색)", cx, cy + R + 60);
+
+  // Right: 3 phase current waveforms
+  const gX = 510, gY = 50, gW = 270, gH = 330;
+  ctx.fillStyle = "#fff"; ctx.fillRect(gX, gY, gW, gH);
+  ctx.strokeStyle = "#cbd5e1"; ctx.strokeRect(gX, gY, gW, gH);
+  ctx.fillStyle = "#475569"; ctx.font="12px sans-serif"; ctx.textAlign="center";
+  ctx.fillText("3상 전류 파형", gX + gW/2, gY - 6);
+
+  // 3 axes
+  for(let i=0;i<3;i++){
+    const ph = phases[i];
+    const baseY = gY + gH*((i+1)/4);
+    ctx.strokeStyle = "#e2e8f0";
+    ctx.beginPath(); ctx.moveTo(gX, baseY); ctx.lineTo(gX+gW, baseY); ctx.stroke();
+    ctx.strokeStyle = ph.color; ctx.lineWidth=2;
+    ctx.beginPath();
+    for(let x=0;x<=gW;x+=2){
+      const lt = t + (x-gW)/gW * 0.05;
+      const v = Math.cos(omegaSync*lt - ph.phase) * 28;
+      const y = baseY - v;
+      if (x===0) ctx.moveTo(gX+x,y); else ctx.lineTo(gX+x,y);
+    }
+    ctx.stroke();
+    ctx.fillStyle = ph.color; ctx.textAlign="left"; ctx.font="bold 12px sans-serif";
+    ctx.fillText(ph.label+"상", gX + 8, baseY - 32);
+  }
+}
+
+["f","p","slip"].forEach(id => $(id).addEventListener("input", ()=>{}));
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>

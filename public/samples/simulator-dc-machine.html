@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>직류기 동작 원리 시뮬레이터</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  body { background:#f8fafc; font-family:'Pretendard',system-ui,sans-serif; }
+  .panel { background:#fff; border-radius:12px; box-shadow:0 4px 6px -1px rgb(0 0 0 / 0.08); }
+  canvas { background:#fff; border-radius:8px; }
+  input[type=range]{accent-color:#7c3aed;}
+</style>
+</head>
+<body class="p-4 md:p-8">
+  <div class="max-w-6xl mx-auto">
+    <header class="mb-6 text-center">
+      <h1 class="text-3xl font-bold text-slate-800">⚙️ 직류기 동작 원리 시뮬레이터</h1>
+      <p class="text-slate-600 mt-2">자기장 속에서 회전하는 코일과 정류자의 동작을 살펴보세요.</p>
+    </header>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div class="lg:col-span-2 panel p-6">
+        <canvas id="cv" width="800" height="420" class="w-full border border-slate-100"></canvas>
+
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-5 text-center">
+          <div class="bg-violet-50 rounded-lg p-3"><div class="text-xs text-violet-700">회전각 θ</div><div id="theta" class="text-lg font-bold text-violet-900">0°</div></div>
+          <div class="bg-blue-50 rounded-lg p-3"><div class="text-xs text-blue-700">유도 기전력 e</div><div id="emf" class="text-lg font-bold text-blue-900">0 V</div></div>
+          <div class="bg-emerald-50 rounded-lg p-3"><div class="text-xs text-emerald-700">정류 후 출력 E</div><div id="dcout" class="text-lg font-bold text-emerald-900">0 V</div></div>
+          <div class="bg-amber-50 rounded-lg p-3"><div class="text-xs text-amber-700">RPM</div><div id="rpm" class="text-lg font-bold text-amber-900">0</div></div>
+        </div>
+      </div>
+
+      <div class="panel p-6 space-y-4">
+        <h2 class="font-bold text-slate-800">변수 조절</h2>
+        <div>
+          <label class="text-sm flex justify-between"><span>회전 속도</span><span id="speedVal" class="font-mono">300</span> RPM</label>
+          <input type="range" id="speed" min="0" max="2000" step="10" value="300" class="w-full">
+        </div>
+        <div>
+          <label class="text-sm flex justify-between"><span>자속 밀도 B</span><span id="bVal" class="font-mono">1.0</span> T</label>
+          <input type="range" id="b" min="0.1" max="3" step="0.1" value="1.0" class="w-full">
+        </div>
+        <div>
+          <label class="text-sm flex items-center gap-2">
+            <input type="checkbox" id="commutator" checked> 정류자 사용 (직류 출력)
+          </label>
+        </div>
+        <div>
+          <label class="text-sm flex items-center gap-2">
+            <input type="checkbox" id="paused"> 일시정지
+          </label>
+        </div>
+
+        <div class="bg-slate-50 rounded-lg p-3 text-xs text-slate-600 space-y-1">
+          <p>e = BLv·sinθ (코일 한 변)</p>
+          <p>정류자: 매 반회전마다 극성을 뒤집어 직류로 출력</p>
+          <p>정류자가 없으면 교류 발생 (회전 1주기 = 1 사이클)</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+const $ = id => document.getElementById(id);
+const cv = $("cv"), ctx = cv.getContext("2d");
+const W = cv.width, H = cv.height;
+let theta = 0, lastTime = performance.now();
+const trace = [];
+const TRACE_LIMIT = 250;
+
+function loop(now) {
+  const dt = Math.min(0.05, (now - lastTime)/1000);
+  lastTime = now;
+  const rpm = +$("speed").value;
+  const omega = (rpm/60) * 2*Math.PI;
+  if (!$("paused").checked) theta += omega * dt;
+  $("speedVal").textContent = rpm; $("bVal").textContent = (+$("b").value).toFixed(1);
+
+  const B = +$("b").value;
+  const L = 0.1, vBar = (rpm/60) * 2*Math.PI * 0.05;
+  const e = B*L*vBar*Math.sin(theta) * 60; // scaled for display
+  const useCommutator = $("commutator").checked;
+  const out = useCommutator ? Math.abs(e) : e;
+  const thetaDeg = ((theta * 180/Math.PI) % 360 + 360) % 360;
+
+  $("theta").textContent = thetaDeg.toFixed(0)+"°";
+  $("emf").textContent = e.toFixed(2)+" V";
+  $("dcout").textContent = out.toFixed(2)+" V";
+  $("rpm").textContent = rpm;
+
+  trace.push(out);
+  if (trace.length > TRACE_LIMIT) trace.shift();
+  draw(theta, out, useCommutator);
+  requestAnimationFrame(loop);
+}
+
+function draw(theta, out, useCommutator) {
+  ctx.clearRect(0,0,W,H);
+  // left: rotor + magnets
+  const cx = 250, cy = 200, r = 120;
+  // N pole (left)
+  ctx.fillStyle = "#dc2626"; ctx.fillRect(cx-180, cy-80, 40, 160);
+  ctx.fillStyle = "white"; ctx.font = "bold 24px sans-serif"; ctx.textAlign="center";
+  ctx.fillText("N", cx-160, cy+8);
+  // S pole (right)
+  ctx.fillStyle = "#2563eb"; ctx.fillRect(cx+140, cy-80, 40, 160);
+  ctx.fillStyle = "white"; ctx.fillText("S", cx+160, cy+8);
+
+  // field lines
+  ctx.strokeStyle = "#fca5a5"; ctx.lineWidth = 1;
+  for(let i=-3;i<=3;i++){
+    ctx.beginPath();
+    ctx.moveTo(cx-140, cy + i*22);
+    ctx.lineTo(cx+140, cy + i*22);
+    ctx.stroke();
+    // arrow
+    ctx.beginPath();
+    ctx.moveTo(cx+135, cy + i*22 - 4);
+    ctx.lineTo(cx+140, cy + i*22);
+    ctx.lineTo(cx+135, cy + i*22 + 4);
+    ctx.stroke();
+  }
+
+  // rotating coil
+  const x1 = cx + r*Math.cos(theta), y1 = cy + r*Math.sin(theta);
+  const x2 = cx - r*Math.cos(theta), y2 = cy - r*Math.sin(theta);
+  ctx.strokeStyle = "#0f172a"; ctx.lineWidth = 4;
+  ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke();
+  // wire ends (dots, color shows current direction)
+  const inDot = Math.sin(theta) > 0 ? "#10b981" : "#dc2626";
+  const outDot = Math.sin(theta) > 0 ? "#dc2626" : "#10b981";
+  ctx.fillStyle = inDot; ctx.beginPath(); ctx.arc(x1,y1,9,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle = outDot; ctx.beginPath(); ctx.arc(x2,y2,9,0,Math.PI*2); ctx.fill();
+  ctx.strokeStyle = "white"; ctx.lineWidth=1.5;
+  ctx.beginPath(); ctx.arc(x1,y1,9,0,Math.PI*2); ctx.stroke();
+  ctx.beginPath(); ctx.arc(x2,y2,9,0,Math.PI*2); ctx.stroke();
+
+  // commutator (small rings)
+  ctx.strokeStyle = "#475569"; ctx.lineWidth=2;
+  ctx.beginPath(); ctx.arc(cx,cy,18,0,Math.PI*2); ctx.stroke();
+  if (useCommutator) {
+    ctx.fillStyle = "#475569";
+    ctx.beginPath(); ctx.arc(cx,cy,18,-Math.PI/2,Math.PI/2); ctx.fill();
+  }
+
+  // right: output graph
+  const gX = 540, gY = 60, gW = 240, gH = 280;
+  ctx.fillStyle = "#fff"; ctx.fillRect(gX, gY, gW, gH);
+  ctx.strokeStyle = "#cbd5e1"; ctx.strokeRect(gX, gY, gW, gH);
+  ctx.fillStyle = "#64748b"; ctx.font = "11px sans-serif"; ctx.textAlign="center";
+  ctx.fillText("출력 파형", gX+gW/2, gY-8);
+  // zero line
+  ctx.strokeStyle = "#e2e8f0";
+  ctx.beginPath(); ctx.moveTo(gX, gY+gH/2); ctx.lineTo(gX+gW, gY+gH/2); ctx.stroke();
+  // trace
+  ctx.strokeStyle = useCommutator ? "#10b981" : "#2563eb"; ctx.lineWidth=2;
+  ctx.beginPath();
+  trace.forEach((v,i)=>{
+    const x = gX + (i/TRACE_LIMIT)*gW;
+    const y = gY + gH/2 - v*4;
+    if (i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+  });
+  ctx.stroke();
+
+  // labels
+  ctx.fillStyle = "#0f172a"; ctx.textAlign="left"; ctx.font = "13px sans-serif";
+  ctx.fillText(useCommutator ? "직류 출력 (정류 후)" : "교류 출력 (정류 없음)", gX+10, gY+20);
+}
+
+["speed","b","commutator","paused"].forEach(id => $(id).addEventListener("change", ()=>{}));
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>
