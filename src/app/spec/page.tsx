@@ -6,547 +6,451 @@ type Slide = {
   no: string;
   category: string;
   title: string;
-  intro?: string;
-  why?: string;
-  features?: string[];
-  visuals?: string[];
-  tech?: string;
-  capture?: string;
-  emoji: string;
-  accent: string; // tailwind color class root, e.g. blue, violet
+  summary: string;
+  why: string;
+  features: string[];
+  hook: string;
+  emoji?: string;
+  accent?: "blue" | "violet" | "emerald" | "amber" | "rose" | "indigo";
 };
 
 const slides: Slide[] = [
   {
     no: "01",
-    category: "1부 · 개요",
-    title: "프로젝트 한눈에",
-    emoji: "📘",
-    accent: "blue",
-    intro: "독끝 전기기능사 필기 — addto 온라인 / 교재 한 권으로 시작해 합격까지 이어지는 통합 학습 사이트",
+    category: "1부 · 사이트 개요",
+    title: "독끝 전기기능사 필기, 한눈에",
+    summary:
+      "교재 한 권으로 시작해 합격까지 이어지는 통합 학습 사이트. 교재 + CBT 모의고사 + 부가 콘텐츠가 하나로 연결됩니다.",
+    why: "전기기능사 시험 준비자에게 흩어진 학습 자원(책 / 강의 / 카드 / 모의고사)을 한 군데에서 끝낼 수 있게 만들기 위해 기획.",
     features: [
       "1,600+ 엄선된 CBT 문제",
       "100% 기출 해설 무료 공개",
-      "13개 인터랙티브 시뮬레이터",
-      "300+ 핵심 암기카드",
+      "13개 인터랙티브 이론 시뮬레이터",
+      "300+ 핵심 암기카드 + 오디오북",
+      "재미있는 콘셉트 콘텐츠 (카톡·신문 형식)",
     ],
-    visuals: [
-      "대상: 비전공 입문자 / 시간 부족한 직장인 / 깊이 학습형 학생",
-      "차별 가치: 빅데이터 기반 고적중 + 무료 부가 학습",
-    ],
-    capture: "/ 메인 진입 시 상단 풀샷 (히어로 0번째 교재 슬라이드)",
+    hook: "비전공자·직장인·학생까지, 학습 시간이 다른 모든 학습자를 한 사이트에서 합격시키는 것이 목표.",
   },
   {
     no: "02",
-    category: "1부 · 개요",
-    title: "사이트맵",
-    emoji: "🗺️",
-    accent: "blue",
-    intro: "16개 정적 라우트 + 7개 동적 라우트",
+    category: "1부 · 사이트 개요",
+    title: "사용자가 사이트를 이용하는 흐름",
+    summary:
+      "방문 → 가치 발견 → 가입(예정) → 교재 구매 → 학습 → 합격 → 후기·추천. 각 단계마다 자연스럽게 다음으로 넘어가도록 설계.",
+    why: "단순히 페이지가 있는 것이 아니라, 합격까지의 전체 여정을 사이트가 안내해야 학습자가 이탈 없이 끝까지 옴.",
     features: [
-      "/ 랜딩 (15개 섹션)",
-      "/cbt 전기기능사 대시보드 + 4개 하위 (study/exams/wrong-notes)",
-      "/cbt/[id]/take|result|review · CBT 응시 흐름",
-      "/simulator + /simulator/[id] · 13개 시뮬",
-      "/schedule · /gallery · /blog · /invite",
-      "글로벌: /sitemap.xml · /robots.txt · /manifest.webmanifest",
+      "랜딩에서 6슬라이드 자동 회전 — 모든 가치 자동 노출",
+      "5가지 학습 도구 → 클릭 시 미리보기로 신뢰 형성",
+      "CBT 모의고사 → 학습 사이클 (응시→결과→해설→오답)",
+      "후기 + 합격 갤러리 + 친구 초대로 확산",
     ],
+    hook: "사용자가 어디로 가야 할지 모를 일이 없도록 모든 페이지가 다음 액션을 제안.",
   },
+
+  // 글로벌 셀링 요소
   {
     no: "03",
-    category: "2부 · 디자인",
-    title: "디자인 시스템",
-    emoji: "🎨",
-    accent: "violet",
-    why: "addto.co.kr 톤 + 다산패스/해커스 패턴 차용. 콘텐츠 카피는 100% 자체 작성.",
+    category: "2부 · 글로벌 셀링",
+    title: "상단 교재 구매 배너",
+    summary:
+      "사이트의 모든 페이지 최상단에 깔리는 sticky 배너. 교재 한 권 셀링을 항상 눈에 보이게.",
+    why: "교재가 비즈니스의 시작점이자 핵심 매출원. 어떤 페이지에 들어와도 한 줄 셀링이 노출되어야 함.",
     features: [
-      "Primary Blue 600 + Accent Amber 400 (골드 강조)",
-      "5도구별 시그니처 컬러 (CBT 블루 / 해설 에메랄드 / 카드 바이올렛 / 오디오 앰버 / 시뮬 인디고)",
-      "한글 Pretendard Variable (CDN)",
-      "자체 SVG 패턴 8종: grid · dots · diagonal · circuit · mesh-blue/amber/violet · noise",
-      "패턴 opacity 6-8% (가독성 우선)",
+      "그라디언트 배경(앰버→오렌지→로즈)으로 시선 끌기",
+      "한 줄 카피: '합격을 책임지는 단 하나의 교재'",
+      "구매하러 가기 버튼 (출시 시 결제 페이지로 연결)",
+      "닫아도 24시간 후 다시 표시 (도배 방지하면서 노출 유지)",
     ],
+    hook: "사이트 어디서든 '교재가 있다'는 신호를 무의식에 박아둠. 결국 학습 도구만 쓰던 사용자도 책으로 유도.",
   },
   {
     no: "04",
-    category: "2부 · 디자인",
-    title: "인터랙션 시스템",
-    emoji: "✨",
-    accent: "violet",
-    why: "외부 라이브러리 0. 자체 제작으로 가벼움 + 학습 가능성.",
+    category: "2부 · 글로벌 셀링",
+    title: "헤더 — addto 카테고리 통합",
+    summary:
+      "공기업 / 자격증 / 대기업 / 전기기능사 4개 카테고리가 나란히. 우리 사이트는 그 중 '전기기능사' 탭이 활성된 형태.",
+    why: "addto.co.kr 기존 회원이 자연스럽게 우리 페이지로 유입되도록, 본사 사이트와 일관된 네비게이션을 가져감.",
     features: [
-      "<Reveal> · IntersectionObserver 기반 5종 (fade-up/fade-in/slide-left/slide-right/scale)",
-      "<BackgroundPattern> · SVG 패턴 8종",
-      "<SectionDivider> · spark/wave/line/dots",
-      "<ScrollProgress> · 상단 그라디언트 바",
-      "<ScrollToTop> · 우하단 ↑ 버튼 (600px 후 등장)",
-      "prefers-reduced-motion 자동 대응",
+      "addto BI 로고로 본사 정체성 유지",
+      "전기기능사 탭 액센트로 현재 위치 명확",
+      "검색 단축키 (Ctrl+K) — 익숙한 키 한 번에 검색",
+      "내강의실 / CBT 시작하기 / 로그인·회원가입 즉시 접근",
     ],
+    hook: "addto 본사 트래픽이 자격증 → 전기기능사로 자연스럽게 흘러 들어옴.",
   },
   {
     no: "05",
-    category: "3부 · 글로벌",
-    title: "상단 교재 배너",
-    emoji: "📘",
-    accent: "amber",
-    why: "교재 판매가 수익 핵심. 모든 페이지에 한 줄 셀링.",
+    category: "2부 · 글로벌 셀링",
+    title: "우측 교재 플로팅 팝업",
+    summary:
+      "주요 학습 페이지 우측에 책 일러스트와 함께 떠 있는 작은 카드. 시각적으로 교재의 존재감을 강조.",
+    why: "학습 도구를 쓰는 동안에도 교재가 실재한다는 인식을 유지. '도구가 아닌 책으로 시작하라'는 메시지.",
     features: [
-      "풀폭 sticky (앰버→오렌지→로즈 그라디언트)",
-      '"📘 합격을 책임지는 단 하나의 교재 — 독끝 전기기능사 필기"',
-      "구매하러 가기 버튼 (준비중 비활성)",
-      "✕ 닫으면 24시간 후 재표시 (localStorage)",
+      "독끝 전기기능사 필기 책 일러스트 (CSS 3D)",
+      "'옆으로 접기' / '오늘 하루 보지 않기' / '이번에만 닫기' 3단계 옵션",
+      "학습 흐름을 가리지 않으면서 시각적 어필",
     ],
-    tech: "src/components/TextbookBanner.tsx",
+    hook: "디지털 학습 도구만 쓰는 사용자에게 '책 한 권의 가치'를 매 방문마다 환기시킴.",
   },
   {
     no: "06",
-    category: "3부 · 글로벌",
-    title: "헤더 네비게이션",
-    emoji: "🧭",
-    accent: "blue",
-    why: "addto 4개 카테고리 탭 + 검색 + 핵심 액션 즉시 접근",
+    category: "2부 · 글로벌 셀링",
+    title: "실시간 활동 알림 (소셜 프루프)",
+    summary:
+      "좌하단에 14초마다 등장하는 작은 토스트. '○○님이 CBT 응시', '○○님이 합격(78점)' 등.",
+    why: "혼자 공부하는 시험 준비는 외로움. 다른 사람도 활발히 학습 중이라는 시그널이 학습 동기 + 사이트 신뢰로 이어짐.",
     features: [
-      "유틸 바: 로그인·회원가입·쿠폰·장바구니·1:1 문의",
-      "메인 바: addto BI + 4 카테고리 + 🔍 검색 + CBT 시작 + 내강의실",
-      "검색: Ctrl+K / ⌘K 단축키",
-      "모바일: 햄버거 (3선→X 모핑)",
+      "9가지 활동 패턴 (응시 / 합격 / 카드 학습 / 시뮬 체험 등)",
+      "초록 점멸 점으로 'live' 느낌",
+      "응시 중·시뮬 상세에선 자동 숨김 (학습 방해 안 됨)",
     ],
-    tech: "src/components/Header.tsx + SearchModal.tsx",
+    hook: "'사이트가 살아있다'는 인상 → 가입하고 싶어지는 무의식적 신호.",
   },
+
+  // 랜딩 페이지
   {
     no: "07",
-    category: "3부 · 글로벌",
-    title: "푸터 + 우측 플로팅 팝업",
-    emoji: "📬",
-    accent: "amber",
+    category: "3부 · 랜딩 페이지",
+    title: "히어로 슬라이더 (6슬라이드 자동 회전)",
+    summary:
+      "방문 즉시 6장의 카드가 5.5초 간격으로 돌아가며 사이트의 모든 가치를 노출.",
+    why: "첫 인상에서 한 가지만 보여주면 다른 가치가 가려짐. 6가지를 자동 회전으로 모두 노출하면 누구든 자기에게 맞는 가치를 발견.",
     features: [
-      "[푸터] 4컬럼: 브랜드 / 학습콘텐츠 / 고객지원 / 정책",
-      "[푸터] SNS 4종 + 사업자 정보",
-      "[플로팅] 우상단 fixed 카드 (xl:1280+)",
-      "[플로팅] 책 일러스트 (CSS 3D) + 셀링 카피",
-      "[플로팅] '오늘 하루 보지 않기' (자정까지)",
-      "[플로팅] '옆으로 접기' 가능한 세로 탭",
+      "1번 슬라이드: 독끝 전기기능사 필기 교재 (검정/앰버 — 프리미엄 톤)",
+      "2~6번: CBT / 해설강의 / 플립카드 / 오디오북 / 시뮬레이터",
+      "각 슬라이드 컬러가 달라 시각적으로 구분",
+      "큰 이모지 부유 애니메이션 → 살아있는 느낌",
+      "수동 조작 가능 (좌우 화살표 + 하단 dots)",
     ],
-    tech: "Footer.tsx + TextbookFloatingPopup.tsx",
+    hook: "5초 안에 사이트의 모든 가치를 학습자가 알게 됨 → 이탈율 감소, 체류 시간 증가.",
   },
   {
     no: "08",
-    category: "3부 · 글로벌",
-    title: "활동 티커 (소셜 프루프)",
-    emoji: "💬",
-    accent: "emerald",
-    why: '"지금 살아있는 사이트" 인상 + 다른 사람도 학습 중이라는 시그널',
+    category: "3부 · 랜딩 페이지",
+    title: "합격 로드맵 — 단 3단계",
+    summary:
+      "교재 → 모의고사 → 부가 서비스. 막연한 시험 준비를 단순한 3단계로 정리.",
+    why: "처음 도전하는 사람에게 '뭐부터 해야 할지'가 가장 큰 진입 장벽. 3단계 안내로 막연함을 해소.",
     features: [
-      "좌하단 14초 간격 알림 (6초 노출)",
-      '9가지 활동 패턴 ("○○님이 합격" / "응시 시작" 등)',
-      "응시 중·시뮬 상세에서는 자동 숨김 (산만함 방지)",
-      "초록 점멸 점으로 live 느낌",
+      "STEP 01 — 기본 학습 (📘 교재로 기초)",
+      "STEP 02 — 실전 콘텐츠 (🖥 CBT 모의고사로 검증)",
+      "STEP 03 — 부가 서비스 (✨ 오디오북·카드·시뮬로 마무리)",
+      "각 단계마다 즉시 시작 가능한 CTA",
     ],
-    tech: "src/components/ActivityTicker.tsx",
+    hook: "복잡해 보이던 시험 준비가 'A → B → C'로 단순해짐 → '나도 할 수 있겠다' 확신 형성.",
   },
   {
     no: "09",
-    category: "4부 · 랜딩",
-    title: "히어로 슬라이더 (6슬라이드)",
-    emoji: "🎢",
-    accent: "blue",
-    why: "첫 인상에서 6가지 가치 제안을 자동 노출",
+    category: "3부 · 랜딩 페이지",
+    title: "5가지 학습 도구 카드",
+    summary:
+      "사이트의 핵심 가치 5개를 카드로 빠르게 훑어볼 수 있고, 클릭하면 실제 동작 미리보기까지 확인 가능.",
+    why: "가입 전에 '이 사이트에서 뭘 할 수 있는지' 직접 체험할 수 있어야 신뢰가 생김.",
     features: [
-      "5.5초 자동 회전 (호버 시 일시정지)",
-      "좌우 화살표 + dots + 진행바",
-      "큰 이모지 6초 부유 애니메이션",
-      "슬라이드: ① 교재(검정/앰버) ② CBT(블루) ③ 해설강의(에메랄드) ④ 플립카드(바이올렛) ⑤ 오디오북(앰버/오렌지) ⑥ 시뮬레이터(인디고)",
+      "🖥 CBT 모의고사 (이용 가능)",
+      "🎬 기출 해설강의 (Coming Soon)",
+      "🃏 플립 암기카드 (실제 샘플 동작)",
+      "🎧 오디오북 (실제 샘플 트랙 재생)",
+      "⚡ 이론 시뮬레이터 (실제 시뮬 임베드)",
     ],
-    tech: "src/components/HeroSlider.tsx",
+    hook: "Coming Soon 기능도 샘플은 동작 → '말만이 아니라 진짜로 만들고 있다'는 신뢰감.",
   },
   {
     no: "10",
-    category: "4부 · 랜딩",
-    title: "합격 로드맵 (3단계)",
-    emoji: "🗺️",
-    accent: "blue",
-    why: "교재→모의고사→부가서비스 흐름 명시화",
+    category: "3부 · 랜딩 페이지",
+    title: "5도구 특장점 자세히 보기",
+    summary:
+      "5개 카드 아래 좌우 교차 레이아웃으로 도구별 5가지 특장점을 깊이 있게 풀어줌.",
+    why: "결제·가입 직전 단계의 사용자는 짧은 카피보다 구체적인 기능 리스트가 결정에 결정적.",
     features: [
-      "STEP 01 — 기본 학습 (앰버) · 📘 독끝 교재",
-      "STEP 02 — 실전 콘텐츠 (블루) · 🖥 CBT 모의고사",
-      "STEP 03 — 부가 서비스 (바이올렛) · ✨ 오디오/카드/시뮬",
-      "거대 ROADMAP 워터마크 + 단계 번호 워터마크 (140px)",
-      "헤드라인: '합격까지, 단 3단계' + 앰버 형광펜 효과",
+      "각 도구마다 5가지 ✓ 특장점 + 한 줄 설명",
+      "도구별 시그니처 컬러로 시각 구분",
+      "단계 번호(STEP 01~05) 워터마크로 임팩트",
+      "각 도구마다 즉시 시작 CTA",
     ],
-    tech: "src/components/HowItWorks.tsx",
+    hook: "비교 검토 단계의 사용자가 정보 부족으로 떠나지 않도록, 정보 깊이로 결정을 유도.",
   },
   {
     no: "11",
-    category: "4부 · 랜딩",
-    title: "5가지 학습 도구 (카드 그리드)",
-    emoji: "🃏",
-    accent: "violet",
+    category: "3부 · 랜딩 페이지",
+    title: "CBT 셀링 스포트라이트 — 무료 강조",
+    summary:
+      "'교재 구매자에게는 강력한 CBT 기능을 무료로 제공'이라는 메시지를 다크 톤으로 임팩트 있게.",
+    why: "교재 구매를 망설이는 사용자에게 '책 사면 디지털 도구 다 무료'라는 결정적 한 방.",
     features: [
-      "5개 카드 (3/2/1열 반응형)",
-      "상태 뱃지: Coming Soon (앰버) / 이용 가능 (에메랄드)",
-      "CBT → /cbt 직접 이동",
-      "해설강의 → 비활성 (모달 X)",
-      "플립/오디오/시뮬 → 미리보기 모달",
-      "거대 FEATURES 워터마크 + 그라디언트 헤드라인",
+      "🪟 가로·세로 유형별 문제풀이 (1단/2단/1문제 모드)",
+      "📝 모든 문항 상세 해설",
+      "🎬 모든 문항 영상 강의",
+      "각 기능마다 ✓ 무료 제공 표시",
     ],
+    hook: "'교재 한 권 = 학원 한 학기 가치' → 결제 전환 핵심 섹션.",
   },
   {
     no: "12",
-    category: "4부 · 랜딩",
-    title: "미리보기 모달 (4종)",
-    emoji: "🔍",
-    accent: "violet",
+    category: "3부 · 랜딩 페이지",
+    title: "출판사 신뢰감 — 왜 독끝인가요?",
+    summary:
+      "다크 톤 + 골드 액센트로 프리미엄 분위기. 통계와 차별점으로 교재 브랜드의 신뢰 형성.",
+    why: "처음 보는 출판사 책을 사기 망설이는 사용자에게 '검증된 교재'임을 수치로 증명.",
     features: [
-      "info · 설명만 (해설강의)",
-      "iframe · 실제 HTML 임베드 (시뮬레이터)",
-      "audio · MP3 플레이어 (오디오북)",
-      "rich-flashcards · 그라디언트 헤더 + 카드 스택 + 카테고리 + iframe",
-      "ESC / 배경 / ✕로 닫기",
+      "누적 판매 부수 12,400+ / 합격률 87% / 5쇄 / 평점 4.8",
+      "빅데이터 기반 출제 분석",
+      "합격 임계점 역산 설계",
+      "현장 실무자 검수",
     ],
-    tech: "src/components/FeaturePreviewModal.tsx",
+    hook: "'그냥 책'이 아니라 '데이터로 검증된 합격 교재'라는 프리미엄 포지셔닝.",
   },
   {
     no: "13",
-    category: "4부 · 랜딩",
-    title: "특장점 자세히 (5도구 상세)",
-    emoji: "📋",
-    accent: "violet",
-    why: "5카드는 빠른 개요, 깊은 정보는 별도 섹션. 좌우 교차 스토리텔링.",
+    category: "3부 · 랜딩 페이지",
+    title: "학습 플래너 — 14일 / 28일 / 90일",
+    summary:
+      "교재의 학습 플래너 3종을 그대로 반영 + 부가 학습 통합. '전략적 학습 기간으로 효율적으로 한 방에 합격'.",
+    why: "학습자마다 가용 시간이 다름. 한 가지 일정만 제시하면 누군가는 부담 + 누군가는 답답.",
     features: [
-      "5도구 좌우 교차 (1·3·5 비주얼 좌측 / 2·4 우측)",
-      "각 도구: 그라디언트 비주얼 + 워터마크 STEP 번호",
-      "5개 특장점 (✓ 체크 + 한 줄 설명)",
-      "도구 사이 'STEP 02' spark 디바이더",
-      "거대 DETAILS 워터마크 + 그라디언트 헤드라인",
+      "TYPE 01 단기완성 14일 — '핵심만 잡고 끝낸다'",
+      "TYPE 02 표준형 28일 — '한 번에 합격하는 정공법' (가장 추천)",
+      "TYPE 03 학습몰두 90일 — '내 페이스로 완벽하게'",
+      "각 단계마다 부가 학습 도구 통합 제안",
+      "추천 대상 / 주요 학습 도구 / 진행률 / 핵심 전략 한눈에",
     ],
-    tech: "src/components/FeatureDetails.tsx",
+    hook: "'언제 끝낼 수 있을까?'에 대한 답이 명확해져 결제·시작 망설임 감소.",
   },
   {
     no: "14",
-    category: "4부 · 랜딩",
-    title: "CBT 셀링 스포트라이트",
-    emoji: "⚡",
-    accent: "blue",
-    why: '"교재 구매자에게 무료 강력 기능" 임팩트 강조',
+    category: "3부 · 랜딩 페이지",
+    title: "잠깐! 콘셉트 콘텐츠",
+    summary:
+      "5개 학습 도구 외에 '재미있는 콘셉트 콘텐츠'도 있다는 시그널. 카톡방·신문 형식의 이론 학습.",
+    why: "딱딱한 시험 공부에 지친 학습자에게 'addto만의 차별 즐거움'을 한 번 더 제공.",
     features: [
-      "짙은 네이비 배경 + 발광 오브",
-      "골드 PILL '⚡ 잠깐!'",
-      "헤드라인: '교재 구매자에게는, 강력한 기능을 무료로' (무료 골드 underline)",
-      "3가지 특징: 가로·세로 유형별 / 상세한 해설 / 모든 문항 강의",
-      "CTA: CBT 무료 응시 + 교재 구매(준비중)",
+      "💬 단톡방 시리즈 — 옴의 법칙·전력 (직급별 단톡방 콘셉트)",
+      "📰 전기 일보 — 환형자계·키르히호프 (모바일 신문)",
+      "카드 클릭 시 실제 콘텐츠 모달로 즉시 체험",
+      "매주 새 콘셉트 콘텐츠 추가 예정",
     ],
-    tech: "src/components/CbtSpotlight.tsx",
+    hook: "SNS 공유 가능한 재미있는 콘텐츠 → 자연스러운 바이럴 트래픽.",
   },
   {
     no: "15",
-    category: "4부 · 랜딩",
-    title: "출판사 신뢰감 (Trust)",
-    emoji: "📊",
-    accent: "amber",
+    category: "3부 · 랜딩 페이지",
+    title: "통계 / 후기 / FAQ / 뉴스레터",
+    summary:
+      "신뢰(통계+후기) → 정보(FAQ+무료자료) → 전환(뉴스레터). 결제 직전 모든 의문을 해소.",
+    why: "결제 전 사용자의 마음속 마지막 질문(이거 진짜 효과 있나? 환불 되나? 출시일은?)에 모두 답하는 섹션 묶음.",
     features: [
-      "다크 zinc-900 + 골드 회로 패턴 + 발광 오브",
-      "'왜 독끝인가요?' 헤드라인",
-      "통계 4개: 누적 12,400+ / 합격률 87% / 5쇄 / 평점 4.8",
-      "차별점 4개: 빅데이터 / 합격 임계점 / 완전 연동 / 현장 검수",
-      "mock 수치임을 정직하게 명시",
+      "Stats Bar 4개 통계 (1,600+ 문제 / 13 시뮬 / 300+ 카드 / 100% 무료)",
+      "합격 후기 6명 (점수 + 활용 도구 해시태그)",
+      "FAQ 10개 아코디언 (학습/결제/환불/단체/오프라인)",
+      "무료 자료 4종 (체크리스트 / 출제 분석 / 한 장 요약 / 플래너)",
+      "뉴스레터 가입 폼 (출시 알림)",
     ],
-    tech: "src/components/TextbookTrust.tsx",
+    hook: "결정 직전 사용자의 모든 의문을 해소 → 이메일 가입까지 끌고 옴.",
   },
+
+  // 전기기능사 학습 영역
   {
     no: "16",
-    category: "4부 · 랜딩",
-    title: "학습 플래너 (14/28/90일)",
-    emoji: "📅",
-    accent: "rose",
-    why: "교재 학습 플래너를 그대로 반영 + 부가 학습 통합",
+    category: "4부 · 학습 영역",
+    title: "전기기능사 학습 대시보드",
+    summary:
+      "로그인한 사용자가 자기 학습 진행 현황을 한 페이지에서 파악. D-day, 학습량, 취약 진단, 학습 곡선 모두 한곳에.",
+    why: "재방문할 이유를 만들어주는 핵심 페이지. 매일 들어왔을 때 '오늘 뭐 해야 하지'가 즉시 보여야 함.",
     features: [
-      "TYPE 01 단기완성형 14일 (로즈) — '2주, 핵심만 잡고 끝낸다'",
-      "TYPE 02 표준형 28일 (블루) — '4주, 한 번에 합격하는 정공법'",
-      "TYPE 03 학습몰두형 90일 (에메랄드) — '3개월, 내 페이스로'",
-      "각 단계 일정 + 부가 학습 통합 ('🎧 오디오북 + 🃏 플립카드')",
-      "우측 다크 사이드바: STRATEGY 핵심 3포인트 + CTA",
-      "메인 카피: '전략적 학습 기간으로, 효율적으로 한 방에 합격'",
+      "📅 시험까지 D-day (시기별 메시지)",
+      "🎯 과목별 누적 정답률 (3과목 삼각형)",
+      "📊 학습량 vs 이용자 평균 (비교)",
+      "🔥 오늘의 도전 (일일 30문항 + 연속 학습일)",
+      "취약 토픽 자동 진단 + 최근 응시 + 학습 곡선 + 공지사항",
     ],
-    tech: "src/components/StudyPlan.tsx",
+    hook: "lock-in 효과: 한 번 시작하면 '내 진도'가 쌓이니까 떠날 수 없음. 재방문율 핵심.",
   },
   {
     no: "17",
-    category: "4부 · 랜딩",
-    title: "잠깐! 콘셉트 콘텐츠",
-    emoji: "💬",
-    accent: "rose",
-    why: "5도구 외 재미있는 콘텐츠가 더 있다는 시그널",
+    category: "4부 · 학습 영역",
+    title: "과목별 학습 — 원하는 범위만",
+    summary:
+      "전기이론 / 전기기기 / 전기설비 3과목 → 주제 → 하위분류까지. 약점만 골라서 풀 수 있음.",
+    why: "전체 60문항을 다시 푸는 건 비효율. '어디가 약한지'를 알려주고 '거기만 풀게' 해주는 게 학원의 1:1 관리 효과.",
     features: [
-      "💬 단톡방 시리즈 (직급별 단톡방 콘셉트)",
-      "📰 전기 일보 (모바일 신문 형식)",
-      "카드 클릭 → 모달 임베드 (실제 HTML)",
-      "'🎁 매주 새로운 콘셉트 콘텐츠 추가' 안내",
+      "3과목 × 평균 3주제 × 평균 3 하위분류 = 28개 세분화 학습 단위",
+      "어느 레벨에서든 '응시하기' 버튼으로 즉시 시험",
+      "선택한 범위만 추려서 동적 시험 생성",
+      "대상 연도 2009~2016년 표기",
     ],
-    tech: "ElectricExtras.tsx + public/extras/*.html",
+    hook: "1:1 학원 관리 같은 맞춤 학습 = 효율 + 자기 주도 학습 = 학습자가 통제권을 가진다는 만족.",
   },
   {
     no: "18",
-    category: "4부 · 랜딩",
-    title: "후기 / FAQ / 뉴스레터",
-    emoji: "⭐",
-    accent: "amber",
+    category: "4부 · 학습 영역",
+    title: "CBT 모의고사 응시 화면",
+    summary:
+      "실제 시험장의 CBT 환경을 그대로 재현. 60문항 60분, 글자 크기·화면 배치·계산기까지 똑같이.",
+    why: "시험 당일 처음 보는 환경에서 당황해 떨어지는 학습자가 많음. 익숙한 환경 = 합격률 상승.",
     features: [
-      "[후기] 6개 합격 카드 (점수 + 활용 도구 해시태그)",
-      "[FAQ] 10개 아코디언 (학습/결제/환불/단체/오프라인)",
-      "[무료 자료] 4 PDF (체크리스트 / 출제 분석 / 한 장 요약 / 플래너)",
-      "[뉴스레터] 이메일 입력 + validation + mock 제출",
+      "글자 크기 3단계 (100/130/150%)",
+      "화면 배치 3종 (1단·2단·1문제)",
+      "팝업 계산기 / 전체문제 그리드 / 체크 표시",
+      "남은 시간 카운트다운 + 자동 제출",
+      "중간 종료해도 진행 상태 자동 저장",
     ],
+    hook: "'시험장에서 처음 보는 환경'이 사라짐 = 합격률에 직접 기여 = 후기·재방문 강화.",
   },
   {
     no: "19",
-    category: "5부 · 학습",
-    title: "전기기능사 대시보드",
-    emoji: "📊",
-    accent: "blue",
-    why: "다산패스 스타일 + 우리만의 위젯 추가",
+    category: "4부 · 학습 영역",
+    title: "결과 + 해설 + 오답 노트",
+    summary:
+      "응시가 끝이 아니라 학습의 시작. PASS/FAIL 즉시 → 과목별 분석 → 60문항 해설 → 오답만 모은 노트.",
+    why: "응시 후 '결과만 보고 끝나는' 사이트가 대부분. 우리는 '왜 틀렸는지 → 다시 풀이' 사이클을 완성.",
     features: [
-      "상단 배너: D-day 위젯 + 빠른 액션 (과목별/CBT/시뮬)",
-      "Stats Row 3카드: 학습 현황 삼각형 / 학습량 vs 평균 / 오늘의 도전",
-      "취약점 진단 + 최근 응시 기록",
-      "학습 곡선 SVG 차트 (응시별 점수 + 합격선 60)",
-      "공지사항 + 학습 게시판",
+      "PASS / FAIL 큰 배너 + 100점 환산",
+      "과목별 삼각형 레이더 + 강점/취약 진단",
+      "60문항 해설 (페이지당 10) + 정답·내선택 색상 구분",
+      "오답 노트: 모든 회차의 틀린 문제만 자동 모음 + 과목 필터",
     ],
-    tech: "Dashboard.tsx + DDayWidget/DailyChallenge/RecentAttempts/LearningCurve",
+    hook: "응시 사이클을 완성 = '점수만 알려주는 사이트'와의 결정적 차별점.",
   },
+
+  // 시뮬레이터
   {
     no: "20",
-    category: "5부 · 학습",
-    title: "과목별 학습 (트리)",
-    emoji: "📚",
-    accent: "violet",
-    why: "원하는 범위만 골라 응시 (약점 보강용)",
+    category: "5부 · 시뮬레이터",
+    title: "이론 시뮬레이터 13종",
+    summary:
+      "글로 읽지 말고 손으로 만지자. 전기력선·자기력·RLC·변압기·차단기까지 13개 인터랙티브 시뮬.",
+    why: "전기 비전공자에게 '자기력선'이나 'RLC 공진'은 추상적. 슬라이더 하나 움직였을 때 결과가 즉시 보이면 이해가 직관으로 박힘.",
     features: [
-      "3과목 탭 (전기이론/기기/설비)",
-      "선택된 과목의 주제 카드 (3-4개)",
-      "각 카드: 주제 + 하위분류 리스트 + 응시 버튼",
-      "응시 → /cbt/practice-{과목}-{주제}-{하위}/take 동적 라우트",
-      "ExamTaker 컴포넌트 재사용",
+      "전기이론 6종 (전기력선·평행도선·RLC·직병렬·옴의법칙·키르히호프)",
+      "전기기기 5종 (변압기 권수비/Y-Δ·직류기·유도전동기·동기기)",
+      "전기설비 2종 (접지·차단기)",
+      "변수 슬라이더 + 그래프·다이어그램 즉시 갱신",
+      "공식과 시각이 같은 화면에서 동시에",
     ],
-    tech: "StudyBrowser.tsx + curriculum.ts (28 하위분류)",
+    hook: "타사 어디에도 없는 자체 시뮬 13종 = 강력한 차별점 + SEO 콘텐츠 + 이론 비전공자 유입.",
   },
   {
     no: "21",
-    category: "5부 · 학습",
-    title: "CBT 응시 (5회차)",
-    emoji: "🖥️",
-    accent: "blue",
-    why: "실제 CBT 환경 그대로 — 시험장 친숙도",
+    category: "5부 · 시뮬레이터",
+    title: "시뮬 상세 — 핵심 공식 + 핵심 예제",
+    summary:
+      "각 시뮬레이터 페이지에 핵심 공식과 풀이 단계까지 나오는 예제가 함께. 시뮬만 가지고 끝나지 않게.",
+    why: "시뮬은 이해용. 시험은 결국 공식과 풀이 능력. 두 가지를 한 화면에서 연결하면 '시뮬 = 시험 점수'로 가치가 직결됨.",
     features: [
-      "툴바: 글자크기(100/130/150) / 화면배치(1단/2단/1문제) / 계산기",
-      "전체문제·남은문제·체크문제 필터 + 그리드",
-      "좌·우 양방향 연동 답안 표기란",
-      "카운트다운 타이머 (자동 제출)",
-      "localStorage 자동 저장 (중단해도 이어서)",
-      "미풀이 경고 → 최종 확인 → 제출",
+      "📐 핵심 공식 카드 — 1~3개 공식 (수식 + 의미)",
+      "✏️ 핵심 예제 — 문제 / 주어진 값 / 풀이 단계 / 정답",
+      "단계별 풀이를 검정+골드 모노스페이스로 강조",
+      "같은 과목의 다른 시뮬 추천 카드",
     ],
-    tech: "ExamTaker.tsx + Calculator/QuestionMap Dialog",
+    hook: "'시뮬 보러 왔다가 시험 공부까지 하고 가는' 페이지 → 체류 시간 + 학습 효과 동시 향상.",
   },
+
+  // 부가 페이지
   {
     no: "22",
-    category: "5부 · 학습",
-    title: "결과 + 해설 + 오답 노트",
-    emoji: "📈",
-    accent: "emerald",
+    category: "6부 · 부가 페이지",
+    title: "시험 일정 캘린더",
+    summary:
+      "큐넷 정기 시험 4회차 일정 + D-day + 응시 절차 4단계.",
+    why: "처음 응시하는 사람들이 '언제 어떻게 신청하지?'에서 막힘. 일정과 절차를 한 페이지에 정리해 진입 장벽 제거.",
     features: [
-      "[결과] PASS/FAIL 큰 배너 + 100점 환산",
-      "[결과] 과목별 삼각형 레이더 + 강점/보통/취약 진단",
-      "[해설] 60문항 (페이지당 10) + 60번호 그리드 (맞힘/틀림/체크 색상)",
-      "[해설] 정답·내선택 컬러 표시 + 필터 (전체/맞힘/틀림/체크)",
-      "[오답노트] 모든 회차의 오답 자동 추출 + 과목 필터 + 정답 토글",
+      "4회차 일정 카드 (D-day 자동 계산)",
+      "시기별 컬러 (30일+ 블루 / 7~30일 앰버 / 7일 이내 로즈)",
+      "응시 절차 4단계 (원서접수 → 결제 → 응시 → 합격발표)",
+      "큐넷 외부 링크",
     ],
-    tech: "ResultView.tsx + ReviewView.tsx + WrongNotes.tsx",
+    hook: "시험 일정 검색 SEO 트래픽 흡수 + 처음 도전자에게 친절한 가이드.",
   },
   {
     no: "23",
-    category: "6부 · 시뮬",
-    title: "시뮬레이터 인덱스 (13개)",
-    emoji: "⚡",
-    accent: "indigo",
-    why: "글로 읽지 말고 손으로 만져 이해",
+    category: "6부 · 부가 페이지",
+    title: "합격 인증 갤러리",
+    summary:
+      "먼저 합격한 사람들의 점수와 짧은 후기. 어떤 도구가 결정적이었는지 해시태그로 정리.",
+    why: "후기 6개로는 부족. 갤러리 형태로 9~수십 개를 보여주면 '이 사이트로 정말 합격하는구나' 신뢰가 강해짐.",
     features: [
-      "인디고-퍼플 그라디언트 히어로 + 회로 패턴",
-      "카테고리별: 전기이론(6) / 전기기기(5) / 전기설비(2)",
-      "각 카드: 이모지 + 토픽 칩 + '체험하기 →'",
-      "하단 학습 팁 3종 (변수 끝까지 / 공식과 그림 / 시뮬→기출)",
+      "9개 인증 카드 + 점수 뱃지 + 활용 도구 해시태그",
+      "각 후기마다 어떤 도구가 결정적이었는지 명시",
+      "추후 사용자가 자기 인증을 직접 등록 가능 (예정)",
     ],
-    tech: "src/app/simulator/page.tsx",
+    hook: "사회적 증명 (social proof) 극대화 → 결제 전 마지막 망설임 해소.",
   },
   {
     no: "24",
-    category: "6부 · 시뮬",
-    title: "시뮬 13종 카탈로그",
-    emoji: "🧪",
-    accent: "indigo",
+    category: "6부 · 부가 페이지",
+    title: "블로그 / 학습 팁",
+    summary:
+      "학습 전략·자주 틀리는 함정·시험 당일 체크리스트 등 5편의 자체 작성 글.",
+    why: "검색 엔진을 통한 자연 유입 트래픽 = 마케팅 비용 0원의 사용자 확보 채널.",
     features: [
-      "전기이론: 전기력선 · 평행도선 · RLC 공진 · 직병렬 · 옴의 법칙 · 키르히호프",
-      "전기기기: 변압기 권수비 · Y/Δ 결선 · 직류기 · 유도전동기 회전자계 · 동기기 P-δ",
-      "전기설비: 접지 저항 · 차단기 동작",
-      "각 시뮬 단독 HTML (Tailwind CDN + Pretendard + Canvas/SVG)",
+      "5편 글: 4주 학습 순서 / 자주 틀리는 5가지 / 시험 당일 / 무료 가능? / 합격 후 활용",
+      "각 글마다 'CBT 모의고사 응시' CTA로 자연스러운 전환",
+      "다른 글 추천으로 체류 시간 연장",
     ],
+    hook: "구글 검색 'CBT 4주 합격', '전기기능사 함정' 등 키워드 → 우리 사이트로 유입 → 학습 도구 발견.",
   },
   {
     no: "25",
-    category: "6부 · 시뮬",
-    title: "시뮬 상세 (공식 + 예제)",
-    emoji: "📐",
-    accent: "indigo",
-    why: "시뮬만이 아니라 공식·예제까지 학습 — 시험 직결",
+    category: "6부 · 부가 페이지",
+    title: "친구 초대 (바이럴)",
+    summary:
+      "사용자가 친구를 초대하면 양쪽 모두에게 학습 부스터(자료팩·카드·시청권) 제공.",
+    why: "광고 비용 없이 사용자 1명이 친구 1~2명을 데려오면 트래픽이 기하급수적으로 성장.",
     features: [
-      "인트로 헤더 (이모지 + 카테고리·토픽 + 큰 제목)",
-      "시뮬 iframe (80vh)",
-      "📐 핵심 공식 카드 (블루) — 수식+의미",
-      "✏️ 핵심 예제 카드 (앰버) — 문제·주어진값·풀이단계·정답",
-      "같은 과목의 다른 시뮬 추천 3개",
-      "13개 시뮬 모두 정적 빌드 (generateStaticParams)",
+      "추천 코드 + 초대 링크 자동 발급",
+      "혜택 3가지 (양쪽 자료팩 / 카드 50장 / 우선 시청권)",
+      "카카오·네이버 밴드·이메일 공유 (출시 시 연동)",
     ],
-    tech: "src/app/simulator/[id]/page.tsx + simulators.ts",
-  },
-  {
-    no: "26",
-    category: "7부 · 부가",
-    title: "시험 일정 (`/schedule`)",
-    emoji: "🗓️",
-    accent: "blue",
-    features: [
-      "히어로: '언제 응시할지, 미리 정하세요'",
-      "4회차 일정 카드 + D-day 자동 계산",
-      "시기별 컬러 (30+ 블루 / 7-30 앰버 / 7- 로즈)",
-      "응시 절차 4단계 (원서접수→결제→응시→발표)",
-      "큐넷 외부 링크",
-    ],
-  },
-  {
-    no: "27",
-    category: "7부 · 부가",
-    title: "합격 갤러리 / 친구 초대",
-    emoji: "🏆",
-    accent: "rose",
-    features: [
-      "[갤러리] 9개 인증 카드 (그라디언트 헤더 + 점수 + 활용 도구)",
-      "[갤러리] '인증 등록' (준비중)",
-      "[초대] 추천 코드 + 초대 링크 복사",
-      "[초대] 카카오·밴드·이메일 공유 (준비중)",
-      "[초대] 3가지 혜택 (자료팩 / 카드 50장 / 우선 시청권)",
-    ],
-  },
-  {
-    no: "28",
-    category: "7부 · 부가",
-    title: "블로그 / 학습 팁",
-    emoji: "📝",
-    accent: "blue",
-    why: "SEO 트래픽 + 권위 형성",
-    features: [
-      "5개 글: 4주 합격 학습 순서 / 자주 틀리는 함정 / 시험 당일 / 무료 가능 / 합격 후 활용",
-      "인덱스: 추천 1개 + 그리드 4개",
-      "상세: 카테고리·요약·본문(간단 마크다운) + 다른 글 추천",
-      "각 글 정적 빌드 + SEO 메타",
-    ],
-    tech: "src/app/blog + src/lib/blog.ts",
-  },
-  {
-    no: "29",
-    category: "8부 · 시스템",
-    title: "검색 모달 / 토스트 / 스켈레톤 / 에러",
-    emoji: "🛠️",
-    accent: "violet",
-    features: [
-      "[검색] 헤더 🔍 + Ctrl+K — 인기 검색어 + 빠른 이동",
-      "[토스트] useToast() 훅, 4톤(성공/에러/안내), 4초 자동",
-      "[스켈레톤] Skeleton/CardSkeleton/ListSkeleton, pulse 애니메이션",
-      "[에러] app/error.tsx, '다시 시도' + '메인으로' + digest 표시",
-    ],
-  },
-  {
-    no: "30",
-    category: "9부 · 부록",
-    title: "기술 / SEO / 성능",
-    emoji: "⚙️",
-    accent: "blue",
-    features: [
-      "Next.js 16 App Router + TypeScript + Tailwind v4",
-      "한글 Pretendard Variable (CDN)",
-      "외부 UI 라이브러리 0 (자체 제작)",
-      "정적 라우트 11개 + 동적 4개",
-      "SEO: 페이지별 metadata + OG + JSON-LD + sitemap + robots",
-      "PWA manifest (모바일 홈 화면 추가 가능)",
-      "현재 100% 클라이언트 + mock + localStorage",
-    ],
-  },
-  {
-    no: "31",
-    category: "9부 · 부록",
-    title: "향후 확장 (Priority 1)",
-    emoji: "🚀",
-    accent: "amber",
-    features: [
-      "회원가입/로그인 (Supabase Auth + 카카오/네이버 소셜)",
-      "DB 연동 (Supabase) — 사용자/문제/응시기록/후기",
-      "결제 (PortOne / 토스페이먼츠)",
-      "관리자 CMS (1,600문제 입력)",
-      "이메일 발송 (Resend / Stibee)",
-      "Google Analytics 4 + Microsoft Clarity",
-      "다크모드 (선택)",
-      "푸시 알림 (D-day 임박)",
-    ],
+    hook: "K = 1.5 (1명이 1.5명 초대) 정도의 바이럴 계수만 나와도 사용자 베이스 폭발적 성장.",
   },
 ];
 
+type AccentKey = "blue" | "violet" | "emerald" | "amber" | "rose" | "indigo";
+
 const ACCENTS: Record<
-  string,
-  { bg: string; text: string; ring: string; chip: string }
+  AccentKey,
+  { bg: string; text: string; chip: string }
 > = {
-  blue: {
-    bg: "bg-blue-600",
-    text: "text-blue-700",
-    ring: "ring-blue-200",
-    chip: "bg-blue-50 text-blue-700",
-  },
-  violet: {
-    bg: "bg-violet-600",
-    text: "text-violet-700",
-    ring: "ring-violet-200",
-    chip: "bg-violet-50 text-violet-700",
-  },
-  emerald: {
-    bg: "bg-emerald-600",
-    text: "text-emerald-700",
-    ring: "ring-emerald-200",
-    chip: "bg-emerald-50 text-emerald-700",
-  },
-  amber: {
-    bg: "bg-amber-500",
-    text: "text-amber-700",
-    ring: "ring-amber-200",
-    chip: "bg-amber-50 text-amber-700",
-  },
-  rose: {
-    bg: "bg-rose-600",
-    text: "text-rose-700",
-    ring: "ring-rose-200",
-    chip: "bg-rose-50 text-rose-700",
-  },
-  indigo: {
-    bg: "bg-indigo-600",
-    text: "text-indigo-700",
-    ring: "ring-indigo-200",
-    chip: "bg-indigo-50 text-indigo-700",
-  },
+  blue: { bg: "bg-blue-600", text: "text-blue-700", chip: "bg-blue-50 text-blue-700" },
+  violet: { bg: "bg-violet-600", text: "text-violet-700", chip: "bg-violet-50 text-violet-700" },
+  emerald: { bg: "bg-emerald-600", text: "text-emerald-700", chip: "bg-emerald-50 text-emerald-700" },
+  amber: { bg: "bg-amber-500", text: "text-amber-700", chip: "bg-amber-50 text-amber-700" },
+  rose: { bg: "bg-rose-600", text: "text-rose-700", chip: "bg-rose-50 text-rose-700" },
+  indigo: { bg: "bg-indigo-600", text: "text-indigo-700", chip: "bg-indigo-50 text-indigo-700" },
 };
+
+// 카테고리별 액센트 자동 매핑
+const CATEGORY_ACCENT: Record<string, Slide["accent"]> = {
+  "1부 · 사이트 개요": "blue",
+  "2부 · 글로벌 셀링": "amber",
+  "3부 · 랜딩 페이지": "violet",
+  "4부 · 학습 영역": "blue",
+  "5부 · 시뮬레이터": "indigo",
+  "6부 · 부가 페이지": "rose",
+};
+
+const EMOJIS = [
+  "📘", "🗺️",
+  "🏷️", "🧭", "📕", "💬",
+  "🎢", "🛣️", "🃏", "📋", "⚡", "🏆", "📅", "🗞️", "⭐",
+  "📊", "🎯", "🖥️", "📈",
+  "🧪", "📐",
+  "📅", "🏆", "📝", "🎁",
+];
+
+slides.forEach((s, i) => {
+  s.accent = CATEGORY_ACCENT[s.category] ?? s.accent ?? "blue";
+  s.emoji = EMOJIS[i] ?? "📄";
+});
 
 export default function SpecPage() {
   return (
     <div className="min-h-screen bg-zinc-50 text-zinc-900">
-      {/* 인쇄용 표지 */}
+      {/* 표지 */}
       <header className="break-after-page bg-gradient-to-br from-blue-700 via-indigo-700 to-violet-800 px-6 py-20 text-white print:py-32">
         <div className="mx-auto max-w-4xl">
           <p className="text-sm font-bold tracking-widest text-amber-300">
-            PROJECT SPEC · 2026
+            PROJECT BRIEF · 2026
           </p>
           <h1 className="mt-4 text-4xl font-black leading-tight tracking-tight sm:text-6xl">
             독끝 전기기능사 필기
@@ -554,15 +458,14 @@ export default function SpecPage() {
             <span className="text-amber-300">addto 온라인 기획서</span>
           </h1>
           <p className="mt-6 text-base leading-7 text-white/85 sm:text-lg">
-            모든 페이지·섹션·컴포넌트의 목적과 구현을
+            각 페이지·섹션을
             <br />
-            슬라이드 단위로 정리한 통합 기획서
+            <strong>왜 만들었나 / 특장점 / 모객 포인트</strong> 3관점으로 정리.
           </p>
-          <div className="mt-10 grid grid-cols-2 gap-4 text-sm sm:grid-cols-4">
-            <Stat label="섹션" value="31개" />
+          <div className="mt-10 grid grid-cols-2 gap-4 text-sm sm:grid-cols-3">
+            <Stat label="섹션" value={`${slides.length}개`} />
             <Stat label="페이지" value="16개" />
             <Stat label="시뮬레이터" value="13개" />
-            <Stat label="컴포넌트" value="35+" />
           </div>
           <div className="mt-12 flex flex-wrap gap-3 print:hidden">
             <Link
@@ -584,32 +487,30 @@ export default function SpecPage() {
         </div>
       </header>
 
-      {/* 사용 안내 (인쇄에서 빠짐) */}
       <section className="border-b border-zinc-200 bg-amber-50/60 px-6 py-6 print:hidden">
         <div className="mx-auto flex max-w-4xl items-start gap-3 text-sm text-amber-900">
           <span className="text-xl">💡</span>
           <div>
             <p className="font-semibold">PPT로 활용하시려면</p>
             <ul className="mt-1 space-y-0.5 text-xs">
-              <li>· 각 슬라이드 카드 한 장을 1슬라이드로 옮기세요</li>
+              <li>· 카드 한 장을 PPT 1슬라이드로 옮기세요 (텍스트 그대로 복사)</li>
               <li>
-                · 캡처가 필요한 항목은 브라우저에서 해당 페이지를 열고
-                <code className="mx-1 rounded bg-white px-1">Win + Shift + S</code>
-                로 영역 캡처
+                · 이미지가 필요한 슬라이드는 사이트 해당 페이지에서{" "}
+                <code className="mx-1 rounded bg-white px-1">Win + Shift + S</code>{" "}
+                영역 캡처
               </li>
               <li>
-                · 또는 우측 상단 <strong>"PDF로 출력"</strong> 버튼으로 인쇄 →
-                Microsoft Print to PDF
+                · 혹은 우상단 <strong>"PDF로 출력"</strong>으로 바로 PDF 생성
               </li>
             </ul>
           </div>
         </div>
       </section>
 
-      {/* 슬라이드 카드들 */}
+      {/* 슬라이드 카드 */}
       <main className="mx-auto max-w-4xl px-6 py-12 print:py-0">
         {slides.map((s) => {
-          const a = ACCENTS[s.accent] ?? ACCENTS.blue;
+          const a = ACCENTS[s.accent ?? "blue"];
           return (
             <article
               key={s.no}
@@ -638,61 +539,46 @@ export default function SpecPage() {
               </header>
 
               <div className="px-8 py-6">
-                {s.intro && (
-                  <p className="mb-4 text-sm leading-6 text-zinc-800 sm:text-base">
-                    {s.intro}
+                {/* 한 줄 요약 */}
+                <p className="text-sm leading-7 text-zinc-800 sm:text-base">
+                  {s.summary}
+                </p>
+
+                {/* 왜 만들었나 */}
+                <div className={`mt-5 rounded-lg px-4 py-3 ${a.chip}`}>
+                  <p className="text-[11px] font-bold uppercase tracking-wide">
+                    왜 만들었나
                   </p>
-                )}
+                  <p className="mt-1 text-sm leading-6">{s.why}</p>
+                </div>
 
-                {s.why && (
-                  <div className={`mb-5 rounded-lg px-4 py-3 ${a.chip}`}>
-                    <p className="text-[11px] font-bold tracking-wide uppercase">
-                      Why
-                    </p>
-                    <p className="mt-1 text-sm leading-6">{s.why}</p>
-                  </div>
-                )}
+                {/* 특장점 */}
+                <div className="mt-5">
+                  <p
+                    className={`text-[11px] font-bold uppercase tracking-wide ${a.text}`}
+                  >
+                    특장점
+                  </p>
+                  <ul className="mt-2 space-y-1.5 text-sm leading-6 text-zinc-800">
+                    {s.features.map((f, i) => (
+                      <li key={i} className="flex items-start gap-2">
+                        <span
+                          className={`mt-1 h-1.5 w-1.5 flex-shrink-0 rounded-full ${a.bg}`}
+                        />
+                        <span>{f}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
 
-                {s.features && s.features.length > 0 && (
-                  <div className="mb-5">
-                    <p className={`text-[11px] font-bold uppercase tracking-wide ${a.text}`}>
-                      구현 / 구성
-                    </p>
-                    <ul className="mt-2 space-y-1.5 text-sm leading-6 text-zinc-800">
-                      {s.features.map((f, i) => (
-                        <li key={i} className="flex items-start gap-2">
-                          <span className={`mt-1 h-1.5 w-1.5 flex-shrink-0 rounded-full ${a.bg}`} />
-                          <span>{f}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-
-                {s.visuals && s.visuals.length > 0 && (
-                  <div className="mb-5">
-                    <p className={`text-[11px] font-bold uppercase tracking-wide ${a.text}`}>
-                      시각 / 추가 메모
-                    </p>
-                    <ul className="mt-2 space-y-1 text-sm leading-6 text-zinc-700">
-                      {s.visuals.map((v, i) => (
-                        <li key={i}>· {v}</li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-
-                <div className="mt-6 flex flex-wrap gap-2 border-t border-zinc-100 pt-4 text-xs">
-                  {s.tech && (
-                    <span className="rounded-md bg-zinc-900 px-2.5 py-1 font-mono text-amber-300">
-                      💻 {s.tech}
-                    </span>
-                  )}
-                  {s.capture && (
-                    <span className="rounded-md bg-amber-50 px-2.5 py-1 text-amber-800">
-                      📸 캡처: {s.capture}
-                    </span>
-                  )}
+                {/* 모객 포인트 */}
+                <div className="mt-5 rounded-lg border-2 border-amber-300 bg-amber-50 px-4 py-3">
+                  <p className="text-[11px] font-bold uppercase tracking-wide text-amber-700">
+                    💡 모객 포인트
+                  </p>
+                  <p className="mt-1 text-sm font-semibold leading-6 text-amber-900">
+                    {s.hook}
+                  </p>
                 </div>
               </div>
             </article>
@@ -702,15 +588,18 @@ export default function SpecPage() {
         <div className="rounded-2xl border-2 border-dashed border-zinc-300 bg-white p-8 text-center print:hidden">
           <p className="text-2xl">📑</p>
           <p className="mt-2 text-sm font-semibold text-zinc-800">
-            전체 본문은 <code className="mx-1 rounded bg-zinc-100 px-1.5 py-0.5">SPEC.md</code> 파일에서도 확인 가능합니다
+            동일 본문은{" "}
+            <code className="mx-1 rounded bg-zinc-100 px-1.5 py-0.5">
+              SPEC.md
+            </code>{" "}
+            파일에서도 확인 가능합니다
           </p>
           <p className="mt-1 text-xs text-zinc-500">
-            프로젝트 루트에 위치 — Notion / Google Docs 복붙 가능
+            프로젝트 루트 — Notion / Google Docs 복붙 가능
           </p>
         </div>
       </main>
 
-      {/* 인쇄 전용 스타일 */}
       <style>{`
         @media print {
           @page { size: A4; margin: 12mm; }
