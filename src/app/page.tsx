@@ -10,6 +10,7 @@ import CbtSpotlight from "@/components/CbtSpotlight";
 import ElectricExtras from "@/components/ElectricExtras";
 import Testimonials from "@/components/Testimonials";
 import Faq from "@/components/Faq";
+import TextbookFloatingPopup from "@/components/TextbookFloatingPopup";
 import FeaturePreviewModal, {
   type FeaturePreview,
 } from "@/components/FeaturePreviewModal";
@@ -360,6 +361,8 @@ export default function Home() {
       {active && (
         <FeaturePreviewModal feature={active} onClose={() => setActiveId(null)} />
       )}
+
+      <TextbookFloatingPopup />
     </div>
   );
 }

@@ -2,8 +2,13 @@
 
 import { useEffect, useState } from "react";
 
-const STORAGE_KEY = "textbook-floating-dismissed-at";
-const RESHOW_AFTER_MS = 24 * 60 * 60 * 1000; // 24시간
+const STORAGE_KEY = "textbook-floating-hide-until";
+
+function endOfTodayMs(): number {
+  const d = new Date();
+  d.setHours(23, 59, 59, 999);
+  return d.getTime();
+}
 
 export default function TextbookFloatingPopup() {
   const [visible, setVisible] = useState(false);
@@ -12,12 +17,11 @@ export default function TextbookFloatingPopup() {
 
   useEffect(() => {
     try {
-      const dismissed = Number(localStorage.getItem(STORAGE_KEY) ?? "0");
-      const elapsed = Date.now() - dismissed;
-      const shouldShow = !dismissed || elapsed > RESHOW_AFTER_MS;
+      const hideUntil = Number(localStorage.getItem(STORAGE_KEY) ?? "0");
+      const shouldShow = !hideUntil || Date.now() > hideUntil;
       setVisible(shouldShow);
       if (shouldShow) {
-        // 살짝 늦게 등장하도록 (페이지 로드 후 슬라이드 인)
+        // 페이지 로드 후 살짝 늦게 슬라이드 인
         const id = window.setTimeout(() => setEntered(true), 350);
         return () => window.clearTimeout(id);
       }
@@ -27,12 +31,16 @@ export default function TextbookFloatingPopup() {
     }
   }, []);
 
-  function dismiss() {
+  function hideForToday() {
     try {
-      localStorage.setItem(STORAGE_KEY, String(Date.now()));
+      localStorage.setItem(STORAGE_KEY, String(endOfTodayMs()));
     } catch {
       /* ignore */
     }
+    setVisible(false);
+  }
+
+  function hideThisSession() {
     setVisible(false);
   }
 
@@ -71,14 +79,16 @@ export default function TextbookFloatingPopup() {
               type="button"
               onClick={() => setCollapsed(true)}
               aria-label="배너 접기"
+              title="옆으로 접기"
               className="rounded p-1 text-white/70 transition hover:bg-white/10 hover:text-white"
             >
               <span aria-hidden="true">›</span>
             </button>
             <button
               type="button"
-              onClick={dismiss}
+              onClick={hideThisSession}
               aria-label="배너 닫기"
+              title="이번에만 닫기"
               className="rounded p-1 text-white/70 transition hover:bg-white/10 hover:text-white"
             >
               <span aria-hidden="true">✕</span>
@@ -151,6 +161,23 @@ export default function TextbookFloatingPopup() {
           <p className="mt-2 text-center text-[10px] text-zinc-400">
             ※ 출시 알림은 회원가입 후 받아보실 수 있습니다.
           </p>
+
+          <div className="mt-3 flex items-center justify-between border-t border-zinc-100 pt-2">
+            <button
+              type="button"
+              onClick={hideForToday}
+              className="text-[11px] font-medium text-zinc-500 hover:text-zinc-900"
+            >
+              오늘 하루 보지 않기
+            </button>
+            <button
+              type="button"
+              onClick={hideThisSession}
+              className="text-[11px] text-zinc-400 hover:text-zinc-700"
+            >
+              닫기
+            </button>
+          </div>
         </div>
       </div>
     </aside>
