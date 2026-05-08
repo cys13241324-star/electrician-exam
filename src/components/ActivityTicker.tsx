@@ -21,8 +21,8 @@ const POOL: Activity[] = [
   { text: "조*나 님이 합격 (85점)", time: "22분 전", emoji: "🎉" },
 ];
 
-const SHOW_INTERVAL_MS = 8000; // 8초마다 새 알림
-const VISIBLE_MS = 5500; // 5.5초 후 사라짐
+const SHOW_INTERVAL_MS = 14000; // 14초마다 새 알림
+const VISIBLE_MS = 6000; // 6초 후 사라짐
 
 const SUPPRESS_PATHS = [/\/cbt\/[^/]+\/take$/, /\/simulator\/[^/]+$/];
 

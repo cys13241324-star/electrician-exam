@@ -159,10 +159,17 @@ function SlideCard({ slide }: { slide: HeroSlide }) {
         <div
           aria-hidden="true"
           className="flex h-40 w-40 flex-shrink-0 items-center justify-center self-center rounded-3xl bg-white/15 text-7xl shadow-inner backdrop-blur-sm sm:h-56 sm:w-56 sm:text-8xl lg:h-64 lg:w-64"
+          style={{ animation: "heroFloat 6s ease-in-out infinite" }}
         >
           {slide.emoji}
         </div>
       </div>
+      <style jsx>{`
+        @keyframes heroFloat {
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(-12px); }
+        }
+      `}</style>
     </div>
   );
 }
