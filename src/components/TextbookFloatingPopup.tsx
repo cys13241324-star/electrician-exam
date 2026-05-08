@@ -53,7 +53,7 @@ export default function TextbookFloatingPopup() {
         type="button"
         onClick={() => setCollapsed(false)}
         aria-label="교재 구매 배너 펼치기"
-        className="fixed right-2 top-36 z-30 hidden flex-col items-center gap-1 rounded-l-xl bg-gradient-to-b from-amber-500 via-orange-500 to-rose-500 px-2 py-3 text-white shadow-xl transition hover:px-3 xl:flex"
+        className="fixed right-14 top-44 z-30 hidden flex-col items-center gap-1 rounded-l-xl bg-gradient-to-b from-amber-500 via-orange-500 to-rose-500 px-2 py-3 text-white shadow-xl transition hover:px-3 xl:flex"
       >
         <span className="text-2xl">📘</span>
         <span className="writing-mode-vertical text-[10px] font-bold tracking-widest" style={{ writingMode: "vertical-rl" }}>
@@ -65,7 +65,7 @@ export default function TextbookFloatingPopup() {
 
   return (
     <aside
-      className={`fixed right-6 top-36 z-30 hidden w-56 xl:block ${entered ? "translate-x-0 opacity-100" : "translate-x-8 opacity-0"} transition-all duration-500 ease-out`}
+      className={`fixed right-14 top-44 z-30 hidden w-56 xl:block ${entered ? "translate-x-0 opacity-100" : "translate-x-8 opacity-0"} transition-all duration-500 ease-out`}
     >
       <div className="relative overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-2xl">
         {/* 상단 그라디언트 + 책 일러스트 */}
