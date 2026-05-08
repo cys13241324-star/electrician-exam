@@ -16,6 +16,7 @@ import TextbookFloatingPopup from "@/components/TextbookFloatingPopup";
 import StudyPlan from "@/components/StudyPlan";
 import TextbookTrust from "@/components/TextbookTrust";
 import FreeResources from "@/components/FreeResources";
+import NewsletterCTA from "@/components/NewsletterCTA";
 import FeaturePreviewModal, {
   type FeaturePreview,
 } from "@/components/FeaturePreviewModal";
@@ -348,6 +349,8 @@ export default function Home() {
       <Testimonials />
 
       <Faq />
+
+      <NewsletterCTA />
 
       <section className="mx-auto max-w-6xl px-6 py-16">
         <Reveal type="scale">
