@@ -6,6 +6,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import HeroSlider, { type HeroSlide } from "@/components/HeroSlider";
 import HowItWorks from "@/components/HowItWorks";
+import CbtSpotlight from "@/components/CbtSpotlight";
 import ElectricExtras from "@/components/ElectricExtras";
 import Testimonials from "@/components/Testimonials";
 import Faq from "@/components/Faq";
@@ -305,6 +306,8 @@ export default function Home() {
           })}
         </div>
       </section>
+
+      <CbtSpotlight />
 
       <ElectricExtras />
 
