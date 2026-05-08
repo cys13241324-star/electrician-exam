@@ -216,6 +216,58 @@ export default function CardStudy({
         </button>
       </div>
 
+      {/* 관련 예제 (뒤집은 후에만 노출) */}
+      {flipped && card.example && (
+        <div className="mx-auto mb-6 max-w-3xl overflow-hidden rounded-2xl border-2 border-amber-200 bg-white shadow-md">
+          <header className="flex items-center gap-2 border-b border-amber-200 bg-amber-50 px-5 py-2.5">
+            <span className="rounded-md bg-amber-500 px-2 py-0.5 text-[10px] font-black tracking-wider text-white">
+              ✏️ 관련 예제
+            </span>
+            <p className="text-xs font-semibold text-amber-900">
+              실제 시험에서는 이렇게 출제됩니다
+            </p>
+          </header>
+          <div className="px-5 py-4 sm:px-6 sm:py-5">
+            <p className="text-[10px] font-bold tracking-widest text-zinc-500">
+              문제
+            </p>
+            <p className="mt-1.5 text-sm leading-7 text-zinc-900 sm:text-base">
+              {card.example.question}
+            </p>
+
+            <div className="mt-4">
+              <p className="text-[10px] font-bold tracking-widest text-zinc-500">
+                풀이 과정
+              </p>
+              <ol className="mt-2 space-y-1.5">
+                {card.example.solution.map((step, i) => (
+                  <li
+                    key={i}
+                    className="flex items-start gap-3 rounded-md bg-zinc-900 px-3 py-2"
+                  >
+                    <span className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-amber-400 text-[10px] font-bold text-amber-950">
+                      {i + 1}
+                    </span>
+                    <span className="font-mono text-xs text-amber-300 sm:text-sm">
+                      {step}
+                    </span>
+                  </li>
+                ))}
+              </ol>
+            </div>
+
+            <div className="mt-4 flex items-center gap-3 rounded-lg border-2 border-emerald-300 bg-emerald-50 px-4 py-2.5">
+              <span className="rounded-md bg-emerald-600 px-2 py-0.5 text-[10px] font-black tracking-wider text-white">
+                정답
+              </span>
+              <p className="font-mono text-sm font-bold text-emerald-900 sm:text-base">
+                {card.example.answer}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* 평가 버튼 또는 안내 */}
       {flipped ? (
         <div className="mx-auto max-w-3xl">

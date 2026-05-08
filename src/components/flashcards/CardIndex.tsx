@@ -385,6 +385,35 @@ function CardDetailModal({
           <p className="mt-2 whitespace-pre-line text-sm leading-7 text-zinc-800">
             {card.back}
           </p>
+
+          {card.example && (
+            <>
+              <hr className="my-5 border-zinc-200" />
+              <p className="text-[11px] font-bold tracking-widest text-amber-600">
+                ✏️ 관련 예제
+              </p>
+              <div className="mt-2 rounded-lg bg-amber-50 p-3">
+                <p className="text-xs font-bold text-amber-900">문제</p>
+                <p className="mt-1 text-sm leading-6 text-zinc-800">
+                  {card.example.question}
+                </p>
+                <p className="mt-3 text-xs font-bold text-amber-900">풀이</p>
+                <ol className="mt-1 space-y-1">
+                  {card.example.solution.map((step, i) => (
+                    <li
+                      key={i}
+                      className="rounded bg-zinc-900 px-2 py-1 font-mono text-[11px] text-amber-300"
+                    >
+                      <span className="text-amber-400">{i + 1}.</span> {step}
+                    </li>
+                  ))}
+                </ol>
+                <p className="mt-3 rounded-md border border-emerald-300 bg-emerald-50 px-3 py-1.5 text-xs font-bold text-emerald-900">
+                  정답: {card.example.answer}
+                </p>
+              </div>
+            </>
+          )}
         </div>
 
         <div className="grid grid-cols-2 gap-3 border-t border-zinc-200 bg-zinc-50 px-6 py-4 text-xs">

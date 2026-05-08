@@ -2,6 +2,12 @@ import type { Subject } from "@/lib/cbt/types";
 
 export type CardSource = "preset" | "cbt-wrong" | "user";
 
+export type CardExample = {
+  question: string;
+  solution: string[];
+  answer: string;
+};
+
 export type Flashcard = {
   id: string;
   front: string;
@@ -10,6 +16,7 @@ export type Flashcard = {
   topic: string;
   source: CardSource;
   hint?: string;
+  example?: CardExample;
 };
 
 export type Rating = "again" | "hard" | "normal" | "easy";
