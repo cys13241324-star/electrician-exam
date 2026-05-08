@@ -6,6 +6,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import HeroSlider, { type HeroSlide } from "@/components/HeroSlider";
 import HowItWorks from "@/components/HowItWorks";
+import FeatureDetails from "@/components/FeatureDetails";
 import CbtSpotlight from "@/components/CbtSpotlight";
 import ElectricExtras from "@/components/ElectricExtras";
 import Testimonials from "@/components/Testimonials";
@@ -306,7 +307,19 @@ export default function Home() {
             );
           })}
         </div>
+
+        <div className="mt-10 flex justify-center">
+          <Link
+            href="#feature-details"
+            className="group inline-flex items-center gap-2 rounded-full border border-zinc-300 bg-white px-5 py-2.5 text-sm font-semibold text-zinc-700 shadow-sm transition hover:border-blue-400 hover:text-blue-700"
+          >
+            각 도구의 특장점 자세히 보기
+            <span className="transition group-hover:translate-y-0.5">↓</span>
+          </Link>
+        </div>
       </section>
+
+      <FeatureDetails />
 
       <CbtSpotlight />
 
