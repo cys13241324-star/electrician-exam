@@ -56,7 +56,7 @@ const features: FeaturePreview[] = [
     ],
     status: "coming_soon",
     cta: { label: "카드 학습하기", href: "#" },
-    preview: { kind: "iframe", src: "/samples/flashcards.html" },
+    preview: { kind: "rich-flashcards", iframeSrc: "/samples/flashcards.html" },
   },
   {
     id: "audiobook",
@@ -80,14 +80,14 @@ const features: FeaturePreview[] = [
     emoji: "⚡",
     tagline: "회로와 원리를 직접 체험",
     description:
-      "글로만 읽던 이론을 직접 만지며 이해하세요. 전기력선, 평행도선 자기력 등 핵심 원리를 시뮬레이터로 익힐 수 있습니다.",
+      "글로만 읽던 이론을 직접 만지며 이해하세요. 전기력선, 평행도선 자기력 등 핵심 원리를 시뮬레이터로 익힐 수 있습니다. 전기이론 / 전기기기 / 전기설비 카테고리에서 더 많은 시뮬을 만나보세요.",
     highlights: [
       "전기장 / 자기장 / 회로 시각화",
       "변수 조절로 즉각 결과 확인",
-      "이론 공식과 연동된 해설",
+      "카테고리별 시뮬레이터 모음",
     ],
-    status: "coming_soon",
-    cta: { label: "시뮬레이터 열기", href: "#" },
+    status: "available",
+    cta: { label: "시뮬레이터 사이트로", href: "/simulator" },
     preview: { kind: "iframe", src: "/samples/simulator-electric-field.html" },
   },
 ];
