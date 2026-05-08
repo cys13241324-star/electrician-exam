@@ -128,28 +128,28 @@ const items: FeatureDetail[] = [
       "전기기능사 합격에 필요한 핵심 키워드 300장을 카드로 정리. 손가락 한 번이면 카드를 뒤집어 정답 확인. 즐겨찾기는 자동으로 모이고, 오답은 따로 모아 다시 학습합니다.",
     features: [
       {
-        title: "과목별 핵심 키워드 300장",
-        description: "전기이론·전기기기·전기설비 각 100장씩.",
+        title: "간격 반복 알고리즘 (SM-2 lite)",
+        description: "Anki식 간격 반복으로 어려운 카드는 자주, 쉬운 카드는 가끔 자동 노출.",
       },
       {
-        title: "카드 뒤집기 인터랙션",
-        description: "탭 한 번에 정답·해설 확인, 매끄러운 3D 회전.",
+        title: "자가 평가 4단계",
+        description: "다시 / 어려움 / 보통 / 쉬움 — 평가에 따라 다음 복습 시기 자동 조정.",
       },
       {
-        title: "즐겨찾기 자동 모음",
-        description: "어려웠던 카드는 즐겨찾기 → 시험 전날 한 번 더.",
+        title: "CBT 오답 자동 카드",
+        description: "모의고사에서 틀린 문제가 자동으로 카드가 되어 다시 풀 수 있음.",
       },
       {
-        title: "오답노트 자동 생성",
-        description: "틀린 카드만 모아 보는 오답 컬렉션.",
+        title: "스마트 인덱스",
+        description: "그리드 + 검색 + 필터(과목/상태/즐겨찾기/오답)로 카드 빠르게 찾기.",
       },
       {
-        title: "출퇴근길 5분 학습",
-        description: "한 번에 한 카드, 짧은 시간에도 누적 효과.",
+        title: "마스터리 시각화",
+        description: "미학습 → 학습중 → 복습중 → 마스터 4단계로 진도가 한눈에.",
       },
     ],
-    cta: { label: "샘플 카드 체험하기 (준비중)" },
-    status: "coming_soon",
+    cta: { label: "카드 학습 시작 →", href: "/flashcards" },
+    status: "available",
     theme: {
       badgeBg: "bg-violet-100",
       badgeText: "text-violet-700",
