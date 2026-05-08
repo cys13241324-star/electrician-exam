@@ -42,4 +42,6 @@ next-env.d.ts
 
 # extracted planning materials (keep originals, ignore unzipped)
 /example/_extracted/
+/example/_frontmatter/
 /example/_slides.txt
+/example/_frontmatter.txt
