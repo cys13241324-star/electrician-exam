@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>전기기능사 필기 300선 마스터</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+        body { font-family: 'Pretendard', sans-serif; background-color: #f1f5f9; }
+        
+        .perspective { perspective: 1000px; }
+        .flip-card-inner {
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+        .flipped { transform: rotateY(180deg); }
+        .flip-card-front, .flip-card-back {
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+        }
+        .flip-card-back { transform: rotateY(180deg); }
+        
+        .view-section { transition: opacity 0.3s ease-in-out; }
+        .hidden { display: none; opacity: 0; }
+
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        /* 즐겨찾기 애니메이션 */
+        .star-active { fill: #fbbf24; stroke: #fbbf24; transform: scale(1.2); transition: all 0.2s; }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+
+    <!-- MAIN MENU VIEW -->
+    <div id="menu-view" class="w-full max-w-4xl view-section">
+        <header class="text-center mb-10">
+            <h1 class="text-4xl font-black text-slate-900 mb-3">⚡ 전기기능사 300선</h1>
+            <p class="text-slate-500">합격을 위한 과목별 핵심 암기카드 및 오답노트</p>
+        </header>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Theory -->
+            <div onclick="startStudy('theory')" class="group bg-white p-6 rounded-3xl shadow-sm hover:shadow-xl border border-slate-200 transition-all cursor-pointer flex flex-col items-center text-center hover:-translate-y-2">
+                <div class="w-14 h-14 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                </div>
+                <h3 class="text-lg font-bold text-slate-800 mb-1">전기이론</h3>
+                <p class="text-slate-400 text-xs italic">100 Cards</p>
+            </div>
+
+            <!-- Machine -->
+            <div onclick="startStudy('machine')" class="group bg-white p-6 rounded-3xl shadow-sm hover:shadow-xl border border-slate-200 transition-all cursor-pointer flex flex-col items-center text-center hover:-translate-y-2">
+                <div class="w-14 h-14 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /></svg>
+                </div>
+                <h3 class="text-lg font-bold text-slate-800 mb-1">전기기기</h3>
+                <p class="text-slate-400 text-xs italic">100 Cards</p>
+            </div>
+
+            <!-- Install -->
+            <div onclick="startStudy('install')" class="group bg-white p-6 rounded-3xl shadow-sm hover:shadow-xl border border-slate-200 transition-all cursor-pointer flex flex-col items-center text-center hover:-translate-y-2">
+                <div class="w-14 h-14 bg-amber-100 text-amber-600 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>
+                </div>
+                <h3 class="text-lg font-bold text-slate-800 mb-1">전기설비</h3>
+                <p class="text-slate-400 text-xs italic">100 Cards</p>
+            </div>
+
+            <!-- Saved Cards -->
+            <div onclick="startStudy('saved')" class="group bg-white p-6 rounded-3xl shadow-sm hover:shadow-xl border border-slate-200 transition-all cursor-pointer flex flex-col items-center text-center hover:-translate-y-2">
+                <div class="w-14 h-14 bg-rose-100 text-rose-600 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 fill-rose-600" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.175 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.382-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+                </div>
+                <h3 class="text-lg font-bold text-slate-800 mb-1">저장된 카드</h3>
+                <p id="saved-count-label" class="text-slate-400 text-xs italic">0 Cards</p>
+            </div>
+        </div>
+        
+        <footer class="mt-12 text-center text-slate-400 text-xs">
+            © 2024 전기기능사 마스터 플래시카드 | 로컬 저장소 사용
+        </footer>
+    </div>
+
+    <!-- STUDY VIEW -->
+    <div id="study-view" class="w-full max-w-xl hidden view-section">
+        <!-- Top Nav -->
+        <div class="flex justify-between items-center mb-6">
+            <button onclick="goBack()" class="flex items-center gap-2 text-slate-500 hover:text-slate-800 transition font-medium text-sm">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
+                메뉴
+            </button>
+            <span id="header-title" class="text-lg font-bold text-slate-800">전기이론</span>
+            <div class="flex items-center gap-2 bg-white px-3 py-1 rounded-full border border-slate-200 shadow-sm">
+                <span class="text-[10px] font-bold text-slate-400">JUMP</span>
+                <input type="number" id="jump-input" placeholder="0" class="w-10 text-center text-sm font-bold text-blue-600 focus:outline-none" min="1">
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="bg-white p-4 rounded-2xl shadow-sm mb-6 border border-slate-100">
+            <div class="flex justify-between text-[10px] font-bold mb-2 text-slate-400 uppercase tracking-widest">
+                <span id="progress-text">1 / 100</span>
+                <span id="percent-text">1%</span>
+            </div>
+            <div class="w-full bg-slate-100 rounded-full h-1.5">
+                <div id="progress-bar" class="bg-blue-600 h-1.5 rounded-full transition-all duration-300"></div>
+            </div>
+        </div>
+
+        <!-- Card Container -->
+        <div class="perspective w-full h-[380px] mb-8 relative">
+            <!-- Save Button (Floating) -->
+            <button id="save-toggle-btn" onclick="event.stopPropagation(); toggleSaveCurrent();" class="absolute top-6 right-6 z-20 w-12 h-12 bg-white/80 backdrop-blur rounded-full flex items-center justify-center shadow-lg hover:scale-110 active:scale-90 transition group">
+                <svg id="star-icon" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-slate-300 stroke-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.175 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.382-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                </svg>
+            </button>
+
+            <div id="card-inner" onclick="flipCard()" class="flip-card-inner w-full h-full relative shadow-2xl rounded-[2.5rem]">
+                <!-- Front -->
+                <div class="flip-card-front absolute w-full h-full bg-white rounded-[2.5rem] p-10 flex flex-col items-center justify-center text-center border-2 border-slate-50">
+                    <div id="card-badge" class="absolute top-8 left-10 px-3 py-1 bg-slate-100 text-slate-500 text-[10px] font-bold rounded-full uppercase tracking-tighter">QUESTION</div>
+                    <h2 id="card-front-text" class="text-2xl md:text-3xl font-extrabold text-slate-800 leading-tight">...</h2>
+                    <p class="absolute bottom-8 text-[11px] text-slate-300 uppercase tracking-widest">Tap to reveal answer</p>
+                </div>
+                <!-- Back -->
+                <div id="card-back-bg" class="flip-card-back absolute w-full h-full bg-blue-600 rounded-[2.5rem] p-10 flex flex-col items-center justify-center text-center text-white border-4 border-white/10 shadow-inner">
+                    <div class="absolute top-8 left-10 px-3 py-1 bg-white/20 text-white text-[10px] font-bold rounded-full uppercase tracking-tighter">ANSWER</div>
+                    <h2 id="card-back-text" class="text-xl md:text-2xl font-semibold leading-relaxed">...</h2>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="grid grid-cols-3 gap-4">
+            <button onclick="prevCard()" class="bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-bold py-5 rounded-3xl shadow-sm transition active:scale-95">이전</button>
+            <button onclick="flipCard()" class="bg-slate-900 hover:bg-black text-white font-bold py-5 rounded-3xl shadow-lg transition active:scale-95">뒤집기</button>
+            <button onclick="nextCard()" class="bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-bold py-5 rounded-3xl shadow-sm transition active:scale-95">다음</button>
+        </div>
+
+        <div class="mt-8 flex justify-center">
+            <button onclick="shuffleCurrent()" class="text-slate-400 hover:text-blue-600 text-sm flex items-center gap-2 transition font-medium">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+                현재 목록 섞기
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // 데이터 정의 (식별을 위해 ID를 자동으로 생성)
+        const baseData = {
+            theory: [
+                { q: "옴의 법칙 공식", a: "V = I × R" },
+                { q: "전력(P) 공식", a: "P = VI = I²R = V²/R [W]" },
+                { q: "줄의 법칙(열량 H) 공식", a: "H = 0.24 I²Rt [cal]" },
+                { q: "전력량(W) 공식", a: "W = Pt = VIt [J]" },
+                { q: "저항의 직렬 합성저항", a: "R = R1 + R2 + R3..." },
+                { q: "저항의 병렬 합성저항(2개)", a: "R = (R1×R2) / (R1+R2)" },
+                { q: "콘덴서 병렬 합성용량", a: "C = C1 + C2 + C3..." },
+                { q: "콘덴서 직렬 합성용량(2개)", a: "C = (C1×C2) / (C1+C2)" },
+                { q: "정전 에너지(W) 공식", a: "W = 1/2 CV² [J]" },
+                { q: "자기 에너지(W) 공식", a: "W = 1/2 LI² [J]" },
+                { q: "쿨롱의 법칙(정전력 F)", a: "F = 9 × 10⁹ × (Q1Q2 / r²) [N]" },
+                { q: "전계의 세기(E)", a: "E = 9 × 10⁹ × (Q / r²) [V/m]" },
+                { q: "자기장의 세기(H)", a: "H = 6.33 × 10⁴ × (m / r²) [AT/m]" },
+                { q: "자속밀도(B) 공식", a: "B = Φ / A = μH [Wb/m²]" },
+                { q: "플레밍의 왼손 법칙 용도", a: "전동기 (힘의 방향)" },
+                { q: "플레밍의 오른손 법칙 용도", a: "발전기 (기전력의 방향)" },
+                { q: "패러데이 전자유도 법칙", a: "e = -N (dΦ / dt)" },
+                { q: "렌츠의 법칙 정의", a: "유도 기전력은 자속의 변화를 방해하는 방향으로 발생" },
+                { q: "자기 인덕턴스(L)와 권수(N) 관계", a: "L은 N의 제곱에 비례" },
+                { q: "교류 실효값(V) 공식", a: "V = Vm / √2 ≒ 0.707 Vm" },
+                { q: "교류 평균값(Vav) 공식", a: "Vav = 2Vm / π ≒ 0.637 Vm" },
+                { q: "파형률 공식", a: "실효값 / 평균값 (실평)" },
+                { q: "파고률 공식", a: "최댓값 / 실효값 (최실)" },
+                { q: "유도 리액턴스(XL) 공식", a: "XL = 2πfL [Ω]" },
+                { q: "용량 리액턴스(XC) 공식", a: "XC = 1 / (2πfC) [Ω]" },
+                { q: "임피던스(Z, RLC직렬)", a: "Z = √[R² + (XL - XC)²]" },
+                { q: "공진 주파수(f0) 공식", a: "f0 = 1 / (2π√LC)" },
+                { q: "피상 전력(Pa) 공식", a: "Pa = VI [VA]" },
+                { q: "유효 전력(P) 공식", a: "P = VI cosθ [W]" },
+                { q: "무효 전력(Pr) 공식", a: "Pr = VI sinθ [Var]" },
+                { q: "역률(cosθ) 공식", a: "유효전력 / 피상전력 = R / Z" },
+                { q: "3상 Y결선 전압 관계", a: "선간전압 = √3 × 상전압 (30도 앞섬)" },
+                { q: "3상 Δ결선 전류 관계", a: "선전류 = √3 × 상전류 (30도 뒤짐)" },
+                { q: "3상 전력 공식(선간 V, I)", a: "P = √3 VI cosθ [W]" },
+                { q: "비정현파의 구성", a: "직류분 + 기본파 + 고조파" },
+                { q: "제베크 효과", a: "온도차 -> 기전력 발생" },
+                { q: "펠티에 효과", a: "전류 -> 열의 흡수/발생" },
+                { q: "톰슨 효과", a: "동일 금속 온도차 + 전류 -> 열 이동" },
+                { q: "전하량(Q) 공식", a: "Q = It = CV" },
+                { q: "전위(V) 공식", a: "V = 9 × 10⁹ × (Q / r) [V]" },
+                { q: "비오-사바르 법칙 용도", a: "전류에 의한 자기장의 세기 계산" },
+                { q: "자기저항(Rm) 공식", a: "Rm = l / (μA)" },
+                { q: "로렌츠의 힘 공식", a: "F = qvB sinθ" },
+                { q: "정현파 교류 순시값 공식", a: "v = Vm sin(ωt + φ)" },
+                { q: "각주파수(ω) 공식", a: "ω = 2πf" },
+                { q: "전기저항(R)과 고유저항(ρ) 관계", a: "R = ρ × (l / A)" },
+                { q: "정전용량(C) 공식", a: "C = ε × (A / d)" },
+                { q: "평균 전력(유효 전력)의 단위", a: "와트 [W]" },
+                { q: "복소 임피던스(Z) 표현", a: "Z = R + j(XL - XC)" },
+                { q: "상호 인덕턴스(M) 공식", a: "M = k√(L1L2)" },
+                { q: "결합계수(k) 범위", a: "0 ≤ k ≤ 1" },
+                { q: "브리지 회로 평형 조건", a: "대각선 저항의 곱이 같다" },
+                { q: "키르히호프 1법칙(KCL)", a: "접합점 전류의 합은 0 (전하 보존)" },
+                { q: "키르히호프 2법칙(KVL)", a: "회로 내 전압강하 합 = 기전력 합 (에너지 보존)" },
+                { q: "어드미턴스(Y)", a: "임피던스의 역수 (Y = 1/Z) [S]" },
+                { q: "컨덕턴스(G)", a: "저항의 역수 (G = 1/R) [S]" },
+                { q: "서셉턴스(B)", a: "리액턴스의 역수 성분 [S]" },
+                { q: "선속 밀도(D) 공식", a: "D = εE" },
+                { q: "패러데이 상수(F)", a: "96,485 [C/mol]" },
+                { q: "전기분해 석출량(W) - 패러데이", a: "W = kIt = kQ" },
+                { q: "와트시(Wh)와 줄(J) 관계", a: "1Wh = 3600J" },
+                { q: "1[kWh]는 몇 [cal]?", a: "860 [kcal]" },
+                { q: "자유 공간의 유전율(ε0)", a: "8.854 × 10⁻¹² [F/m]" },
+                { q: "자유 공간의 투자율(μ0)", a: "4π × 10⁻⁷ [H/m]" },
+                { q: "비유전율(εr) 정의", a: "ε / ε0" },
+                { q: "비투자율(μr) 정의", a: "μ / μ0" },
+                { q: "시정수(RL 직렬)", a: "τ = L / R" },
+                { q: "시정수(RC 직렬)", a: "τ = RC" },
+                { q: "교류 회로에서 리액턴스 단위", a: "옴 [Ω]" },
+                { q: "3상 결선 중 Δ-Y 변환 시 임피던스", a: "Zy = 1/3 ZΔ" },
+                { q: "전류의 열작용과 관계 깊은 것", a: "줄의 법칙" },
+                { q: "전력량계의 측정 원리", a: "적산 전력" },
+                { q: "중첩의 원리 적용", a: "선형 회로망 분석" },
+                { q: "테브난의 정리", a: "복잡한 회로를 등가 전압원+저항으로 변환" },
+                { q: "노튼의 정리", a: "복잡한 회로를 등가 전류원+저항으로 변환" },
+                { q: "최대 전력 전달 조건", a: "부하 저항 = 내부 저항" },
+                { q: "반사 계수 공식", a: "(Zl - Z0) / (Zl + Z0)" },
+                { q: "진동 전류 발생 조건(RLC)", a: "R < 2√(L/C)" },
+                { q: "전계 내 에너지가 최소가 되는 상태", a: "등전위면" },
+                { q: "전하가 없는 곳의 자속 밀도 발산", a: "div B = 0" },
+                { q: "맥스웰 방정식 중 전자유도 관련", a: "rot E = -∂B/∂t" },
+                { q: "유전체 내의 전계 세기", a: "E = V / d" },
+                { q: "전기 쌍극자 모멘트", a: "M = Ql" },
+                { q: "자석의 N극에서 나오는 선", a: "자력선" },
+                { q: "자기 차폐 효과가 큰 물질", a: "강자성체" },
+                { q: "강자성체 3요소", a: "철(Fe), 니켈(Ni), 코발트(Co)" },
+                { q: "큐리 온도", a: "강자성체가 상자성체로 변하는 온도" },
+                { q: "히스테리시스 곡선 면적", a: "에너지 손실(히스테리시스 손)" },
+                { q: "교류 주파수(f)와 주기(T) 관계", a: "f = 1 / T" },
+                { q: "위상차 공식", a: "φ1 - φ2" },
+                { q: "순수 저항 회로 위상", a: "전압과 전류가 동상" },
+                { q: "순수 인덕터 회로 위상", a: "전류가 전압보다 90도 뒤짐(지상)" },
+                { q: "순수 커패시터 회로 위상", a: "전류가 전압보다 90도 앞섬(진상)" },
+                { q: "무효율(sinθ)", a: "무효전력 / 피상전력" },
+                { q: "2전력계법 총 전력", a: "P = P1 + P2" },
+                { q: "고조파 중 3상에서 나타나지 않는 것", a: "제3고조파 (Δ결선 내 환류)" },
+                { q: "전기장과 자기장이 수직으로 진행", a: "전자파" },
+                { q: "변위 전류의 원인", a: "전속 밀도의 시간적 변화" },
+                { q: "임펄스 전압의 특징", a: "파두가 짧고 파미가 긴 파형" },
+                { q: "상전압과 선간전압 중 큰 것(Y결선)", a: "선간전압" }
+            ],
+            machine: [
+                { q: "직류기 3요소", a: "계자, 전기자, 정류자" },
+                { q: "계자의 역할", a: "자속 발생" },
+                { q: "전기자의 역할", a: "기전력 발생" },
+                { q: "정류자의 역할", a: "AC를 DC로 변환" },
+                { q: "직류 발전기 기전력(E) 공식", a: "E = (PZ / 60a) ΦN" },
+                { q: "병렬 회로수(a) 중권일 때", a: "a = P (극수)" },
+                { q: "병렬 회로수(a) 파권일 때", a: "a = 2" },
+                { q: "전기자 반작용 방지 대책", a: "보극 설치, 브러시 이동, 권선 보상" },
+                { q: "직류 발전기 전압 확립 조건(분권)", a: "잔류 자기가 있을 것" },
+                { q: "직류 전동기 속도(N) 공식", a: "N = (V - IaRa) / (kΦ)" },
+                { q: "직류 전동기 토크(τ)와 전류 관계(직권)", a: "토크는 전류의 제곱에 비례" },
+                { q: "직류 전동기 속도 제어법 중 효율 최고", a: "계자 제어" },
+                { q: "직류 전동기 속도 제어법 중 광범위", a: "전압 제어" },
+                { q: "변압기 원리", a: "전자 유도 (상호 유도)" },
+                { q: "변압기 유도 기전력(E) 공식", a: "E = 4.44 f N Φ" },
+                { q: "변압기 권수비(a)", a: "a = N1/N2 = V1/V2 = I2/I1" },
+                { q: "변압기 손실 중 무부하손", a: "철손 (히스테리시스손 + 와류손)" },
+                { q: "변압기 효율 최대 조건", a: "철손 = 동손" },
+                { q: "변압기 결선 중 제3고조파 제거", a: "Δ 결선 포함 결선" },
+                { q: "변압기 병렬 운전 조건 4가지", a: "극성, 권수비, 전압, %임피던스가 같을 것" },
+                { q: "V-V 결선 이용률", a: "86.6%" },
+                { q: "V-V 결선 출력비", a: "57.7%" },
+                { q: "동기 속도(Ns) 공식", a: "Ns = 120f / P" },
+                { q: "슬립(s) 공식", a: "s = (Ns - N) / Ns" },
+                { q: "동기 발전기 병렬 운전 조건 4가지", a: "기전력의 크기, 위상, 주파수, 파형이 같을 것" },
+                { q: "동기 조상기 과여자 운전 시", a: "진상 전류 (콘덴서 역할)" },
+                { q: "동기 조상기 부족여자 운전 시", a: "지상 전류 (리액터 역할)" },
+                { q: "동기기 V곡선 관계", a: "전기자 전류(Ia)와 계자 전류(If)" },
+                { q: "동기기 난조 방지책", a: "제동 권선 설치" },
+                { q: "유도 전동기 원리", a: "아라고의 원판" },
+                { q: "유도 전동기 회전자 속도(N)", a: "N = (1-s)Ns" },
+                { q: "단상 유도 전동기 기동 토크 순서", a: "반발기동 > 반발유도 > 콘덴서기동 > 분상기동 > 쉐이딩코일" },
+                { q: "스테핑 모터 특징", a: "입력 펄스 수에 따라 회전각 제어" },
+                { q: "SCR 단자 명칭", a: "애노드, 캐소드, 게이트" },
+                { q: "TRIAC 특징", a: "양방향 3단자 (교류 제어)" },
+                { q: "단상 반파 정류 전압(Ed)", a: "Ed = 0.45 E" },
+                { q: "단상 전파 정류 전압(Ed)", a: "Ed = 0.9 E" },
+                { q: "3상 전파 정류 전압(Ed)", a: "Ed = 1.35 E" },
+                { q: "히스테리시스손 감소 대책", a: "규소 강판 사용" },
+                { q: "와류손 감소 대책", a: "철심 성층 사용" },
+                { q: "직류 발전기 무부하 특성 곡선", a: "단자전압(V)과 계자전류(If)" },
+                { q: "분권 전동기 특징", a: "정속도 전동기" },
+                { q: "직권 전동기 용도", a: "전동차, 기중기 (기동 토크 큼)" },
+                { q: "변압기 냉각 방식 중 유입 자냉식", a: "기름 속 침전 + 자연 냉각" },
+                { q: "부흐홀츠 계전기 설치 위치", a: "변압기 주탱크와 콘서베이터 사이" },
+                { q: "비율 차동 계전기 용도", a: "기기 내부 고장 보호" },
+                { q: "동기 발전기 전기자 반작용(R하부)", a: "횡축 반작용 (교차 자화)" },
+                { q: "동기 발전기 전기자 반작용(L부하)", a: "감자 작용" },
+                { q: "동기 발전기 전기자 반작용(C부하)", a: "증자 작용" },
+                { q: "단락비가 큰 기기의 특징", a: "전압 변동률 작음, 안정도 높음, 기기가 큼" },
+                { q: "유도 전동기 2차 동손(P2c) 공식", a: "P2c = s × P2" },
+                { q: "유도 전동기 슬립 범위(운전 시)", a: "0 < s < 1" },
+                { q: "유도 전동기 제동법 중 발전 제동", a: "DC 공급 후 열로 소모" },
+                { q: "유도 전동기 제동법 중 플러깅(역전)", a: "상 2개 교체하여 급정지" },
+                { q: "변압기 등가 회로 필요 시험", a: "권선 저항, 무부하(개방), 단락 시험" },
+                { q: "서보 모터 특징", a: "응답 속도가 빠르고 정밀 제어" },
+                { q: "사이리스터 중 게이트 턴 오프 기능", a: "GTO" },
+                { q: "IGBT 특징", a: "MOSFET + BJT 장점" },
+                { q: "정류 회로 맥동률 최소", a: "3상 전파 정류" },
+                { q: "변압기 %임피던스 강하 공식", a: "(InZ / V) × 100" },
+                { q: "직류 발전기 정류 주기 공식", a: "T = (b-m) / v" },
+                { q: "유도 전동기 원형도 작성을 위한 시험", a: "무부하 시험, 구속 시험, 저항 측정" },
+                { q: "유도 전동기 기동법(와이-델타)", a: "전압 1/√3배, 기동전류 1/3배" },
+                { q: "전기자 권선법 중 분포권 사용 이유", a: "파형 개선, 누설 리액턴스 감소" },
+                { q: "전기자 권선법 중 단절권 사용 이유", a: "고조파 제거, 구리 절약" },
+                { q: "브러시 위치 이동 이유", a: "정류 불꽃 방지" },
+                { q: "직류 전동기 역기전력 공식", a: "E = V - IaRa" },
+                { q: "직류기 탄소 브러시 장점", a: "접촉 저항이 커서 정류에 유리" },
+                { q: "동기 전동기 기동법(자기동법)", a: "제동 권선을 이용하여 기동" },
+                { q: "동기 발전기 전압 변동률 공식", a: "(V0 - Vn) / Vn" },
+                { q: "회전 자계 발생 조건", a: "다상 교류" },
+                { q: "유도 전동기 비례 추이 가능 기종", a: "권선형 유도 전동기" },
+                { q: "2차 저항 제어법 장점", a: "구조 간단, 기동 토크 조절 가능" },
+                { q: "유도 전동기 극수 변환 제어", a: "불연속적 속도 제어" },
+                { q: "농형 유도 전동기 특징", a: "구조 견고, 기동 토크 작음" },
+                { q: "인버터(Inverter)", a: "DC를 AC로 변환" },
+                { q: "컨버터(Converter)", a: "AC를 DC로 변환" },
+                { q: "교류 발전기 정격 출력 표시", a: "[kVA]" },
+                { q: "직류 전동기 정격 출력 표시", a: "[kW] 또는 [HP]" },
+                { q: "변압기 온도 상승 시험법", a: "실부하법, 반환부하법" },
+                { q: "계기용 변압기(PT)", a: "고전압을 저전압으로 변환" },
+                { q: "변류기(CT)", a: "대전류를 소전류로 변환" },
+                { q: "CT 2차측 개방 금지 이유", a: "2차측 고전압 발생 위험" },
+                { q: "유도형 계전기 동작 원리", a: "이동 자계에 의한 회전력" },
+                { q: "디지털 기기의 AD 변환", a: "아날로그 신호를 디지털로" },
+                { q: "전동기 절연 등급 E종", a: "120도" },
+                { q: "전동기 절연 등급 B종", a: "130도" },
+                { q: "전동기 절연 등급 F종", a: "155도" },
+                { q: "무부하 발전기 단락 전류 특징", a: "처음은 크나 점차 감소" },
+                { q: "동기 검정기 용도", a: "위상 일치 확인" },
+                { q: "동기 전동기 용도", a: "역률 개선" },
+                { q: "교류 정류자 전동기 특징", a: "속도 가변" },
+                { q: "단상 유도 전동기 역회전 방법", a: "단자 반대로" },
+                { q: "3상 유도 전동기 역회전 방법", a: "임의의 두 상 교체" },
+                { q: "슬립링(Slip Ring) 용도", a: "회전체에 전류 공급" },
+                { q: "변압기 부싱 역할", a: "절연 및 지지" },
+                { q: "변압기 호흡 작용 방지책", a: "콘서베이터 설치" },
+                { q: "변압기 절연유 열화 영향", a: "절연 내력 저하" },
+                { q: "단권 변압기 장점", a: "동량 절약" },
+                { q: "수소 냉각 장점", a: "풍손 감소" }
+            ],
+            install: [
+                { q: "연동선 고유 저항", a: "1/58 [Ω·mm²/m]" },
+                { q: "경동선 고유 저항", a: "1/55 [Ω·mm²/m]" },
+                { q: "전선의 굵기 결정 3요소", a: "허용전류, 전압강하, 기계적강도" },
+                { q: "IV 전선 약호 의미", a: "600V 비닐 절연 전선" },
+                { q: "OW 전선 약호 의미", a: "옥외용 비닐 절연 전선" },
+                { q: "VV 전선 약호 의미", a: "비닐 절연 비닐 시스 케이블" },
+                { q: "CV 전선 약호 의미", a: "가교 폴리에틸렌 절연 비닐 시스 케이블" },
+                { q: "전선 접속 시 강도 저하 한도", a: "20% 이내" },
+                { q: "전선 접속 시 전기 저항 증가", a: "증가시키지 말 것" },
+                { q: "전선 테이프 감기 횟수", a: "반폭 이상 겹쳐 2회 이상" },
+                { q: "옥내 저압 전압 구분(KEC)", a: "AC 1000V 이하, DC 1500V 이하" },
+                { q: "합성수지관 지지점 거리", a: "1.5m 이하" },
+                { q: "금속관 지지점 거리", a: "2.0m 이하" },
+                { q: "금속 덕트 지지점 거리", a: "3.0m 이하" },
+                { q: "합성수지관 삽입 깊이", a: "외경의 1.2배" },
+                { q: "가요 전선관 지지점 거리", a: "1.0m 이하" },
+                { q: "가공 전선 이도(Dip) 공식", a: "D = (WS²) / (8T)" },
+                { q: "전주 근입 깊이", a: "길이의 1/6 이상" },
+                { q: "지선의 안전율", a: "2.5 이상" },
+                { q: "지선 소선 수와 지름", a: "3가닥 이상, 2.6mm 이상" },
+                { q: "애자 공사 전선 상호 간격", a: "6cm 이상" },
+                { q: "애자 공사 전선-조영재 간격", a: "2.5cm 이상" },
+                { q: "금속관 공사 굴곡 반지름", a: "안지름의 6배 이상" },
+                { q: "금속관 나사 내는 도구", a: "오스터" },
+                { q: "금속관 끝 보호 도구", a: "부싱" },
+                { q: "금속관 굴곡 도구", a: "히키(Hickey)" },
+                { q: "콘크리트 벽 구멍 뚫기", a: "해머 드릴" },
+                { q: "접지 시스템 구분 3가지", a: "단독, 공통, 통합 접지" },
+                { q: "접지 시스템 구성 3요소", a: "접지극, 접지도체, 보호도체" },
+                { q: "보호도체 색상", a: "녹색-노란색 줄무늬" },
+                { q: "절연저항 측정기 이름", a: "메거 (Megger)" },
+                { q: "접지저항 측정기 이름", a: "어스 테스터" },
+                { q: "검전기 용도", a: "충전 여부 확인" },
+                { q: "후크온 메타 용도", a: "전선을 끊지 않고 전류 측정" },
+                { q: "와이어 스트리퍼 용도", a: "피복 벗기기" },
+                { q: "스패너 용도", a: "볼트, 너트 체결" },
+                { q: "와이어 커넥터 용도", a: "박스 내 전선 접속 보호" },
+                { q: "분전반 설치 높이 기준", a: "중앙 1.5m 정도" },
+                { q: "누전 차단기 동작 시간", a: "0.03초 이내" },
+                { q: "피뢰기(LA) 설치 장소", a: "발변전소 인입구" },
+                { q: "배선 차단기 약호", a: "MCCB" },
+                { q: "전등 기구 매입 천장 종류", a: "이중 천장" },
+                { q: "감광 보상률", a: "여유율" },
+                { q: "광속 단위", a: "루멘 [lm]" },
+                { q: "조도 단위", a: "럭스 [lx]" },
+                { q: "광도 단위", a: "칸델라 [cd]" },
+                { q: "휘도 단위", a: "sb, nt" },
+                { q: "백열전구 소켓 E26", a: "26mm 에디슨 나사형" },
+                { q: "형광등 스타터 용도", a: "예열 및 고전압 발생" },
+                { q: "열동 계전기 (THR)", a: "과부하 보호" },
+                { q: "과전류 가청 표시 기구", a: "벨, 버저" },
+                { q: "심볼 Ⓜ의 의미", a: "전동기" },
+                { q: "심볼 Ⓢ의 의미", a: "개폐기" },
+                { q: "심볼 Ⓗ의 의미", a: "전열기" },
+                { q: "화약고 전압 제한", a: "대지 전압 300V 이하" },
+                { q: "부식 장소 배선 공사", a: "애자 사용 공사" },
+                { q: "가연성 가스 장소 공사", a: "금속관 공사" },
+                { q: "전압 강하 허용 한도", a: "조명 3%, 기타 5%" },
+                { q: "저압 옥내 배선 최소 굵기", a: "2.5mm²" },
+                { q: "소출력 회로 전압 기준", a: "60V 이하" },
+                { q: "제어 회로 최소 굵기", a: "1.5mm² 이상" },
+                { q: "금속관 전선 점유율", a: "48% 이하" },
+                { q: "풀박스 용도", a: "긴 전선로 통과" },
+                { q: "정크션 박스 용도", a: "접속점 설치" },
+                { q: "유니버셜 엘보 용도", a: "직각 굴곡부" },
+                { q: "덕트 수직 설치 지지점", a: "6m 이하" },
+                { q: "버스 덕트 종류", a: "피더, 플러그인, 트롤리" },
+                { q: "케이블 트레이 종류", a: "사다리형, 펀칭형, 매쉬형" },
+                { q: "수용률 공식", a: "최대수요전력 / 설비용량" },
+                { q: "부하율 공식", a: "평균전력 / 최대전력" },
+                { q: "부등률 특징", a: "항상 1보다 큼" },
+                { q: "차단기 용량 결정 요소", a: "단락 용량" },
+                { q: "전력용 콘덴서 목적", a: "역률 개선" },
+                { q: "방전 코일 용도", a: "잔류 전하 방전" },
+                { q: "직렬 리액터 용도", a: "제5고조파 제거" },
+                { q: "케이블 헤드(CH) 용도", a: "가공선과 케이블 접속" },
+                { q: "영상 변류기(ZCT) 용도", a: "지락 전류 검출" },
+                { q: "전력 퓨즈(PF) 특징", a: "재투입 불가" },
+                { q: "단로기(DS) 특징", a: "부하 전류 차단 불가" },
+                { q: "가공 지선 용도", a: "선로 보호" },
+                { q: "현수 애자 개수(22.9kV)", a: "2~3개" },
+                { q: "전선 지름 단위", a: "[mm]" },
+                { q: "전선 단면적 단위", a: "[mm²]" },
+                { q: "중성선 색상", a: "백색 또는 회색" },
+                { q: "검상기 용도", a: "상 회전 확인" },
+                { q: "새들 (Saddle) 용도", a: "노출 배관 지지" },
+                { q: "벽면 콘센트 심볼", a: "●" },
+                { q: "바닥면 콘센트 심볼", a: "◈" },
+                { q: "천장 조명 심볼", a: "○" },
+                { q: "3로 스위치 용도", a: "2개소 점멸" },
+                { q: "4로 스위치 용도", a: "3개소 이상 점멸" },
+                { q: "연접 인입선 도로 횡단", a: "5m 이상" },
+                { q: "인입선 지상 높이", a: "5m 이상" },
+                { q: "농사용 가공전선 높이", a: "3.5m 이상" },
+                { q: "슬리브 접속 특징", a: "압착기로 압착" },
+                { q: "솔더리스 커넥터 특징", a: "납땜 불필요" },
+                { q: "저압 절연저항 기준", a: "1.0 MΩ 이상" },
+                { q: "특별저압(ELV) 전압", a: "AC 50V 이하" },
+                { q: "수영장 조명 전압", a: "150V 이하" },
+                { q: "과전류 차단기 설치", a: "단락 보호" }
+            ]
+        };
+
+        // 데이터 초기화: 각 카드에 고유 ID 부여 및 전체 목록 생성
+        const fullList = [];
+        Object.keys(baseData).forEach(cat => {
+            baseData[cat].forEach((item, idx) => {
+                item.id = `${cat}-${idx}`;
+                fullList.push(item);
+            });
+        });
+
+        // 상태 관리
+        let currentCategory = 'theory';
+        let currentIndex = { theory: 0, machine: 0, install: 0, saved: 0 };
+        let activeData = { theory: [...baseData.theory], machine: [...baseData.machine], install: [...baseData.install], saved: [] };
+        let isFlipped = false;
+        
+        // 즐겨찾기 목록 (localStorage에서 불러옴)
+        let savedIds = JSON.parse(localStorage.getItem('saved_flashcards')) || [];
+
+        // UI 업데이트: 메뉴에서 저장된 카드 개수 표시
+        function updateMenuLabels() {
+            document.getElementById('saved-count-label').innerText = `${savedIds.length} Cards`;
+        }
+
+        // 특정 카테고리로 학습 시작
+        function startStudy(cat) {
+            currentCategory = cat;
+            
+            if (cat === 'saved') {
+                activeData.saved = fullList.filter(item => savedIds.includes(item.id));
+                if (activeData.saved.length === 0) {
+                    alert("저장된 카드가 없습니다. 먼저 카드를 저장해 주세요!");
+                    return;
+                }
+            }
+
+            document.getElementById('menu-view').classList.add('hidden');
+            document.getElementById('study-view').classList.remove('hidden');
+            
+            // UI 테마 설정
+            const backBg = document.getElementById('card-back-bg');
+            const pBar = document.getElementById('progress-bar');
+            const jumpIn = document.getElementById('jump-input');
+            
+            let colorClass = "blue";
+            if (cat === 'machine') colorClass = "emerald";
+            if (cat === 'install') colorClass = "amber";
+            if (cat === 'saved') colorClass = "rose";
+            
+            backBg.className = `flip-card-back absolute w-full h-full bg-${colorClass}-600 rounded-[2.5rem] p-10 flex flex-col items-center justify-center text-center text-white border-4 border-white/10 shadow-inner`;
+            pBar.className = `bg-${colorClass}-600 h-1.5 rounded-full transition-all duration-300`;
+            jumpIn.className = `w-10 text-center text-sm font-bold text-${colorClass}-600 focus:outline-none`;
+            
+            updateCard();
+        }
+
+        function goBack() {
+            document.getElementById('study-view').classList.add('hidden');
+            document.getElementById('menu-view').classList.remove('hidden');
+            updateMenuLabels();
+        }
+
+        function updateCard() {
+            const index = currentIndex[currentCategory];
+            const data = activeData[currentCategory][index];
+            
+            isFlipped = false;
+            document.getElementById('card-inner').classList.remove('flipped');
+            
+            setTimeout(() => {
+                document.getElementById('card-front-text').innerText = data.q;
+                document.getElementById('card-back-text').innerText = data.a;
+                
+                let title = "전기이론";
+                if (currentCategory === 'machine') title = "전기기기";
+                if (currentCategory === 'install') title = "전기설비";
+                if (currentCategory === 'saved') title = "저장된 카드";
+                document.getElementById('header-title').innerText = title;
+                
+                const total = activeData[currentCategory].length;
+                const currentNum = index + 1;
+                const percent = Math.round((currentNum / total) * 100);
+                
+                document.getElementById('progress-text').innerText = `${currentNum} / ${total}`;
+                document.getElementById('percent-text').innerText = `${percent}%`;
+                document.getElementById('progress-bar').style.width = `${percent}%`;
+                document.getElementById('jump-input').value = currentNum;
+                
+                // 저장 아이콘 상태 업데이트
+                updateSaveIcon(data.id);
+            }, 100);
+        }
+
+        function updateSaveIcon(id) {
+            const icon = document.getElementById('star-icon');
+            if (savedIds.includes(id)) {
+                icon.classList.add('star-active');
+            } else {
+                icon.classList.remove('star-active');
+            }
+        }
+
+        function toggleSaveCurrent() {
+            const currentItem = activeData[currentCategory][currentIndex[currentCategory]];
+            const id = currentItem.id;
+            
+            if (savedIds.includes(id)) {
+                savedIds = savedIds.filter(savedId => savedId !== id);
+                // 저장 목록 학습 중 카드를 해제하면 목록에서 제거할지 선택 가능하지만,
+                // UX상 현재는 보기를 유지하고 나가서 다시 들어올 때 갱신되게 함
+            } else {
+                savedIds.push(id);
+            }
+            
+            localStorage.setItem('saved_flashcards', JSON.stringify(savedIds));
+            updateSaveIcon(id);
+        }
+
+        function jumpToCard(val) {
+            const total = activeData[currentCategory].length;
+            if (isNaN(val) || val < 1) val = 1;
+            if (val > total) val = total;
+            
+            currentIndex[currentCategory] = val - 1;
+            updateCard();
+        }
+
+        document.getElementById('jump-input').addEventListener('change', function(e) {
+            jumpToCard(parseInt(e.target.value));
+        });
+
+        function flipCard() {
+            isFlipped = !isFlipped;
+            document.getElementById('card-inner').classList.toggle('flipped', isFlipped);
+        }
+
+        function nextCard() {
+            if (currentIndex[currentCategory] < activeData[currentCategory].length - 1) {
+                currentIndex[currentCategory]++;
+                updateCard();
+            }
+        }
+
+        function prevCard() {
+            if (currentIndex[currentCategory] > 0) {
+                currentIndex[currentCategory]--;
+                updateCard();
+            }
+        }
+
+        function shuffleCurrent() {
+            activeData[currentCategory].sort(() => Math.random() - 0.5);
+            currentIndex[currentCategory] = 0;
+            updateCard();
+        }
+
+        // Keybindings
+        document.addEventListener('keydown', (e) => {
+            const isStudyVisible = !document.getElementById('study-view').classList.contains('hidden');
+            if (!isStudyVisible) return;
+            if (document.activeElement.id === 'jump-input') return;
+
+            if (e.code === 'Space') { e.preventDefault(); flipCard(); }
+            if (e.code === 'ArrowRight') nextCard();
+            if (e.code === 'ArrowLeft') prevCard();
+            if (e.code === 'Escape') goBack();
+            if (e.code === 'KeyS') toggleSaveCurrent(); // 'S'키로 저장 토글
+        });
+
+        // 초기 실행
+        updateMenuLabels();
+    </script>
+</body>
+</html>

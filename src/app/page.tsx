@@ -1,37 +1,94 @@
+"use client";
+
 import Link from "next/link";
+import { useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import FeaturePreviewModal, {
+  type FeaturePreview,
+} from "@/components/FeaturePreviewModal";
 
-const features = [
+const features: FeaturePreview[] = [
   {
+    id: "cbt",
     title: "CBT 모의고사",
-    description: "실제 시험 환경 그대로. 타이머와 자동 채점으로 실전 감각을 익혀보세요.",
-    badge: "실전",
-    href: "/cbt",
+    emoji: "🖥️",
+    tagline: "실제 시험 환경 그대로",
+    description:
+      "타이머와 자동 채점이 있는 CBT 환경에서 60문항을 60분 안에 풀어보세요. 화면배치, 글자크기, 계산기까지 실제 시험과 동일합니다.",
+    highlights: [
+      "5회차 모의고사 + 과목별/주제별 연습",
+      "화면배치 (1단/2단/1문제 모드)",
+      "응시 후 PASS/FAIL과 과목별 분석 제공",
+      "전체 60문항 무료 해설",
+    ],
+    status: "available",
+    cta: { label: "지금 시작하기", href: "/cbt" },
+    preview: { kind: "info" },
   },
   {
+    id: "lecture",
     title: "기출 해설강의",
-    description: "모든 기출 문제 무료 해설. 왜 이 답인지 끝까지 알려드립니다.",
-    badge: "무료",
-    href: "#",
+    emoji: "🎬",
+    tagline: "모든 기출 문제 무료 해설",
+    description:
+      "왜 이 답인지, 어떻게 풀어야 하는지 끝까지 알려드립니다. 2009~2016년 기출 전 회차를 영상으로 제공할 예정입니다.",
+    highlights: [
+      "기출 전 회차 영상 해설 (무료)",
+      "문제별 핵심 풀이 포인트",
+      "모바일/PC 어디서나 시청 가능",
+    ],
+    status: "coming_soon",
+    cta: { label: "영상 보러가기", href: "#" },
+    preview: { kind: "info" },
   },
   {
+    id: "flashcards",
     title: "플립 암기카드",
-    description: "핵심 이론과 공식을 카드로. 짧은 자투리 시간을 효율적으로.",
-    badge: "암기",
-    href: "#",
+    emoji: "🃏",
+    tagline: "핵심 키워드 300선",
+    description:
+      "전기기능사 합격을 위한 핵심 키워드를 카드 형태로 정리. 짧은 자투리 시간을 활용해 암기하고 즐겨찾기로 모아 다시 학습하세요.",
+    highlights: [
+      "과목별 핵심 키워드 300장",
+      "카드 뒤집기 방식의 인터랙션",
+      "즐겨찾기 + 오답노트 자동 생성",
+    ],
+    status: "coming_soon",
+    cta: { label: "카드 학습하기", href: "#" },
+    preview: { kind: "iframe", src: "/samples/flashcards.html" },
   },
   {
+    id: "audiobook",
     title: "오디오북",
-    description: "출퇴근길, 운동하면서. 귀로 듣는 전기기능사 이론 정리.",
-    badge: "오디오",
-    href: "#",
+    emoji: "🎧",
+    tagline: "귀로 듣는 전기기능사 이론",
+    description:
+      "출퇴근길, 운동하면서, 자기 전 들으면 좋은 이론 정리 오디오북. 핵심 개념을 듣기만 해도 자연스럽게 익혀집니다.",
+    highlights: [
+      "과목별 이론 정리 오디오",
+      "1.0x ~ 2.0x 배속 재생",
+      "구간 반복 + 북마크 기능",
+    ],
+    status: "coming_soon",
+    cta: { label: "오디오북 듣기", href: "#" },
+    preview: { kind: "audio", src: "/samples/audiobook-sample.mp3" },
   },
   {
+    id: "simulator",
     title: "이론 시뮬레이터",
-    description: "회로와 원리를 직접 만져보며 이해하세요. 글로만 읽던 이론이 손에 잡힙니다.",
-    badge: "체험",
-    href: "#",
+    emoji: "⚡",
+    tagline: "회로와 원리를 직접 체험",
+    description:
+      "글로만 읽던 이론을 직접 만지며 이해하세요. 전기력선, 평행도선 자기력 등 핵심 원리를 시뮬레이터로 익힐 수 있습니다.",
+    highlights: [
+      "전기장 / 자기장 / 회로 시각화",
+      "변수 조절로 즉각 결과 확인",
+      "이론 공식과 연동된 해설",
+    ],
+    status: "coming_soon",
+    cta: { label: "시뮬레이터 열기", href: "#" },
+    preview: { kind: "iframe", src: "/samples/simulator-electric-field.html" },
   },
 ];
 
@@ -42,6 +99,9 @@ const stats = [
 ];
 
 export default function Home() {
+  const [activeId, setActiveId] = useState<string | null>(null);
+  const active = features.find((f) => f.id === activeId);
+
   return (
     <div className="min-h-screen bg-white">
       <Header />
@@ -67,12 +127,13 @@ export default function Home() {
               >
                 CBT 모의고사 풀기
               </Link>
-              <Link
-                href="#"
+              <button
+                type="button"
+                onClick={() => setActiveId("lecture")}
                 className="rounded-md border border-zinc-300 bg-white px-6 py-3 text-sm font-semibold text-zinc-700 transition hover:bg-zinc-50"
               >
                 해설강의 둘러보기
-              </Link>
+              </button>
             </div>
           </div>
         </div>
@@ -84,31 +145,43 @@ export default function Home() {
             전기기능사 인기 콘텐츠
           </h2>
           <p className="mt-2 text-sm text-zinc-600">
-            합격생이 가장 많이 사용한 학습 도구를 만나보세요.
+            카드를 클릭하면 미리보기를 확인할 수 있습니다.
           </p>
         </div>
 
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {features.map((feature) => (
-            <Link
-              key={feature.title}
-              href={feature.href}
-              className="group rounded-xl border border-zinc-200 bg-white p-6 transition hover:border-blue-300 hover:shadow-md"
-            >
-              <span className="inline-block rounded-md bg-zinc-100 px-2 py-1 text-xs font-medium text-zinc-700 group-hover:bg-blue-50 group-hover:text-blue-700">
-                {feature.badge}
-              </span>
-              <h3 className="mt-4 text-lg font-semibold text-zinc-900">
-                {feature.title}
-              </h3>
-              <p className="mt-2 text-sm leading-6 text-zinc-600">
-                {feature.description}
-              </p>
-              <div className="mt-4 text-sm font-medium text-blue-600 opacity-0 transition group-hover:opacity-100">
-                바로가기 →
-              </div>
-            </Link>
-          ))}
+          {features.map((feature) => {
+            const isComingSoon = feature.status === "coming_soon";
+            return (
+              <button
+                key={feature.id}
+                type="button"
+                onClick={() => setActiveId(feature.id)}
+                className="group relative rounded-xl border border-zinc-200 bg-white p-6 text-left transition hover:border-blue-300 hover:shadow-md"
+              >
+                {isComingSoon && (
+                  <span className="absolute right-4 top-4 rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-bold tracking-wide text-amber-800">
+                    Coming Soon
+                  </span>
+                )}
+                {!isComingSoon && (
+                  <span className="absolute right-4 top-4 rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-bold tracking-wide text-emerald-800">
+                    이용 가능
+                  </span>
+                )}
+                <div className="text-3xl leading-none">{feature.emoji}</div>
+                <h3 className="mt-4 text-lg font-semibold text-zinc-900">
+                  {feature.title}
+                </h3>
+                <p className="mt-2 text-sm leading-6 text-zinc-600">
+                  {feature.tagline}
+                </p>
+                <div className="mt-4 flex items-center gap-1 text-sm font-medium text-blue-600 opacity-0 transition group-hover:opacity-100">
+                  미리보기 →
+                </div>
+              </button>
+            );
+          })}
         </div>
       </section>
 
@@ -134,17 +207,21 @@ export default function Home() {
             <p className="mt-3 text-sm leading-6 text-zinc-300 sm:text-base">
               회원가입 없이도 기출 해설강의와 일부 콘텐츠를 무료로 이용할 수 있습니다.
             </p>
-            <button
-              type="button"
-              className="mt-6 rounded-md bg-white px-6 py-3 text-sm font-semibold text-zinc-900 transition hover:bg-zinc-100"
+            <Link
+              href="/cbt"
+              className="mt-6 inline-block rounded-md bg-white px-6 py-3 text-sm font-semibold text-zinc-900 transition hover:bg-zinc-100"
             >
               학습 시작하기
-            </button>
+            </Link>
           </div>
         </div>
       </section>
 
       <Footer />
+
+      {active && (
+        <FeaturePreviewModal feature={active} onClose={() => setActiveId(null)} />
+      )}
     </div>
   );
 }
