@@ -322,13 +322,15 @@ export default function Home() {
 
       <section className="border-y border-zinc-100 bg-zinc-50">
         <div className="mx-auto grid max-w-6xl grid-cols-2 gap-6 px-6 py-12 sm:grid-cols-4">
-          {stats.map((stat) => (
-            <div key={stat.label} className="text-center">
-              <div className="text-3xl font-bold text-blue-600 sm:text-4xl">
-                {stat.value}
+          {stats.map((stat, i) => (
+            <Reveal key={stat.label} type="fade-up" delay={i * 100}>
+              <div className="text-center">
+                <div className="text-3xl font-bold text-blue-600 sm:text-4xl">
+                  {stat.value}
+                </div>
+                <div className="mt-2 text-sm text-zinc-600">{stat.label}</div>
               </div>
-              <div className="mt-2 text-sm text-zinc-600">{stat.label}</div>
-            </div>
+            </Reveal>
           ))}
         </div>
       </section>
@@ -338,6 +340,7 @@ export default function Home() {
       <Faq />
 
       <section className="mx-auto max-w-6xl px-6 py-16">
+        <Reveal type="scale">
         <div className="rounded-2xl bg-zinc-900 px-8 py-12 sm:px-12 sm:py-16">
           <div className="max-w-2xl">
             <h2 className="text-2xl font-bold text-white sm:text-3xl">
@@ -362,6 +365,7 @@ export default function Home() {
             </div>
           </div>
         </div>
+        </Reveal>
       </section>
 
       <Footer />

@@ -2,6 +2,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SubTabs from "@/components/cbt/SubTabs";
 import StudyBrowser from "@/components/cbt/StudyBrowser";
+import TextbookFloatingPopup from "@/components/TextbookFloatingPopup";
 import { TARGET_YEAR_RANGE, curriculum } from "@/lib/cbt/curriculum";
 import { countQuestionsBy } from "@/lib/cbt/mockData";
 
@@ -51,6 +52,7 @@ export default function StudyPage() {
 
         <StudyBrowser tree={tree} />
       </main>
+      <TextbookFloatingPopup />
 
       <Footer />
     </div>

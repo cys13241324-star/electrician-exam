@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Reveal from "./Reveal";
 
 const items = [
   {
@@ -61,6 +62,7 @@ export default function Faq() {
           </p>
         </div>
 
+        <Reveal type="fade-up">
         <div className="overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm">
           {items.map((it, i) => {
             const isOpen = open === i;
@@ -105,6 +107,7 @@ export default function Faq() {
             );
           })}
         </div>
+        </Reveal>
 
         <div className="mt-6 flex flex-col items-center gap-2 text-sm text-zinc-600 sm:flex-row sm:justify-center">
           <span>원하는 답변을 찾지 못하셨나요?</span>

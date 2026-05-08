@@ -2,6 +2,7 @@ import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SubTabs from "@/components/cbt/SubTabs";
+import TextbookFloatingPopup from "@/components/TextbookFloatingPopup";
 import { mockExamSummaries } from "@/lib/cbt/mockData";
 import type { ExamStatus } from "@/lib/cbt/types";
 import { TARGET_YEAR_RANGE } from "@/lib/cbt/curriculum";
@@ -100,6 +101,7 @@ export default function CbtExamsPage() {
       </main>
 
       <Footer />
+      <TextbookFloatingPopup />
     </div>
   );
 }

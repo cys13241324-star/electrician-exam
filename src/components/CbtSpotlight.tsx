@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Reveal from "./Reveal";
 
 type Feature = {
   emoji: string;
@@ -72,9 +73,9 @@ export default function CbtSpotlight() {
 
         <div className="mt-12 grid grid-cols-1 gap-5 md:grid-cols-3">
           {features.map((f, i) => (
+            <Reveal key={i} type="fade-up" delay={i * 100}>
             <div
-              key={i}
-              className="group relative overflow-hidden rounded-2xl border border-white/15 bg-white/5 p-6 backdrop-blur-sm transition hover:border-white/30 hover:bg-white/10"
+              className="group relative h-full overflow-hidden rounded-2xl border border-white/15 bg-white/5 p-6 backdrop-blur-sm transition hover:border-white/30 hover:bg-white/10"
             >
               <div className="absolute -right-4 -top-4 h-20 w-20 rounded-full bg-blue-400/10 blur-2xl transition group-hover:bg-amber-400/20" />
               <div className="relative">
@@ -95,6 +96,7 @@ export default function CbtSpotlight() {
                 </div>
               </div>
             </div>
+            </Reveal>
           ))}
         </div>
 

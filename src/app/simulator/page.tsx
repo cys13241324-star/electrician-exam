@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import Reveal from "@/components/Reveal";
 import { simulators, SIMULATOR_SUBJECTS } from "@/lib/simulators";
 import type { Subject } from "@/lib/cbt/types";
 
@@ -80,12 +81,12 @@ export default function SimulatorIndexPage() {
               </div>
 
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                {items.map((sim) => {
+                {items.map((sim, idx) => {
                   const isAvailable = sim.status === "available";
                   return (
+                    <Reveal key={sim.id} type="fade-up" delay={idx * 80}>
                     <article
-                      key={sim.id}
-                      className="flex flex-col rounded-xl border border-zinc-200 bg-white p-5 shadow-sm transition hover:shadow-md"
+                      className="flex h-full flex-col rounded-xl border border-zinc-200 bg-white p-5 shadow-sm transition hover:shadow-md"
                     >
                       <div className="flex items-start justify-between">
                         <div className="text-3xl leading-none">{sim.emoji}</div>
@@ -123,6 +124,7 @@ export default function SimulatorIndexPage() {
                         </span>
                       )}
                     </article>
+                    </Reveal>
                   );
                 })}
               </div>
@@ -131,6 +133,7 @@ export default function SimulatorIndexPage() {
         })}
 
         {/* 학습 팁 */}
+        <Reveal type="fade-up">
         <section className="mt-12 rounded-2xl border border-zinc-200 bg-white p-8">
           <h2 className="text-lg font-bold text-zinc-900">
             🎯 시뮬레이터를 200% 활용하는 법
@@ -168,6 +171,7 @@ export default function SimulatorIndexPage() {
             </div>
           </div>
         </section>
+        </Reveal>
       </main>
 
       <Footer />
