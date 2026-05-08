@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import type { Subject } from "@/lib/cbt/types";
+import Reveal from "@/components/Reveal";
 
 type SubtopicNode = {
   id: string;
@@ -134,10 +135,10 @@ export default function StudyBrowser({ tree }: { tree: SubjectNode[] }) {
 
       {/* Topic cards grid */}
       <div className="grid auto-rows-fr grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {active.topics.map((topic) => (
+        {active.topics.map((topic, idx) => (
+          <Reveal key={`${active.id}-${topic.id}`} type="fade-up" delay={idx * 80}>
           <article
-            key={topic.id}
-            className={`flex flex-col rounded-xl border border-l-4 border-zinc-200 bg-white p-5 shadow-sm transition hover:shadow-md ${theme.accent}`}
+            className={`flex h-full flex-col rounded-xl border border-l-4 border-zinc-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md ${theme.accent}`}
           >
             <header className="mb-3 flex items-start justify-between">
               <h3 className="text-lg font-bold text-zinc-900">{topic.name}</h3>
@@ -203,6 +204,7 @@ export default function StudyBrowser({ tree }: { tree: SubjectNode[] }) {
               </span>
             )}
           </article>
+          </Reveal>
         ))}
       </div>
     </div>

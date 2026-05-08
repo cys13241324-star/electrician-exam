@@ -4,6 +4,7 @@ import "./globals.css";
 import ScrollToTop from "@/components/ScrollToTop";
 import ScrollProgress from "@/components/ScrollProgress";
 import TextbookBanner from "@/components/TextbookBanner";
+import ActivityTicker from "@/components/ActivityTicker";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -67,6 +68,7 @@ export default function RootLayout({
         <TextbookBanner />
         {children}
         <ScrollToTop />
+        <ActivityTicker />
       </body>
     </html>
   );

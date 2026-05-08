@@ -270,8 +270,9 @@ export default function Home() {
             );
 
             const baseClass =
-              "group relative rounded-xl border border-zinc-200 bg-white p-6 text-left transition";
-            const interactiveClass = " hover:border-blue-300 hover:shadow-md";
+              "group relative rounded-xl border border-zinc-200 bg-white p-6 text-left transition duration-200";
+            const interactiveClass =
+              " hover:-translate-y-0.5 hover:border-blue-300 hover:shadow-lg";
 
             const card =
               goesToPage && feature.cta ? (
