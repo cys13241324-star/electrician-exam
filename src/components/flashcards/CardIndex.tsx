@@ -15,6 +15,7 @@ import type {
   CardStatus,
   Flashcard,
 } from "@/lib/flashcards/types";
+import { MathText } from "@/components/Math";
 
 type ProgressMap = Record<string, ReturnType<typeof getOrCreateProgress>>;
 
@@ -374,7 +375,7 @@ function CardDetailModal({
             QUESTION
           </p>
           <p className="mt-2 text-base font-bold leading-7 text-zinc-900 sm:text-lg">
-            {card.front}
+            <MathText>{card.front}</MathText>
           </p>
 
           <hr className="my-5 border-zinc-200" />
@@ -382,8 +383,8 @@ function CardDetailModal({
           <p className="text-[11px] font-bold tracking-widest text-emerald-600">
             ANSWER
           </p>
-          <p className="mt-2 whitespace-pre-line text-sm leading-7 text-zinc-800">
-            {card.back}
+          <p className="mt-2 text-sm leading-7 text-zinc-800">
+            <MathText>{card.back}</MathText>
           </p>
 
           {card.example && (
@@ -395,24 +396,24 @@ function CardDetailModal({
               <div className="mt-2 rounded-lg bg-amber-50 p-3">
                 <p className="text-xs font-bold text-amber-900">문제</p>
                 <p className="mt-1 text-sm leading-6 text-zinc-800">
-                  {card.example.question}
+                  <MathText>{card.example.question}</MathText>
                 </p>
                 <p className="mt-3 text-xs font-bold text-amber-900">풀이</p>
                 <ol className="mt-1 space-y-1">
                   {card.example.solution.map((step, i) => (
                     <li
                       key={i}
-                      className="rounded border border-zinc-200 bg-white px-2.5 py-1.5 font-mono text-xs text-zinc-900"
+                      className="rounded border border-zinc-200 bg-white px-2.5 py-1.5 text-xs leading-6 text-zinc-900"
                     >
-                      <span className="font-bold text-amber-600">
+                      <span className="mr-1 font-bold text-amber-600">
                         {i + 1}.
-                      </span>{" "}
-                      {step}
+                      </span>
+                      <MathText>{step}</MathText>
                     </li>
                   ))}
                 </ol>
                 <p className="mt-3 rounded-md border border-emerald-300 bg-emerald-50 px-3 py-1.5 text-xs font-bold text-emerald-900">
-                  정답: {card.example.answer}
+                  정답: <MathText>{card.example.answer}</MathText>
                 </p>
               </div>
             </>

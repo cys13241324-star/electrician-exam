@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Reveal from "@/components/Reveal";
 import BackgroundPattern from "@/components/BackgroundPattern";
+import { MathText } from "@/components/Math";
 import { getSimulator, simulators } from "@/lib/simulators";
 
 export async function generateStaticParams() {
@@ -137,11 +138,11 @@ export default async function SimulatorDetailPage({
                     <p className="text-xs font-semibold tracking-wide text-blue-700">
                       {f.name}
                     </p>
-                    <p className="mt-3 rounded-lg border-2 border-blue-200 bg-blue-50 px-4 py-3 font-mono text-base font-bold text-blue-900 sm:text-lg">
-                      {f.expression}
-                    </p>
-                    <p className="mt-3 text-xs leading-5 text-zinc-600">
-                      {f.meaning}
+                    <div className="mt-3 rounded-lg border-2 border-blue-200 bg-blue-50 px-4 py-3 text-base text-blue-900 sm:text-lg">
+                      <MathText>{f.expression}</MathText>
+                    </div>
+                    <p className="mt-3 text-xs leading-6 text-zinc-600">
+                      <MathText>{f.meaning}</MathText>
                     </p>
                   </div>
                 ))}
@@ -170,7 +171,7 @@ export default async function SimulatorDetailPage({
                     문제
                   </p>
                   <p className="mt-2 text-sm leading-7 text-zinc-900 sm:text-base">
-                    {sim.example.question}
+                    <MathText>{sim.example.question}</MathText>
                   </p>
                 </div>
 
@@ -183,10 +184,10 @@ export default async function SimulatorDetailPage({
                     {sim.example.given.map((g, i) => (
                       <li
                         key={i}
-                        className="flex items-center gap-2 rounded-md bg-white px-3 py-1.5 font-mono text-xs text-zinc-800 ring-1 ring-zinc-200"
+                        className="flex items-center gap-2 rounded-md bg-white px-3 py-1.5 text-xs text-zinc-800 ring-1 ring-zinc-200"
                       >
                         <span className="text-zinc-400">▸</span>
-                        {g}
+                        <MathText>{g}</MathText>
                       </li>
                     ))}
                   </ul>
@@ -206,8 +207,8 @@ export default async function SimulatorDetailPage({
                         <span className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-amber-500 text-[11px] font-bold text-white">
                           {i + 1}
                         </span>
-                        <span className="font-mono text-sm text-zinc-900 sm:text-base">
-                          {step}
+                        <span className="text-sm leading-8 text-zinc-900 sm:text-base">
+                          <MathText>{step}</MathText>
                         </span>
                       </li>
                     ))}
@@ -215,12 +216,12 @@ export default async function SimulatorDetailPage({
                 </div>
 
                 {/* 정답 */}
-                <div className="mt-6 flex items-center gap-3 rounded-xl border-2 border-emerald-300 bg-emerald-50 px-5 py-4">
+                <div className="mt-6 flex flex-wrap items-center gap-3 rounded-xl border-2 border-emerald-300 bg-emerald-50 px-5 py-4">
                   <span className="rounded-md bg-emerald-600 px-2 py-1 text-[10px] font-black tracking-wider text-white">
                     정답
                   </span>
-                  <p className="font-mono text-base font-bold text-emerald-900 sm:text-lg">
-                    {sim.example.answer}
+                  <p className="text-base font-bold leading-8 text-emerald-900 sm:text-lg">
+                    <MathText>{sim.example.answer}</MathText>
                   </p>
                 </div>
               </div>

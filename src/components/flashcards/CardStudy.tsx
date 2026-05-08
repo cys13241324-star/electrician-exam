@@ -14,6 +14,7 @@ import {
   toggleFavorite,
 } from "@/lib/flashcards/storage";
 import type { Flashcard, Rating } from "@/lib/flashcards/types";
+import { MathText } from "@/components/Math";
 
 const SUBJECT_THEME: Record<
   string,
@@ -193,7 +194,7 @@ export default function CardStudy({
 
                 <div className="flex flex-1 items-center justify-center px-4 py-8 text-center">
                   <p className="text-2xl font-bold leading-relaxed text-white sm:text-3xl">
-                    {card.front}
+                    <MathText>{card.front}</MathText>
                   </p>
                 </div>
 
@@ -219,9 +220,9 @@ export default function CardStudy({
                   <FavButton onToggle={fav} isFav={isFav} dark={false} />
                 </div>
 
-                <div className="flex flex-1 items-center justify-center px-4 py-6 text-center">
-                  <p className="whitespace-pre-line text-xl font-semibold leading-relaxed text-zinc-900 sm:text-2xl">
-                    {card.back}
+                <div className="flex flex-1 items-center justify-center overflow-y-auto px-4 py-6 text-center">
+                  <p className="text-xl font-semibold leading-relaxed text-zinc-900 sm:text-2xl">
+                    <MathText>{card.back}</MathText>
                   </p>
                 </div>
 
@@ -264,7 +265,7 @@ export default function CardStudy({
               문제
             </p>
             <p className="mt-1.5 text-sm leading-7 text-zinc-900 sm:text-base">
-              {card.example.question}
+              <MathText>{card.example.question}</MathText>
             </p>
 
             <div className="mt-4">
@@ -280,20 +281,20 @@ export default function CardStudy({
                     <span className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-amber-500 text-[10px] font-bold text-white">
                       {i + 1}
                     </span>
-                    <span className="font-mono text-sm text-zinc-900 sm:text-base">
-                      {step}
+                    <span className="text-sm leading-7 text-zinc-900 sm:text-base">
+                      <MathText>{step}</MathText>
                     </span>
                   </li>
                 ))}
               </ol>
             </div>
 
-            <div className="mt-4 flex items-center gap-3 rounded-lg border-2 border-emerald-300 bg-emerald-50 px-4 py-2.5">
+            <div className="mt-4 flex flex-wrap items-center gap-3 rounded-lg border-2 border-emerald-300 bg-emerald-50 px-4 py-2.5">
               <span className="rounded-md bg-emerald-600 px-2 py-0.5 text-[10px] font-black tracking-wider text-white">
                 정답
               </span>
-              <p className="font-mono text-sm font-bold text-emerald-900 sm:text-base">
-                {card.example.answer}
+              <p className="text-sm font-bold leading-7 text-emerald-900 sm:text-base">
+                <MathText>{card.example.answer}</MathText>
               </p>
             </div>
           </div>
