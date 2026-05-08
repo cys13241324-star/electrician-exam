@@ -5,6 +5,7 @@ import { useMemo, useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import HeroSlider, { type HeroSlide } from "@/components/HeroSlider";
+import Reveal from "@/components/Reveal";
 import HowItWorks from "@/components/HowItWorks";
 import FeatureDetails from "@/components/FeatureDetails";
 import CbtSpotlight from "@/components/CbtSpotlight";
@@ -237,7 +238,7 @@ export default function Home() {
         </div>
 
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {features.map((feature) => {
+          {features.map((feature, idx) => {
             const isComingSoon = feature.status === "coming_soon";
             const hasModal = feature.preview.kind !== "info";
             const goesToPage = feature.id === "cbt";
@@ -272,38 +273,32 @@ export default function Home() {
               "group relative rounded-xl border border-zinc-200 bg-white p-6 text-left transition";
             const interactiveClass = " hover:border-blue-300 hover:shadow-md";
 
-            if (goesToPage && feature.cta) {
-              return (
+            const card =
+              goesToPage && feature.cta ? (
                 <Link
-                  key={feature.id}
                   href={feature.cta.href}
-                  className={`${baseClass}${interactiveClass} block`}
+                  className={`${baseClass}${interactiveClass} block h-full`}
                 >
                   {cardInner}
                 </Link>
-              );
-            }
-
-            if (hasModal) {
-              return (
+              ) : hasModal ? (
                 <button
-                  key={feature.id}
                   type="button"
                   onClick={() => setActiveId(feature.id)}
-                  className={`${baseClass}${interactiveClass}`}
+                  className={`${baseClass}${interactiveClass} h-full w-full`}
                 >
                   {cardInner}
                 </button>
+              ) : (
+                <div className={`${baseClass} h-full cursor-default opacity-80`}>
+                  {cardInner}
+                </div>
               );
-            }
 
             return (
-              <div
-                key={feature.id}
-                className={`${baseClass} cursor-default opacity-80`}
-              >
-                {cardInner}
-              </div>
+              <Reveal key={feature.id} type="fade-up" delay={idx * 80}>
+                {card}
+              </Reveal>
             );
           })}
         </div>

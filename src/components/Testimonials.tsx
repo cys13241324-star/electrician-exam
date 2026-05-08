@@ -1,3 +1,5 @@
+import Reveal from "./Reveal";
+
 type Testimonial = {
   id: string;
   name: string;
@@ -94,10 +96,10 @@ export default function Testimonials() {
         </div>
 
         <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {testimonials.map((t) => (
+          {testimonials.map((t, i) => (
+            <Reveal key={t.id} type="fade-up" delay={i * 80}>
             <article
-              key={t.id}
-              className="flex flex-col rounded-2xl border border-zinc-200 bg-gradient-to-br from-white to-zinc-50 p-6 shadow-sm transition hover:shadow-md"
+              className="flex h-full flex-col rounded-2xl border border-zinc-200 bg-gradient-to-br from-white to-zinc-50 p-6 shadow-sm transition hover:shadow-md"
             >
               <header className="flex items-center gap-3">
                 <div className="flex h-12 w-12 items-center justify-center rounded-full bg-blue-50 text-2xl">
@@ -123,6 +125,7 @@ export default function Testimonials() {
                 </div>
               )}
             </article>
+            </Reveal>
           ))}
         </div>
       </div>

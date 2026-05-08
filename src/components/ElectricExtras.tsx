@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Reveal from "./Reveal";
 
 type Extra = {
   id: string;
@@ -76,12 +77,12 @@ export default function ElectricExtras() {
         </div>
 
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-          {extras.map((ex) => (
+          {extras.map((ex, i) => (
+            <Reveal key={ex.id} type="fade-up" delay={i * 100}>
             <button
-              key={ex.id}
               type="button"
               onClick={() => setActive(ex)}
-              className="group flex flex-col overflow-hidden rounded-2xl border border-zinc-200 bg-white text-left shadow-sm transition hover:shadow-xl"
+              className="group flex h-full w-full flex-col overflow-hidden rounded-2xl border border-zinc-200 bg-white text-left shadow-sm transition hover:shadow-xl"
             >
               <div
                 className={`relative flex h-44 items-center justify-center bg-gradient-to-br ${ex.bg}`}
@@ -109,6 +110,7 @@ export default function ElectricExtras() {
                 </div>
               </div>
             </button>
+            </Reveal>
           ))}
         </div>
 

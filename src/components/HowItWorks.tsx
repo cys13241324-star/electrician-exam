@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Reveal from "./Reveal";
 
 type Step = {
   n: number;
@@ -83,7 +84,8 @@ export default function HowItWorks() {
 
         <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
           {steps.map((step, i) => (
-            <div key={step.n} className="relative">
+            <Reveal key={step.n} type="fade-up" delay={i * 150}>
+            <div className="relative h-full">
               {i < steps.length - 1 && (
                 <div className="absolute right-0 top-12 hidden h-px w-full translate-x-1/2 bg-gradient-to-r from-blue-300 to-transparent md:block" />
               )}
@@ -166,6 +168,7 @@ export default function HowItWorks() {
                 )}
               </article>
             </div>
+            </Reveal>
           ))}
         </div>
       </div>

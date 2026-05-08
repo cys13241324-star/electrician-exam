@@ -1,4 +1,6 @@
 import Link from "next/link";
+import Reveal from "./Reveal";
+import SectionDivider from "./SectionDivider";
 
 type Theme = {
   badgeBg: string;
@@ -252,108 +254,117 @@ export default function FeatureDetails() {
   return (
     <section id="feature-details" className="scroll-mt-24 bg-zinc-50">
       <div className="mx-auto max-w-6xl px-6 py-20">
-        <div className="mb-14 text-center">
-          <p className="text-sm font-semibold tracking-wide text-blue-600">
-            특장점 자세히 보기
-          </p>
-          <h2 className="mt-2 text-2xl font-bold tracking-tight text-zinc-900 sm:text-3xl">
-            5가지 학습 도구, 한 가지씩 들여다보기
-          </h2>
-          <p className="mt-3 text-sm text-zinc-600">
-            각 도구가 왜 합격에 효과적인지, 어떤 기능을 제공하는지 자세히 살펴보세요.
-          </p>
-        </div>
+        <Reveal>
+          <div className="mb-14 text-center">
+            <p className="text-sm font-semibold tracking-wide text-blue-600">
+              특장점 자세히 보기
+            </p>
+            <h2 className="mt-2 text-2xl font-bold tracking-tight text-zinc-900 sm:text-3xl">
+              5가지 학습 도구, 한 가지씩 들여다보기
+            </h2>
+            <p className="mt-3 text-sm text-zinc-600">
+              각 도구가 왜 합격에 효과적인지, 어떤 기능을 제공하는지 자세히 살펴보세요.
+            </p>
+          </div>
+        </Reveal>
 
         <div className="space-y-16">
           {items.map((it, i) => {
             const reverse = i % 2 === 1;
             const isComingSoon = it.status === "coming_soon";
             return (
-              <article
-                key={it.id}
-                className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:items-center"
-              >
-                {/* Visual */}
-                <div className={`${reverse ? "lg:order-2" : ""}`}>
-                  <Visual item={it} />
-                </div>
+              <div key={it.id}>
+                {i > 0 && <SectionDivider variant="spark" label={`STEP ${it.step}`} />}
+                <article className="mt-6 grid grid-cols-1 gap-8 lg:grid-cols-2 lg:items-center">
+                  {/* Visual */}
+                  <Reveal
+                    type={reverse ? "slide-right" : "slide-left"}
+                    className={reverse ? "lg:order-2" : ""}
+                  >
+                    <Visual item={it} />
+                  </Reveal>
 
-                {/* Content */}
-                <div className={`${reverse ? "lg:order-1" : ""}`}>
-                  <div className="flex items-center gap-3">
-                    <span
-                      className={`flex h-9 w-9 items-center justify-center rounded-full ${it.theme.stepBg} text-sm font-bold text-white`}
-                    >
-                      {it.step}
-                    </span>
-                    <span
-                      className={`rounded-full ${it.theme.badgeBg} px-3 py-1 text-xs font-bold ${it.theme.badgeText}`}
-                    >
-                      {it.category}
-                    </span>
-                    {isComingSoon ? (
-                      <span className="rounded-full bg-amber-100 px-2.5 py-0.5 text-[10px] font-bold tracking-wide text-amber-800">
-                        Coming Soon
-                      </span>
-                    ) : (
-                      <span className="rounded-full bg-emerald-100 px-2.5 py-0.5 text-[10px] font-bold tracking-wide text-emerald-800">
-                        이용 가능
-                      </span>
-                    )}
-                  </div>
-
-                  <h3 className="mt-4 text-2xl font-bold tracking-tight text-zinc-900 sm:text-3xl">
-                    {it.title}
-                  </h3>
-                  <p className={`mt-1 text-base font-semibold ${it.theme.accent}`}>
-                    {it.tagline}
-                  </p>
-
-                  <p className="mt-4 text-sm leading-7 text-zinc-700 sm:text-base">
-                    {it.description}
-                  </p>
-
-                  <ul className="mt-6 space-y-3">
-                    {it.features.map((f, idx) => (
-                      <li key={idx} className="flex items-start gap-3">
-                        <span
-                          className={`mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full ${it.theme.checkBg} text-[10px] font-bold text-white`}
-                        >
-                          ✓
-                        </span>
-                        <div className="min-w-0">
-                          <p className="text-sm font-semibold text-zinc-900">
-                            {f.title}
-                          </p>
-                          <p className="mt-0.5 text-xs leading-5 text-zinc-600">
-                            {f.description}
-                          </p>
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
-
-                  <div className="mt-7">
-                    {isComingSoon ? (
+                  {/* Content */}
+                  <Reveal
+                    type={reverse ? "slide-left" : "slide-right"}
+                    delay={120}
+                    className={reverse ? "lg:order-1" : ""}
+                  >
+                    <div className="flex items-center gap-3">
                       <span
-                        className="inline-block cursor-not-allowed rounded-md bg-zinc-200 px-6 py-3 text-sm font-bold text-zinc-500"
-                        title="준비중"
+                        className={`flex h-9 w-9 items-center justify-center rounded-full ${it.theme.stepBg} text-sm font-bold text-white`}
                       >
-                        {it.cta.label}
+                        {it.step}
                       </span>
-                    ) : (
-                      it.cta.href && (
-                        <Link
-                          href={it.cta.href}
-                          className={`inline-block rounded-md ${it.theme.ctaBg} px-6 py-3 text-sm font-bold text-white shadow-sm transition ${it.theme.ctaHover}`}
+                      <span
+                        className={`rounded-full ${it.theme.badgeBg} px-3 py-1 text-xs font-bold ${it.theme.badgeText}`}
+                      >
+                        {it.category}
+                      </span>
+                      {isComingSoon ? (
+                        <span className="rounded-full bg-amber-100 px-2.5 py-0.5 text-[10px] font-bold tracking-wide text-amber-800">
+                          Coming Soon
+                        </span>
+                      ) : (
+                        <span className="rounded-full bg-emerald-100 px-2.5 py-0.5 text-[10px] font-bold tracking-wide text-emerald-800">
+                          이용 가능
+                        </span>
+                      )}
+                    </div>
+
+                    <h3 className="mt-4 text-2xl font-bold tracking-tight text-zinc-900 sm:text-3xl">
+                      {it.title}
+                    </h3>
+                    <p className={`mt-1 text-base font-semibold ${it.theme.accent}`}>
+                      {it.tagline}
+                    </p>
+
+                    <p className="mt-4 text-sm leading-7 text-zinc-700 sm:text-base">
+                      {it.description}
+                    </p>
+
+                    <ul className="mt-6 space-y-3">
+                      {it.features.map((f, idx) => (
+                        <li key={idx} className="flex items-start gap-3">
+                          <span
+                            className={`mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full ${it.theme.checkBg} text-[10px] font-bold text-white`}
+                          >
+                            ✓
+                          </span>
+                          <div className="min-w-0">
+                            <p className="text-sm font-semibold text-zinc-900">
+                              {f.title}
+                            </p>
+                            <p className="mt-0.5 text-xs leading-5 text-zinc-600">
+                              {f.description}
+                            </p>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+
+                    <div className="mt-7">
+                      {isComingSoon ? (
+                        <span
+                          className="inline-block cursor-not-allowed rounded-md bg-zinc-200 px-6 py-3 text-sm font-bold text-zinc-500"
+                          title="준비중"
                         >
                           {it.cta.label}
-                        </Link>
-                      )
-                    )}
-                  </div>
-                </div>
-              </article>
+                        </span>
+                      ) : (
+                        it.cta.href && (
+                          <Link
+                            href={it.cta.href}
+                            className={`inline-block rounded-md ${it.theme.ctaBg} px-6 py-3 text-sm font-bold text-white shadow-sm transition ${it.theme.ctaHover}`}
+                          >
+                            {it.cta.label}
+                          </Link>
+                        )
+                      )}
+                    </div>
+                  </Reveal>
+                </article>
+              </div>
             );
           })}
         </div>
