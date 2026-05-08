@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Reveal from "./Reveal";
+import BackgroundPattern from "./BackgroundPattern";
 
 type Day = {
   day: string;
@@ -121,8 +122,9 @@ export default function StudyPlan() {
   const theme = COLOR_MAP[week.color];
 
   return (
-    <section className="bg-white">
-      <div className="mx-auto max-w-6xl px-6 py-20">
+    <section className="relative overflow-hidden bg-white">
+      <BackgroundPattern variant="diagonal" color="#3b82f6" opacity={0.04} />
+      <div className="relative mx-auto max-w-6xl px-6 py-20">
         <Reveal>
           <div className="mb-10 text-center">
             <p className="text-sm font-semibold tracking-wide text-blue-600">

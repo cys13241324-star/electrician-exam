@@ -1,4 +1,5 @@
 import Reveal from "./Reveal";
+import BackgroundPattern from "./BackgroundPattern";
 
 type Testimonial = {
   id: string;
@@ -75,8 +76,10 @@ const testimonials: Testimonial[] = [
 
 export default function Testimonials() {
   return (
-    <section className="bg-white">
-      <div className="mx-auto max-w-6xl px-6 py-20">
+    <section className="relative overflow-hidden bg-white">
+      <BackgroundPattern variant="mesh-amber" />
+      <BackgroundPattern variant="dots" color="#f59e0b" opacity={0.05} />
+      <div className="relative mx-auto max-w-6xl px-6 py-20">
         <div className="mb-10 flex items-end justify-between">
           <div>
             <p className="text-sm font-semibold tracking-wide text-blue-600">

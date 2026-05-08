@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Reveal from "./Reveal";
 import SectionDivider from "./SectionDivider";
+import BackgroundPattern from "./BackgroundPattern";
 
 type Theme = {
   badgeBg: string;
@@ -252,8 +253,12 @@ const items: FeatureDetail[] = [
 
 export default function FeatureDetails() {
   return (
-    <section id="feature-details" className="scroll-mt-24 bg-zinc-50">
-      <div className="mx-auto max-w-6xl px-6 py-20">
+    <section
+      id="feature-details"
+      className="relative scroll-mt-24 overflow-hidden bg-zinc-50"
+    >
+      <BackgroundPattern variant="dots" color="#3b82f6" opacity={0.07} />
+      <div className="relative mx-auto max-w-6xl px-6 py-20">
         <Reveal>
           <div className="mb-14 text-center">
             <p className="text-sm font-semibold tracking-wide text-blue-600">

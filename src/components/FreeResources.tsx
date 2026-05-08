@@ -1,4 +1,5 @@
 import Reveal from "./Reveal";
+import BackgroundPattern from "./BackgroundPattern";
 
 type Resource = {
   emoji: string;
@@ -52,8 +53,10 @@ const items: Resource[] = [
 
 export default function FreeResources() {
   return (
-    <section className="bg-gradient-to-br from-amber-50 via-white to-rose-50">
-      <div className="mx-auto max-w-6xl px-6 py-20">
+    <section className="relative overflow-hidden bg-gradient-to-br from-amber-50 via-white to-rose-50">
+      <BackgroundPattern variant="dots" color="#f59e0b" opacity={0.08} />
+      <BackgroundPattern variant="mesh-amber" />
+      <div className="relative mx-auto max-w-6xl px-6 py-20">
         <Reveal>
           <div className="mb-10 text-center">
             <span className="inline-block rounded-full bg-amber-100 px-3 py-1 text-xs font-bold tracking-wide text-amber-800">

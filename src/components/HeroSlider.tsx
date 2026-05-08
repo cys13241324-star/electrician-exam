@@ -127,6 +127,21 @@ function SlideCard({ slide }: { slide: HeroSlide }) {
         style={{ backgroundColor: slide.decoColor }}
       />
 
+      {/* Subtle grid overlay */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 opacity-[0.08]"
+        style={{
+          backgroundImage:
+            "linear-gradient(to right, white 1px, transparent 1px), linear-gradient(to bottom, white 1px, transparent 1px)",
+          backgroundSize: "60px 60px",
+          maskImage:
+            "radial-gradient(ellipse 80% 60% at 50% 50%, black 40%, transparent 100%)",
+          WebkitMaskImage:
+            "radial-gradient(ellipse 80% 60% at 50% 50%, black 40%, transparent 100%)",
+        }}
+      />
+
       <div className="relative mx-auto flex w-full max-w-6xl flex-col items-start gap-8 px-6 py-20 sm:py-24 lg:flex-row lg:items-center">
         <div className="flex-1 text-white">
           <span

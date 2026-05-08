@@ -2,6 +2,7 @@ import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Reveal from "@/components/Reveal";
+import BackgroundPattern from "@/components/BackgroundPattern";
 import { simulators, SIMULATOR_SUBJECTS } from "@/lib/simulators";
 import type { Subject } from "@/lib/cbt/types";
 
@@ -35,8 +36,10 @@ export default function SimulatorIndexPage() {
       <Header />
 
       {/* Hero */}
-      <section className="border-b border-zinc-100 bg-gradient-to-br from-indigo-50 via-white to-rose-50">
-        <div className="mx-auto max-w-6xl px-6 py-16">
+      <section className="relative overflow-hidden border-b border-zinc-100 bg-gradient-to-br from-indigo-50 via-white to-rose-50">
+        <BackgroundPattern variant="circuit" color="#4f46e5" opacity={0.07} />
+        <BackgroundPattern variant="mesh-violet" />
+        <div className="relative mx-auto max-w-6xl px-6 py-16">
           <p className="text-sm font-semibold tracking-wide text-indigo-600">
             이론 시뮬레이터
           </p>

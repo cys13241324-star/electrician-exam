@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Reveal from "./Reveal";
+import BackgroundPattern from "./BackgroundPattern";
 
 const items = [
   {
@@ -50,8 +51,12 @@ export default function Faq() {
   const [open, setOpen] = useState<number | null>(0);
 
   return (
-    <section id="faq" className="scroll-mt-24 bg-zinc-50">
-      <div className="mx-auto max-w-4xl px-6 py-20">
+    <section
+      id="faq"
+      className="relative scroll-mt-24 overflow-hidden bg-zinc-50"
+    >
+      <BackgroundPattern variant="mesh-violet" />
+      <div className="relative mx-auto max-w-4xl px-6 py-20">
         <div className="mb-10 text-center">
           <p className="text-sm font-semibold tracking-wide text-blue-600">FAQ</p>
           <h2 className="mt-2 text-2xl font-bold tracking-tight text-zinc-900 sm:text-3xl">

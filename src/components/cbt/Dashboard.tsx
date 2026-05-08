@@ -12,6 +12,7 @@ import type { BoardPost, Notice } from "@/lib/cbt/mockBoard";
 import DDayWidget from "./DDayWidget";
 import RecentAttempts from "./RecentAttempts";
 import DailyChallenge from "./DailyChallenge";
+import BackgroundPattern from "@/components/BackgroundPattern";
 
 const COMMUNITY_BASELINE = {
   recentMonthMinutes: 156,
@@ -38,8 +39,9 @@ export default function Dashboard({
   return (
     <main className="mx-auto max-w-6xl px-6 py-8">
       {/* Top banner */}
-      <section className="mb-8 overflow-hidden rounded-2xl border border-blue-100 bg-gradient-to-r from-blue-50 via-white to-blue-50 px-6 py-5 sm:px-8 sm:py-6">
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+      <section className="relative mb-8 overflow-hidden rounded-2xl border border-blue-100 bg-gradient-to-r from-blue-50 via-white to-blue-50 px-6 py-5 sm:px-8 sm:py-6">
+        <BackgroundPattern variant="circuit" color="#1e40af" opacity={0.05} />
+        <div className="relative flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div>
             <p className="text-xs font-semibold tracking-wide text-blue-600">
               addto 온라인 · 전기기능사
@@ -50,7 +52,7 @@ export default function Dashboard({
           </div>
           <DDayWidget />
         </div>
-        <div className="mt-5 flex flex-wrap gap-2 border-t border-blue-100/70 pt-4">
+        <div className="relative mt-5 flex flex-wrap gap-2 border-t border-blue-100/70 pt-4">
           <Link
             href="/cbt/study"
             className="rounded-md border border-blue-300 bg-white px-5 py-2.5 text-sm font-semibold text-blue-700 transition hover:bg-blue-50"

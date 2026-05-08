@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Reveal from "./Reveal";
+import BackgroundPattern from "./BackgroundPattern";
 
 type Step = {
   n: number;
@@ -68,8 +69,10 @@ const steps: Step[] = [
 
 export default function HowItWorks() {
   return (
-    <section id="how" className="scroll-mt-24 bg-gradient-to-br from-blue-50 via-white to-zinc-50">
-      <div className="mx-auto max-w-6xl px-6 py-20">
+    <section id="how" className="relative scroll-mt-24 overflow-hidden bg-gradient-to-br from-blue-50 via-white to-zinc-50">
+      <BackgroundPattern variant="mesh-blue" />
+      <BackgroundPattern variant="grid" color="#1e3a8a" opacity={0.04} />
+      <div className="relative mx-auto max-w-6xl px-6 py-20">
         <div className="mb-12 text-center">
           <p className="text-sm font-semibold tracking-wide text-blue-600">
             합격 로드맵

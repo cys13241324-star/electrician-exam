@@ -6,6 +6,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import HeroSlider, { type HeroSlide } from "@/components/HeroSlider";
 import Reveal from "@/components/Reveal";
+import BackgroundPattern from "@/components/BackgroundPattern";
 import HowItWorks from "@/components/HowItWorks";
 import FeatureDetails from "@/components/FeatureDetails";
 import CbtSpotlight from "@/components/CbtSpotlight";
@@ -107,7 +108,7 @@ const features: FeaturePreview[] = [
 
 const stats = [
   { value: "100%", label: "기출 해설 무료 공개" },
-  { value: "1,000+", label: "엄선된 CBT 문제" },
+  { value: "1,600+", label: "엄선된 CBT 문제" },
   { value: "9", label: "인터랙티브 시뮬레이터" },
   { value: "300+", label: "핵심 암기카드" },
 ];
@@ -329,12 +330,13 @@ export default function Home() {
 
       <ElectricExtras />
 
-      <section className="border-y border-zinc-100 bg-zinc-50">
-        <div className="mx-auto grid max-w-6xl grid-cols-2 gap-6 px-6 py-12 sm:grid-cols-4">
+      <section className="relative overflow-hidden border-y border-zinc-100 bg-zinc-50">
+        <BackgroundPattern variant="circuit" color="#3b82f6" opacity={0.08} />
+        <div className="relative mx-auto grid max-w-6xl grid-cols-2 gap-6 px-6 py-14 sm:grid-cols-4">
           {stats.map((stat, i) => (
             <Reveal key={stat.label} type="fade-up" delay={i * 100}>
               <div className="text-center">
-                <div className="text-3xl font-bold text-blue-600 sm:text-4xl">
+                <div className="bg-gradient-to-br from-blue-600 to-indigo-600 bg-clip-text text-3xl font-black text-transparent sm:text-4xl">
                   {stat.value}
                 </div>
                 <div className="mt-2 text-sm text-zinc-600">{stat.label}</div>
