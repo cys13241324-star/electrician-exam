@@ -129,6 +129,45 @@ export default function SimulatorIndexPage() {
             </section>
           );
         })}
+
+        {/* 학습 팁 */}
+        <section className="mt-12 rounded-2xl border border-zinc-200 bg-white p-8">
+          <h2 className="text-lg font-bold text-zinc-900">
+            🎯 시뮬레이터를 200% 활용하는 법
+          </h2>
+          <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-3">
+            <div className="rounded-xl bg-blue-50 p-5">
+              <div className="text-2xl">🔄</div>
+              <h3 className="mt-3 text-sm font-bold text-blue-900">
+                변수를 끝까지 밀어보세요
+              </h3>
+              <p className="mt-2 text-xs leading-5 text-blue-800">
+                슬라이더를 양 극단까지 움직이면 식의 한계와 의미가 보입니다. 0이
+                되는 지점, 발산하는 지점이 시험 함정 포인트입니다.
+              </p>
+            </div>
+            <div className="rounded-xl bg-emerald-50 p-5">
+              <div className="text-2xl">📐</div>
+              <h3 className="mt-3 text-sm font-bold text-emerald-900">
+                공식과 그림을 연결하세요
+              </h3>
+              <p className="mt-2 text-xs leading-5 text-emerald-800">
+                공식 \(F = BIL\)을 외우는 대신 평행도선 시뮬에서 전류를 줄이면
+                힘이 줄어드는 것을 직접 확인하세요. 시각이 기억을 만듭니다.
+              </p>
+            </div>
+            <div className="rounded-xl bg-rose-50 p-5">
+              <div className="text-2xl">📝</div>
+              <h3 className="mt-3 text-sm font-bold text-rose-900">
+                시뮬 → 기출 문제로 연결
+              </h3>
+              <p className="mt-2 text-xs leading-5 text-rose-800">
+                각 시뮬을 본 직후 같은 토픽의 CBT 문제를 풀어보세요. 시뮬에서 본
+                현상이 문제 보기에 그대로 녹아 있습니다.
+              </p>
+            </div>
+          </div>
+        </section>
       </main>
 
       <Footer />

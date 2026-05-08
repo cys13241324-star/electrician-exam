@@ -9,6 +9,8 @@ import {
   type SubjectAggregate,
 } from "@/lib/cbt/stats";
 import type { BoardPost, Notice } from "@/lib/cbt/mockBoard";
+import DDayWidget from "./DDayWidget";
+import RecentAttempts from "./RecentAttempts";
 
 const COMMUNITY_BASELINE = {
   recentMonthMinutes: 156,
@@ -36,7 +38,7 @@ export default function Dashboard({
     <main className="mx-auto max-w-6xl px-6 py-8">
       {/* Top banner */}
       <section className="mb-8 overflow-hidden rounded-2xl border border-blue-100 bg-gradient-to-r from-blue-50 via-white to-blue-50 px-6 py-5 sm:px-8 sm:py-6">
-        <div className="flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div>
             <p className="text-xs font-semibold tracking-wide text-blue-600">
               addto 온라인 · 전기기능사
@@ -45,20 +47,27 @@ export default function Dashboard({
               오늘도 합격에 한 걸음 더, 학습을 시작해 볼까요?
             </h2>
           </div>
-          <div className="flex gap-2">
-            <Link
-              href="/cbt/study"
-              className="rounded-md border border-blue-300 bg-white px-5 py-2.5 text-sm font-semibold text-blue-700 transition hover:bg-blue-50"
-            >
-              과목별 학습
-            </Link>
-            <Link
-              href="/cbt/exams"
-              className="rounded-md bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700"
-            >
-              CBT 응시하기
-            </Link>
-          </div>
+          <DDayWidget />
+        </div>
+        <div className="mt-5 flex flex-wrap gap-2 border-t border-blue-100/70 pt-4">
+          <Link
+            href="/cbt/study"
+            className="rounded-md border border-blue-300 bg-white px-5 py-2.5 text-sm font-semibold text-blue-700 transition hover:bg-blue-50"
+          >
+            과목별 학습
+          </Link>
+          <Link
+            href="/cbt/exams"
+            className="rounded-md bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700"
+          >
+            CBT 응시하기
+          </Link>
+          <Link
+            href="/simulator"
+            className="rounded-md border border-zinc-300 bg-white px-5 py-2.5 text-sm font-semibold text-zinc-700 transition hover:bg-zinc-50"
+          >
+            이론 시뮬레이터
+          </Link>
         </div>
       </section>
 
@@ -93,14 +102,31 @@ export default function Dashboard({
         </SectionCard>
       </div>
 
-      {/* 취약 진단 */}
-      <SectionCard
-        title="취약점 진단"
-        subtitle="가장 취약한 토픽을 우선 학습해 보세요"
-        className="mb-6"
-      >
-        <WeakPointDiagnosis stats={stats} />
-      </SectionCard>
+      {/* 취약 진단 + 최근 응시 */}
+      <div className="mb-6 grid grid-cols-1 gap-6 lg:grid-cols-3">
+        <SectionCard
+          title="취약점 진단"
+          subtitle="가장 취약한 토픽을 우선 학습해 보세요"
+          className="lg:col-span-2"
+        >
+          <WeakPointDiagnosis stats={stats} />
+        </SectionCard>
+
+        <SectionCard
+          title="최근 응시 기록"
+          subtitle="최근 5회"
+          action={
+            <Link
+              href="/cbt/exams"
+              className="text-xs text-zinc-500 hover:text-zinc-900"
+            >
+              전체 →
+            </Link>
+          }
+        >
+          <RecentAttempts />
+        </SectionCard>
+      </div>
 
       {/* 공지사항 + 학습 게시판 */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">

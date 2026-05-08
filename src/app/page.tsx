@@ -1,9 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import HeroSlider, { type HeroSlide } from "@/components/HeroSlider";
+import HowItWorks from "@/components/HowItWorks";
+import Testimonials from "@/components/Testimonials";
+import Faq from "@/components/Faq";
 import FeaturePreviewModal, {
   type FeaturePreview,
 } from "@/components/FeaturePreviewModal";
@@ -80,11 +84,11 @@ const features: FeaturePreview[] = [
     emoji: "⚡",
     tagline: "회로와 원리를 직접 체험",
     description:
-      "글로만 읽던 이론을 직접 만지며 이해하세요. 전기력선, 평행도선 자기력 등 핵심 원리를 시뮬레이터로 익힐 수 있습니다. 전기이론 / 전기기기 / 전기설비 카테고리에서 더 많은 시뮬을 만나보세요.",
+      "글로만 읽던 이론을 직접 만지며 이해하세요. 전기력선부터 변압기, 회전 자계까지 9개 인터랙티브 시뮬레이터를 만나보세요.",
     highlights: [
       "전기장 / 자기장 / 회로 시각화",
       "변수 조절로 즉각 결과 확인",
-      "카테고리별 시뮬레이터 모음",
+      "카테고리별 시뮬레이터 9종",
     ],
     status: "available",
     cta: { label: "시뮬레이터 사이트로", href: "/simulator" },
@@ -95,53 +99,114 @@ const features: FeaturePreview[] = [
 const stats = [
   { value: "100%", label: "기출 해설 무료 공개" },
   { value: "1,000+", label: "엄선된 CBT 문제" },
-  { value: "5", label: "차별화 학습 도구" },
+  { value: "9", label: "인터랙티브 시뮬레이터" },
+  { value: "300+", label: "핵심 암기카드" },
 ];
 
 export default function Home() {
   const [activeId, setActiveId] = useState<string | null>(null);
   const active = features.find((f) => f.id === activeId);
 
+  const slides: HeroSlide[] = useMemo(
+    () => [
+      {
+        id: "cbt",
+        badge: "CBT 모의고사 · 이용 가능",
+        badgeTone: "available",
+        title: "합격까지,",
+        highlight: "한 곳에서.",
+        description:
+          "60문항 60분, 실전 환경 그대로. 응시 후 과목별 약점 진단까지 자동으로.",
+        bgClass: "from-blue-600 via-blue-500 to-indigo-600",
+        decoColor: "#60a5fa",
+        primary: { label: "CBT 모의고사 풀기 →", href: "/cbt" },
+        secondary: { label: "기능 둘러보기", href: "#features" },
+        emoji: "🖥️",
+      },
+      {
+        id: "lecture",
+        badge: "기출 해설강의 · 무료 공개 예정",
+        badgeTone: "soon",
+        title: "왜 이 답인지,",
+        highlight: "끝까지 알려드립니다.",
+        description:
+          "2009~2016년 기출 전 회차 영상 해설. 회원가입 없이 무료로 시청하세요.",
+        bgClass: "from-emerald-600 via-emerald-500 to-teal-600",
+        decoColor: "#6ee7b7",
+        primary: {
+          label: "해설강의 자세히 보기",
+          onClick: () => setActiveId("lecture"),
+        },
+        emoji: "🎬",
+      },
+      {
+        id: "flashcards",
+        badge: "플립 암기카드 · 출시 준비 중",
+        badgeTone: "soon",
+        title: "300장의 핵심 키워드,",
+        highlight: "카드로 마스터.",
+        description:
+          "과목별 100장씩, 자투리 시간을 합격으로 바꾸는 가장 빠른 방법.",
+        bgClass: "from-violet-600 via-fuchsia-500 to-pink-500",
+        decoColor: "#f0abfc",
+        primary: {
+          label: "샘플 카드 체험하기",
+          onClick: () => setActiveId("flashcards"),
+        },
+        emoji: "🃏",
+      },
+      {
+        id: "audiobook",
+        badge: "오디오북 · 출시 준비 중",
+        badgeTone: "soon",
+        title: "출퇴근길에도",
+        highlight: "합격이 가까워집니다.",
+        description:
+          "전기기능사 핵심 이론을 귀로 듣는 오디오북. 1.0x~2.0x 배속, 구간 반복.",
+        bgClass: "from-amber-500 via-orange-500 to-rose-500",
+        decoColor: "#fdba74",
+        primary: {
+          label: "샘플 트랙 들어보기",
+          onClick: () => setActiveId("audiobook"),
+        },
+        emoji: "🎧",
+      },
+      {
+        id: "simulator",
+        badge: "이론 시뮬레이터 · 이용 가능",
+        badgeTone: "available",
+        title: "글로 읽지 말고,",
+        highlight: "손으로 만져보세요.",
+        description:
+          "전기력선·변압기·RLC·회전 자계까지, 9개 인터랙티브 시뮬레이터.",
+        bgClass: "from-indigo-600 via-violet-600 to-purple-600",
+        decoColor: "#a5b4fc",
+        primary: { label: "시뮬레이터 사이트로 →", href: "/simulator" },
+        secondary: {
+          label: "전기력선 미리보기",
+          onClick: () => setActiveId("simulator"),
+        },
+        emoji: "⚡",
+      },
+    ],
+    [],
+  );
+
   return (
     <div className="min-h-screen bg-white">
       <Header />
 
-      <section className="border-b border-zinc-100 bg-gradient-to-br from-blue-50 via-white to-white">
-        <div className="mx-auto max-w-6xl px-6 py-20 sm:py-28">
-          <div className="max-w-2xl">
-            <span className="inline-block rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold tracking-wide text-blue-700">
-              전기기능사 필기 시험 대비
-            </span>
-            <h1 className="mt-5 text-4xl font-bold leading-tight tracking-tight text-zinc-900 sm:text-5xl">
-              합격까지, <span className="text-blue-600">한 곳에서.</span>
-            </h1>
-            <p className="mt-5 text-base leading-7 text-zinc-600 sm:text-lg">
-              CBT 모의고사, 무료 해설강의, 플립 암기카드, 오디오북, 이론 시뮬레이터.
-              <br className="hidden sm:block" />
-              전기기능사 필기 합격을 위한 모든 것을 담았습니다.
-            </p>
-            <div className="mt-8 flex items-center gap-3">
-              <Link
-                href="/cbt"
-                className="rounded-md bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700"
-              >
-                CBT 모의고사 풀기
-              </Link>
-              <span
-                className="cursor-not-allowed rounded-md border border-zinc-200 bg-zinc-50 px-6 py-3 text-sm font-semibold text-zinc-400"
-                title="준비중"
-              >
-                해설강의 (Coming Soon)
-              </span>
-            </div>
-          </div>
-        </div>
-      </section>
+      <HeroSlider slides={slides} />
 
-      <section className="mx-auto max-w-6xl px-6 py-16">
+      <HowItWorks />
+
+      <section id="features" className="mx-auto max-w-6xl px-6 py-20">
         <div className="mb-10">
-          <h2 className="text-2xl font-bold tracking-tight text-zinc-900 sm:text-3xl">
-            전기기능사 인기 콘텐츠
+          <p className="text-sm font-semibold tracking-wide text-blue-600">
+            전체 기능
+          </p>
+          <h2 className="mt-2 text-2xl font-bold tracking-tight text-zinc-900 sm:text-3xl">
+            전기기능사 합격을 위한 5가지 학습 도구
           </h2>
           <p className="mt-2 text-sm text-zinc-600">
             카드를 클릭하면 미리보기를 확인할 수 있습니다.
@@ -222,7 +287,7 @@ export default function Home() {
       </section>
 
       <section className="border-y border-zinc-100 bg-zinc-50">
-        <div className="mx-auto grid max-w-6xl grid-cols-1 gap-8 px-6 py-12 sm:grid-cols-3">
+        <div className="mx-auto grid max-w-6xl grid-cols-2 gap-6 px-6 py-12 sm:grid-cols-4">
           {stats.map((stat) => (
             <div key={stat.label} className="text-center">
               <div className="text-3xl font-bold text-blue-600 sm:text-4xl">
@@ -234,6 +299,10 @@ export default function Home() {
         </div>
       </section>
 
+      <Testimonials />
+
+      <Faq />
+
       <section className="mx-auto max-w-6xl px-6 py-16">
         <div className="rounded-2xl bg-zinc-900 px-8 py-12 sm:px-12 sm:py-16">
           <div className="max-w-2xl">
@@ -241,14 +310,22 @@ export default function Home() {
               지금 시작하세요. 시작은 무료입니다.
             </h2>
             <p className="mt-3 text-sm leading-6 text-zinc-300 sm:text-base">
-              회원가입 없이도 기출 해설강의와 일부 콘텐츠를 무료로 이용할 수 있습니다.
+              회원가입 없이도 CBT 모의고사와 시뮬레이터를 무료로 이용할 수 있습니다.
             </p>
-            <Link
-              href="/cbt"
-              className="mt-6 inline-block rounded-md bg-white px-6 py-3 text-sm font-semibold text-zinc-900 transition hover:bg-zinc-100"
-            >
-              학습 시작하기
-            </Link>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <Link
+                href="/cbt"
+                className="rounded-md bg-white px-6 py-3 text-sm font-semibold text-zinc-900 transition hover:bg-zinc-100"
+              >
+                CBT 모의고사 풀기
+              </Link>
+              <Link
+                href="/simulator"
+                className="rounded-md border border-white/30 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
+              >
+                시뮬레이터 둘러보기
+              </Link>
+            </div>
           </div>
         </div>
       </section>
