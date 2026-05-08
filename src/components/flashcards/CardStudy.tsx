@@ -53,12 +53,25 @@ export default function CardStudy({
     setFlipped(false);
   }, [index]);
 
-  // 단축키
+  function goPrev() {
+    if (index > 0) setIndex(index - 1);
+  }
+  function goNext() {
+    if (index < deck.length - 1) setIndex(index + 1);
+  }
+
+  // 단축키 — Space 뒤집기, 1~4 평가, ←/→ 이전·다음
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
       if (e.key === " " || e.key === "Enter") {
         e.preventDefault();
         setFlipped((v) => !v);
+      } else if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        goPrev();
+      } else if (e.key === "ArrowRight") {
+        e.preventDefault();
+        goNext();
       } else if (flipped) {
         if (e.key === "1") rate("again");
         else if (e.key === "2") rate("hard");
@@ -138,17 +151,25 @@ export default function CardStudy({
         />
       </div>
 
-      {/* 카드 영역 */}
-      <div
-        className="perspective-1000 mx-auto mb-6 max-w-3xl"
-        style={{ perspective: "1500px" }}
-      >
-        <button
-          type="button"
-          onClick={() => setFlipped((v) => !v)}
-          className="group relative block h-[420px] w-full cursor-pointer sm:h-[500px]"
-          aria-label={flipped ? "질문 보기" : "정답 보기"}
+      {/* 카드 영역 + 좌우 nav 버튼 */}
+      <div className="mx-auto mb-6 flex max-w-5xl items-center gap-2 sm:gap-4">
+        {/* 좌측 nav */}
+        <SideNav
+          dir="prev"
+          onClick={goPrev}
+          disabled={index === 0}
+        />
+
+        <div
+          className="perspective-1000 flex-1"
+          style={{ perspective: "1500px" }}
         >
+          <button
+            type="button"
+            onClick={() => setFlipped((v) => !v)}
+            className="group relative block h-[420px] w-full cursor-pointer sm:h-[500px]"
+            aria-label={flipped ? "질문 보기" : "정답 보기"}
+          >
           <div
             className="relative h-full w-full transition-transform duration-700"
             style={{
@@ -214,6 +235,14 @@ export default function CardStudy({
             </CardFace>
           </div>
         </button>
+        </div>
+
+        {/* 우측 nav */}
+        <SideNav
+          dir="next"
+          onClick={goNext}
+          disabled={index >= deck.length - 1}
+        />
       </div>
 
       {/* 관련 예제 (뒤집은 후에만 노출) */}
@@ -321,33 +350,58 @@ export default function CardStudy({
           </p>
         </div>
       ) : (
-        <div className="mx-auto flex max-w-3xl items-center justify-between">
-          <button
-            type="button"
-            onClick={() => setIndex(Math.max(0, index - 1))}
-            disabled={index === 0}
-            className="rounded-md border border-zinc-300 bg-white px-5 py-2.5 text-sm font-semibold text-zinc-700 disabled:cursor-not-allowed disabled:opacity-40 hover:bg-zinc-50"
-          >
-            ← 이전
-          </button>
+        <div className="mx-auto flex max-w-3xl items-center justify-center gap-2 text-xs text-zinc-500">
           <button
             type="button"
             onClick={() => setFlipped(true)}
             className="rounded-md bg-zinc-900 px-6 py-2.5 text-sm font-bold text-white shadow-md hover:bg-zinc-700"
           >
-            정답 보기 (Space)
+            정답 보기
           </button>
-          <button
-            type="button"
-            onClick={() => setIndex(Math.min(deck.length - 1, index + 1))}
-            disabled={index >= deck.length - 1}
-            className="rounded-md border border-zinc-300 bg-white px-5 py-2.5 text-sm font-semibold text-zinc-700 disabled:cursor-not-allowed disabled:opacity-40 hover:bg-zinc-50"
-          >
-            다음 →
-          </button>
+          <span className="ml-2 hidden sm:inline">
+            <kbd className="rounded bg-zinc-100 px-1.5 py-0.5 font-mono text-[10px]">
+              Space
+            </kbd>
+            <span className="mx-1.5">·</span>
+            <kbd className="rounded bg-zinc-100 px-1.5 py-0.5 font-mono text-[10px]">
+              ←
+            </kbd>
+            <kbd className="rounded bg-zinc-100 px-1.5 py-0.5 font-mono text-[10px]">
+              →
+            </kbd>
+            <span className="ml-1">로 이동</span>
+          </span>
         </div>
       )}
     </div>
+  );
+}
+
+function SideNav({
+  dir,
+  onClick,
+  disabled,
+}: {
+  dir: "prev" | "next";
+  onClick: () => void;
+  disabled: boolean;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      disabled={disabled}
+      aria-label={dir === "prev" ? "이전 카드" : "다음 카드"}
+      className={`group flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full border-2 bg-white text-2xl shadow-md transition sm:h-14 sm:w-14 ${
+        disabled
+          ? "cursor-not-allowed border-zinc-200 text-zinc-300"
+          : "border-zinc-300 text-zinc-700 hover:-translate-y-0.5 hover:border-violet-400 hover:bg-violet-50 hover:text-violet-700 hover:shadow-lg"
+      }`}
+    >
+      <span className="leading-none transition group-hover:scale-110">
+        {dir === "prev" ? "‹" : "›"}
+      </span>
+    </button>
   );
 }
 
