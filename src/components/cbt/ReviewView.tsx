@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
+import AIExplainPanel from "@/components/AIExplainPanel";
 import type { Attempt, Choice, Exam } from "@/lib/cbt/types";
 
 const PAGE_SIZE = 10;
@@ -335,6 +336,23 @@ export default function ReviewView({ exam }: { exam: Exam }) {
                     {userAnswer === null && (
                       <p className="mt-1 text-xs text-zinc-500">미응답</p>
                     )}
+                  </div>
+
+                  <div className="mt-4">
+                    <AIExplainPanel
+                      context={{
+                        kind: "question",
+                        question: `${q.questionText}\n선택지: ${q.choices
+                          .map((c, i) => `${i + 1}) ${c}`)
+                          .join(" / ")}`,
+                        correctAnswer: `${q.answer}번 — ${q.choices[q.answer - 1]}`,
+                        existingExplanation: q.explanation,
+                        userWrongAnswer:
+                          userAnswer !== null && userAnswer !== q.answer
+                            ? `${userAnswer}번 — ${q.choices[userAnswer - 1]}`
+                            : undefined,
+                      }}
+                    />
                   </div>
                 </article>
               );

@@ -1,6 +1,7 @@
 import type { Flashcard } from "./types";
 import { mockExams } from "@/lib/cbt/mockData";
 import { readAttempts } from "@/lib/cbt/stats";
+import { loadUserCards } from "./userCards";
 
 /**
  * 수식은 $...$로 감싸 LaTeX 문법 사용.
@@ -505,8 +506,8 @@ export function getCbtWrongCards(): Flashcard[] {
 }
 
 /**
- * 모든 카드 (프리셋 + 자동 추가). 클라이언트 전용.
+ * 모든 카드 (프리셋 + CBT 오답 자동 + 사용자 AI 생성). 클라이언트 전용.
  */
 export function getAllCards(): Flashcard[] {
-  return [...presetCards, ...getCbtWrongCards()];
+  return [...presetCards, ...getCbtWrongCards(), ...loadUserCards()];
 }

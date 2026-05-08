@@ -8,6 +8,7 @@ import { getOrCreateProgress, loadProgress } from "@/lib/flashcards/storage";
 import type { Flashcard, CardStatus } from "@/lib/flashcards/types";
 import CardStudy from "./CardStudy";
 import CardIndex from "./CardIndex";
+import AICardGenerator from "./AICardGenerator";
 import BackgroundPattern from "@/components/BackgroundPattern";
 
 type Mode = "today" | "index" | "stats";
@@ -17,6 +18,7 @@ export default function FlashcardApp() {
   const [cards, setCards] = useState<Flashcard[]>([]);
   const [progressVersion, setProgressVersion] = useState(0);
   const [hydrated, setHydrated] = useState(false);
+  const [aiOpen, setAiOpen] = useState(false);
 
   useEffect(() => {
     setCards(getAllCards());
@@ -26,6 +28,12 @@ export default function FlashcardApp() {
   // 진행 정보가 바뀌면 재로드 트리거
   function bumpProgress() {
     setProgressVersion((v) => v + 1);
+  }
+
+  // 카드가 새로 생성됐을 때 (AI) — 목록 새로고침
+  function refreshCards() {
+    setCards(getAllCards());
+    bumpProgress();
   }
 
   const progressMap = useMemo(() => {
@@ -125,22 +133,32 @@ export default function FlashcardApp() {
             </div>
           </div>
 
-          {/* 탭 */}
-          <div className="mt-8 flex gap-1 rounded-lg bg-white/70 p-1 shadow-sm backdrop-blur sm:gap-2 sm:p-1.5">
-            <TabButton active={mode === "today"} onClick={() => setMode("today")}>
-              📚 오늘 학습
-              {stats.dueCount > 0 && (
-                <span className="ml-1.5 rounded-full bg-rose-500 px-1.5 py-0.5 text-[10px] font-bold text-white">
-                  {stats.dueCount}
-                </span>
-              )}
-            </TabButton>
-            <TabButton active={mode === "index"} onClick={() => setMode("index")}>
-              🗂 전체 인덱스
-            </TabButton>
-            <TabButton active={mode === "stats"} onClick={() => setMode("stats")}>
-              📊 학습 현황
-            </TabButton>
+          {/* 탭 + AI 생성 버튼 */}
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex gap-1 rounded-lg bg-white/70 p-1 shadow-sm backdrop-blur sm:gap-2 sm:p-1.5">
+              <TabButton active={mode === "today"} onClick={() => setMode("today")}>
+                📚 오늘 학습
+                {stats.dueCount > 0 && (
+                  <span className="ml-1.5 rounded-full bg-rose-500 px-1.5 py-0.5 text-[10px] font-bold text-white">
+                    {stats.dueCount}
+                  </span>
+                )}
+              </TabButton>
+              <TabButton active={mode === "index"} onClick={() => setMode("index")}>
+                🗂 전체 인덱스
+              </TabButton>
+              <TabButton active={mode === "stats"} onClick={() => setMode("stats")}>
+                📊 학습 현황
+              </TabButton>
+            </div>
+            <button
+              type="button"
+              onClick={() => setAiOpen(true)}
+              className="inline-flex items-center justify-center gap-1.5 rounded-lg bg-gradient-to-br from-violet-600 to-pink-500 px-4 py-2.5 text-sm font-bold text-white shadow-md transition hover:shadow-xl"
+            >
+              <span>✨</span>
+              <span>AI로 카드 만들기</span>
+            </button>
           </div>
         </div>
       </section>
@@ -158,6 +176,12 @@ export default function FlashcardApp() {
         )}
         {mode === "stats" && <StatsMode stats={stats} cards={cards} />}
       </main>
+
+      <AICardGenerator
+        open={aiOpen}
+        onClose={() => setAiOpen(false)}
+        onSaved={refreshCards}
+      />
     </>
   );
 }

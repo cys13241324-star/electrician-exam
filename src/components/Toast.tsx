@@ -75,7 +75,7 @@ export default function ToastProvider({
       {children}
       <div
         aria-live="polite"
-        className="pointer-events-none fixed bottom-6 right-6 z-[80] flex flex-col gap-2"
+        className="pointer-events-none fixed bottom-6 left-6 z-[80] flex flex-col gap-2"
       >
         {items.map((t) => (
           <ToastItem key={t.id} toast={t} onDismiss={() => dismiss(t.id)} />

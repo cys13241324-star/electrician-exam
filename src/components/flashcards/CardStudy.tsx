@@ -15,6 +15,7 @@ import {
 } from "@/lib/flashcards/storage";
 import type { Flashcard, Rating } from "@/lib/flashcards/types";
 import { MathText } from "@/components/Math";
+import AIExplainPanel from "@/components/AIExplainPanel";
 
 const SUBJECT_THEME: Record<
   string,
@@ -62,8 +63,17 @@ export default function CardStudy({
   }
 
   // 단축키 — Space 뒤집기, 1~4 평가, ←/→ 이전·다음
+  // 입력창(텍스트/textarea/contenteditable)에 포커스 있으면 무시
   useEffect(() => {
+    function isTypingTarget(t: EventTarget | null): boolean {
+      if (!(t instanceof HTMLElement)) return false;
+      const tag = t.tagName;
+      if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") return true;
+      if (t.isContentEditable) return true;
+      return false;
+    }
     function onKey(e: KeyboardEvent) {
+      if (isTypingTarget(e.target)) return;
       if (e.key === " " || e.key === "Enter") {
         e.preventDefault();
         setFlipped((v) => !v);
@@ -297,7 +307,35 @@ export default function CardStudy({
                 <MathText>{card.example.answer}</MathText>
               </p>
             </div>
+
+            <div className="mt-4">
+              <AIExplainPanel
+                key={`explain-${card.id}`}
+                context={{
+                  kind: "card",
+                  cardFront: card.front,
+                  cardBack: card.back,
+                }}
+              />
+            </div>
           </div>
+        </div>
+      )}
+
+      {/* 예제 없는 카드도 AI 해설 버튼 노출 */}
+      {flipped && !card.example && (
+        <div
+          className="mx-auto mb-6 max-w-3xl"
+          style={{ animation: "flashUp 350ms ease-out 220ms backwards" }}
+        >
+          <AIExplainPanel
+            key={`explain-${card.id}`}
+            context={{
+              kind: "card",
+              cardFront: card.front,
+              cardBack: card.back,
+            }}
+          />
         </div>
       )}
 
