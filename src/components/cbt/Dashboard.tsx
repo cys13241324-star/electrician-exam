@@ -12,6 +12,7 @@ import type { BoardPost, Notice } from "@/lib/cbt/mockBoard";
 import DDayWidget from "./DDayWidget";
 import RecentAttempts from "./RecentAttempts";
 import DailyChallenge from "./DailyChallenge";
+import LearningCurve from "./LearningCurve";
 import BackgroundPattern from "@/components/BackgroundPattern";
 
 const COMMUNITY_BASELINE = {
@@ -109,7 +110,7 @@ export default function Dashboard({
         </div>
       </div>
 
-      {/* 취약 진단 + 최근 응시 */}
+      {/* 취약 진단 + 학습 곡선 + 최근 응시 */}
       <div className="mb-6 grid grid-cols-1 gap-6 lg:grid-cols-3">
         <SectionCard
           title="취약점 진단"
@@ -132,6 +133,23 @@ export default function Dashboard({
           }
         >
           <RecentAttempts />
+        </SectionCard>
+      </div>
+
+      <div className="mb-6">
+        <SectionCard
+          title="학습 곡선"
+          subtitle="응시별 점수 변화"
+          action={
+            <Link
+              href="/cbt/wrong-notes"
+              className="text-xs text-zinc-500 hover:text-zinc-900"
+            >
+              오답 노트 →
+            </Link>
+          }
+        >
+          <LearningCurve />
         </SectionCard>
       </div>
 

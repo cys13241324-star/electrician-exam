@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>옴의 법칙 시뮬레이터</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>body{font-family:'Pretendard',system-ui,sans-serif;background:#f8fafc}.panel{background:#fff;border-radius:12px;box-shadow:0 4px 6px -1px rgb(0 0 0 / 0.08)}input[type=range]{accent-color:#2563eb}</style>
+</head>
+<body class="p-4 md:p-8">
+<div class="max-w-6xl mx-auto">
+<header class="mb-6 text-center">
+<h1 class="text-3xl font-bold text-slate-800">⚡ 옴의 법칙 시뮬레이터</h1>
+<p class="text-slate-600 mt-2">전압·전류·저항 중 두 변수를 잠그면 나머지가 자동 계산됩니다.</p>
+</header>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<div class="lg:col-span-2 panel p-6">
+<svg id="diagram" viewBox="0 0 600 320" class="w-full bg-white rounded-lg border border-slate-100"></svg>
+<div class="grid grid-cols-3 gap-3 mt-5 text-center">
+<div class="bg-blue-50 rounded-lg p-4"><div class="text-xs text-blue-700">전압 V</div><div id="vDisp" class="text-2xl font-bold text-blue-900">12</div><div class="text-xs text-blue-600">[V]</div></div>
+<div class="bg-emerald-50 rounded-lg p-4"><div class="text-xs text-emerald-700">전류 I</div><div id="iDisp" class="text-2xl font-bold text-emerald-900">1.2</div><div class="text-xs text-emerald-600">[A]</div></div>
+<div class="bg-amber-50 rounded-lg p-4"><div class="text-xs text-amber-700">저항 R</div><div id="rDisp" class="text-2xl font-bold text-amber-900">10</div><div class="text-xs text-amber-600">[Ω]</div></div>
+</div>
+</div>
+<div class="panel p-6 space-y-4">
+<h2 class="font-bold text-slate-800">변수 조절</h2>
+<p class="text-xs text-slate-500">계산하고 싶은 변수를 선택하세요. 나머지 두 슬라이더로 조절합니다.</p>
+<div class="space-y-2 text-sm">
+<label class="flex items-center gap-2"><input type="radio" name="solve" value="i" checked> 전류 I 계산 (V·R 조절)</label>
+<label class="flex items-center gap-2"><input type="radio" name="solve" value="v"> 전압 V 계산 (I·R 조절)</label>
+<label class="flex items-center gap-2"><input type="radio" name="solve" value="r"> 저항 R 계산 (V·I 조절)</label>
+</div>
+<div id="ctrl-v" class="space-y-1"><label class="text-sm flex justify-between"><span>전압 V</span><span id="vVal" class="font-mono">12</span> V</label><input type="range" id="v" min="1" max="50" value="12" class="w-full"></div>
+<div id="ctrl-i" class="space-y-1"><label class="text-sm flex justify-between"><span>전류 I</span><span id="iVal" class="font-mono">1.2</span> A</label><input type="range" id="i" min="0.1" max="10" step="0.1" value="1.2" class="w-full"></div>
+<div id="ctrl-r" class="space-y-1"><label class="text-sm flex justify-between"><span>저항 R</span><span id="rVal" class="font-mono">10</span> Ω</label><input type="range" id="r" min="1" max="100" value="10" class="w-full"></div>
+<div class="bg-slate-50 rounded-lg p-3 text-xs text-slate-600 space-y-1 mt-2">
+<p class="font-bold text-slate-800">옴의 법칙</p>
+<p>V = I × R</p>
+<p>I = V / R</p>
+<p>R = V / I</p>
+<p>전력 P = V × I</p>
+</div>
+<div class="bg-rose-50 rounded-lg p-3"><div class="text-xs text-rose-700">전력 P</div><div id="pDisp" class="text-lg font-bold text-rose-900">14.4 W</div></div>
+</div>
+</div>
+</div>
+<script>
+const $ = id => document.getElementById(id);
+let mode = "i";
+document.querySelectorAll('input[name="solve"]').forEach(r => r.addEventListener("change", () => { mode = document.querySelector('input[name="solve"]:checked').value; updateUI(); }));
+["v","i","r"].forEach(id => $(id).addEventListener("input", calc));
+function updateUI(){
+  $("ctrl-v").style.display = mode==="v" ? "none" : "";
+  $("ctrl-i").style.display = mode==="i" ? "none" : "";
+  $("ctrl-r").style.display = mode==="r" ? "none" : "";
+  calc();
+}
+function calc(){
+  let v=+$("v").value, i=+$("i").value, r=+$("r").value;
+  if(mode==="i") i = v/r;
+  if(mode==="v") v = i*r;
+  if(mode==="r") r = i>0 ? v/i : 0;
+  $("vVal").textContent = mode==="v"?v.toFixed(1):$("v").value;
+  $("iVal").textContent = mode==="i"?i.toFixed(2):$("i").value;
+  $("rVal").textContent = mode==="r"?r.toFixed(1):$("r").value;
+  $("vDisp").textContent = v.toFixed(1);
+  $("iDisp").textContent = i.toFixed(2);
+  $("rDisp").textContent = r.toFixed(1);
+  $("pDisp").textContent = (v*i).toFixed(2)+" W";
+  draw(v,i,r);
+}
+function draw(v,i,r){
+  const svg = $("diagram");
+  let s = `<rect x="50" y="120" width="60" height="80" fill="none" stroke="#0f172a" stroke-width="2" rx="8"/>`;
+  s += `<text x="80" y="155" text-anchor="middle" font-size="18" font-weight="bold" fill="#2563eb">${v.toFixed(0)}V</text>`;
+  s += `<text x="80" y="178" text-anchor="middle" font-size="11" fill="#64748b">전압원</text>`;
+  s += `<line x1="110" y1="140" x2="220" y2="140" stroke="#0f172a" stroke-width="2"/>`;
+  s += `<line x1="110" y1="180" x2="220" y2="180" stroke="#0f172a" stroke-width="2"/>`;
+  // 저항
+  s += `<rect x="220" y="125" width="160" height="30" fill="white" stroke="#f59e0b" stroke-width="3" rx="4"/>`;
+  s += `<text x="300" y="145" text-anchor="middle" font-size="14" font-weight="bold" fill="#92400e">R = ${r.toFixed(1)} Ω</text>`;
+  s += `<line x1="380" y1="140" x2="500" y2="140" stroke="#0f172a" stroke-width="2"/>`;
+  s += `<line x1="380" y1="180" x2="500" y2="180" stroke="#0f172a" stroke-width="2"/>`;
+  s += `<line x1="500" y1="140" x2="500" y2="180" stroke="#0f172a" stroke-width="2"/>`;
+  s += `<line x1="220" y1="155" x2="220" y2="180" stroke="#0f172a" stroke-width="2"/>`;
+  s += `<line x1="380" y1="155" x2="380" y2="140" stroke="#0f172a" stroke-width="2"/>`;
+  // 전류 표시
+  const flow = Math.min(20, i*5);
+  for(let n=0;n<flow;n++){
+    const x = 130 + n*15;
+    if(x<490) s += `<circle cx="${x}" cy="140" r="3" fill="#10b981"><animate attributeName="cx" from="${x}" to="${x+15}" dur="0.5s" repeatCount="indefinite"/></circle>`;
+  }
+  s += `<text x="300" y="100" text-anchor="middle" font-size="14" font-weight="bold" fill="#10b981">I = ${i.toFixed(2)} A →</text>`;
+  svg.innerHTML = s;
+}
+updateUI();
+</script>
+</body>
+</html>

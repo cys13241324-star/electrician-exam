@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>키르히호프 법칙 시뮬레이터</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>body{font-family:'Pretendard',system-ui,sans-serif;background:#f8fafc}.panel{background:#fff;border-radius:12px;box-shadow:0 4px 6px -1px rgb(0 0 0 / 0.08)}input[type=range]{accent-color:#2563eb}</style>
+</head>
+<body class="p-4 md:p-8">
+<div class="max-w-6xl mx-auto">
+<header class="mb-6 text-center">
+<h1 class="text-3xl font-bold text-slate-800">🔗 키르히호프 법칙 시뮬레이터</h1>
+<p class="text-slate-600 mt-2">전류 법칙(KCL)과 전압 법칙(KVL)을 단순 회로에서 직접 확인합니다.</p>
+</header>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<div class="lg:col-span-2 panel p-6">
+<svg id="diagram" viewBox="0 0 600 360" class="w-full bg-white rounded-lg border border-slate-100"></svg>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-5 text-center">
+<div class="bg-blue-50 rounded-lg p-3"><div class="text-xs text-blue-700">전체 전류 I</div><div id="iTotal" class="text-lg font-bold text-blue-900">-</div></div>
+<div class="bg-emerald-50 rounded-lg p-3"><div class="text-xs text-emerald-700">I₁ (R₁ 분기)</div><div id="i1d" class="text-lg font-bold text-emerald-900">-</div></div>
+<div class="bg-violet-50 rounded-lg p-3"><div class="text-xs text-violet-700">I₂ (R₂ 분기)</div><div id="i2d" class="text-lg font-bold text-violet-900">-</div></div>
+<div class="bg-amber-50 rounded-lg p-3"><div class="text-xs text-amber-700">KCL 검증</div><div id="kcl" class="text-lg font-bold text-amber-900">-</div></div>
+</div>
+</div>
+<div class="panel p-6 space-y-4">
+<h2 class="font-bold text-slate-800">변수 조절</h2>
+<div><label class="text-sm flex justify-between"><span>전압원 V</span><span id="vVal" class="font-mono">12</span> V</label><input type="range" id="v" min="3" max="30" value="12" class="w-full"></div>
+<div><label class="text-sm flex justify-between"><span>R₁ (병렬 분기)</span><span id="r1Val" class="font-mono">10</span> Ω</label><input type="range" id="r1" min="1" max="50" value="10" class="w-full"></div>
+<div><label class="text-sm flex justify-between"><span>R₂ (병렬 분기)</span><span id="r2Val" class="font-mono">20</span> Ω</label><input type="range" id="r2" min="1" max="50" value="20" class="w-full"></div>
+<div class="bg-slate-50 rounded-lg p-3 text-xs text-slate-600 space-y-1">
+<p class="font-bold text-slate-800">KCL (전류 법칙)</p>
+<p>접점에서 들어가는 전류 = 나오는 전류</p>
+<p>I = I₁ + I₂</p>
+<p class="font-bold text-slate-800 mt-2">KVL (전압 법칙)</p>
+<p>폐회로의 전압 합 = 0</p>
+<p>V = V<sub>R1</sub> = V<sub>R2</sub> (병렬)</p>
+</div>
+</div>
+</div>
+<div class="panel p-6 mt-6">
+<h3 class="font-bold text-slate-800 mb-3">KVL 검증 (각 분기)</h3>
+<div class="grid grid-cols-2 gap-3 text-sm">
+<div class="bg-emerald-50 rounded-lg p-3"><div class="text-xs text-emerald-700">분기 1: V vs I₁×R₁</div><div id="kvl1" class="font-bold text-emerald-900">-</div></div>
+<div class="bg-violet-50 rounded-lg p-3"><div class="text-xs text-violet-700">분기 2: V vs I₂×R₂</div><div id="kvl2" class="font-bold text-violet-900">-</div></div>
+</div>
+</div>
+</div>
+<script>
+const $ = id => document.getElementById(id);
+["v","r1","r2"].forEach(id => $(id).addEventListener("input", render));
+function render(){
+  const V=+$("v").value, R1=+$("r1").value, R2=+$("r2").value;
+  $("vVal").textContent=V; $("r1Val").textContent=R1; $("r2Val").textContent=R2;
+  const I1 = V/R1, I2 = V/R2;
+  const I = I1+I2;
+  $("iTotal").textContent = I.toFixed(3)+" A";
+  $("i1d").textContent = I1.toFixed(3)+" A";
+  $("i2d").textContent = I2.toFixed(3)+" A";
+  $("kcl").textContent = `${I1.toFixed(3)} + ${I2.toFixed(3)} = ${(I1+I2).toFixed(3)} ✓`;
+  $("kvl1").textContent = `${V} = ${(I1*R1).toFixed(2)} V ✓`;
+  $("kvl2").textContent = `${V} = ${(I2*R2).toFixed(2)} V ✓`;
+  draw(V, I, I1, I2, R1, R2);
+}
+function draw(V,I,I1,I2,R1,R2){
+  const svg = $("diagram");
+  let s = "";
+  // 전압원
+  s += `<circle cx="80" cy="180" r="32" fill="white" stroke="#0f172a" stroke-width="2"/>`;
+  s += `<text x="80" y="184" text-anchor="middle" font-size="16" font-weight="bold" fill="#0f172a">${V}V</text>`;
+  // 메인 라인
+  s += `<line x1="80" y1="148" x2="80" y2="80" stroke="#0f172a" stroke-width="2"/>`;
+  s += `<line x1="80" y1="80" x2="250" y2="80" stroke="#0f172a" stroke-width="2"/>`;
+  s += `<line x1="80" y1="212" x2="80" y2="290" stroke="#0f172a" stroke-width="2"/>`;
+  s += `<line x1="80" y1="290" x2="520" y2="290" stroke="#0f172a" stroke-width="2"/>`;
+  // 분기점 A
+  s += `<circle cx="250" cy="80" r="6" fill="#dc2626"/>`;
+  s += `<text x="240" y="60" font-size="13" font-weight="bold" fill="#dc2626">A 접점 (KCL)</text>`;
+  // R1 분기
+  s += `<line x1="250" y1="80" x2="350" y2="80" stroke="#0f172a" stroke-width="2"/>`;
+  s += `<line x1="350" y1="80" x2="350" y2="290" stroke="#0f172a" stroke-width="2"/>`;
+  s += `<rect x="335" y="160" width="30" height="50" fill="white" stroke="#10b981" stroke-width="2"/>`;
+  s += `<text x="350" y="190" text-anchor="middle" font-size="11" font-weight="bold" fill="#10b981">R₁=${R1}Ω</text>`;
+  s += `<text x="385" y="135" font-size="12" font-weight="bold" fill="#10b981">I₁=${I1.toFixed(2)}A</text>`;
+  // R2 분기
+  s += `<line x1="350" y1="80" x2="450" y2="80" stroke="#0f172a" stroke-width="2"/>`;
+  s += `<line x1="450" y1="80" x2="450" y2="290" stroke="#0f172a" stroke-width="2"/>`;
+  s += `<rect x="435" y="160" width="30" height="50" fill="white" stroke="#7c3aed" stroke-width="2"/>`;
+  s += `<text x="450" y="190" text-anchor="middle" font-size="11" font-weight="bold" fill="#7c3aed">R₂=${R2}Ω</text>`;
+  s += `<text x="485" y="135" font-size="12" font-weight="bold" fill="#7c3aed">I₂=${I2.toFixed(2)}A</text>`;
+  // 메인 전류 표시
+  s += `<text x="160" y="70" font-size="13" font-weight="bold" fill="#2563eb">I=${I.toFixed(2)}A →</text>`;
+  // 화살표
+  s += `<polygon points="240,77 248,80 240,83" fill="#2563eb"/>`;
+  svg.innerHTML = s;
+}
+render();
+</script>
+</body>
+</html>

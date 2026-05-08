@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>변압기 결선 시뮬레이터 (Y/Δ)</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>body{font-family:'Pretendard',system-ui,sans-serif;background:#f8fafc}.panel{background:#fff;border-radius:12px;box-shadow:0 4px 6px -1px rgb(0 0 0 / 0.08)}</style>
+</head>
+<body class="p-4 md:p-8">
+<div class="max-w-6xl mx-auto">
+<header class="mb-6 text-center">
+<h1 class="text-3xl font-bold text-slate-800">🔁 변압기 결선 시뮬레이터</h1>
+<p class="text-slate-600 mt-2">Y(성형)·Δ(삼각) 결선의 선간/상 전압·전류 관계를 비교하세요.</p>
+</header>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<div class="lg:col-span-2 panel p-6">
+<div class="flex justify-between items-center mb-4">
+<span class="text-sm font-semibold text-slate-600">결선 방식</span>
+<div class="flex gap-1 rounded-md bg-slate-100 p-1 text-xs font-semibold">
+<button data-conn="Y" class="conn-btn px-3 py-1 rounded">Y 결선 (성형)</button>
+<button data-conn="D" class="conn-btn px-3 py-1 rounded">Δ 결선 (삼각)</button>
+</div>
+</div>
+<svg id="diagram" viewBox="0 0 600 380" class="w-full bg-white rounded-lg border border-slate-100"></svg>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-5 text-center">
+<div class="bg-blue-50 rounded-lg p-3"><div class="text-xs text-blue-700">상 전압 V<sub>p</sub></div><div id="vp" class="text-lg font-bold text-blue-900">-</div></div>
+<div class="bg-violet-50 rounded-lg p-3"><div class="text-xs text-violet-700">선간 전압 V<sub>L</sub></div><div id="vl" class="text-lg font-bold text-violet-900">-</div></div>
+<div class="bg-emerald-50 rounded-lg p-3"><div class="text-xs text-emerald-700">상 전류 I<sub>p</sub></div><div id="ip" class="text-lg font-bold text-emerald-900">-</div></div>
+<div class="bg-amber-50 rounded-lg p-3"><div class="text-xs text-amber-700">선 전류 I<sub>L</sub></div><div id="il" class="text-lg font-bold text-amber-900">-</div></div>
+</div>
+</div>
+<div class="panel p-6 space-y-4">
+<h2 class="font-bold text-slate-800">변수 조절</h2>
+<div><label class="text-sm flex justify-between"><span>상 전압</span><span id="vpVal" class="font-mono">220</span> V</label><input type="range" id="vpIn" min="100" max="380" value="220" class="w-full"></div>
+<div><label class="text-sm flex justify-between"><span>상 전류</span><span id="ipVal" class="font-mono">10</span> A</label><input type="range" id="ipIn" min="1" max="100" value="10" class="w-full"></div>
+<div class="bg-slate-50 rounded-lg p-3 text-xs text-slate-600 space-y-1">
+<p class="font-bold text-slate-800">Y 결선</p>
+<p>· V<sub>L</sub> = √3 × V<sub>p</sub></p>
+<p>· I<sub>L</sub> = I<sub>p</sub></p>
+<p class="font-bold text-slate-800 mt-2">Δ 결선</p>
+<p>· V<sub>L</sub> = V<sub>p</sub></p>
+<p>· I<sub>L</sub> = √3 × I<sub>p</sub></p>
+<p class="font-bold text-slate-800 mt-2">3상 전력</p>
+<p>P = √3 × V<sub>L</sub> × I<sub>L</sub> × cosφ</p>
+</div>
+<div class="bg-rose-50 rounded-lg p-3 text-center">
+<div class="text-xs text-rose-700">3상 전력 (cosφ=1)</div>
+<div id="pDisp" class="text-lg font-bold text-rose-900">-</div>
+</div>
+</div>
+</div>
+</div>
+<script>
+const $ = id => document.getElementById(id);
+let conn = "Y";
+document.querySelectorAll(".conn-btn").forEach(b => b.addEventListener("click", () => {
+  conn = b.dataset.conn;
+  document.querySelectorAll(".conn-btn").forEach(x => x.classList.remove("bg-white","shadow"));
+  b.classList.add("bg-white","shadow");
+  render();
+}));
+document.querySelector('[data-conn="Y"]').classList.add("bg-white","shadow");
+["vpIn","ipIn"].forEach(id => $(id).addEventListener("input", render));
+function render(){
+  const Vp = +$("vpIn").value, Ip = +$("ipIn").value;
+  $("vpVal").textContent = Vp; $("ipVal").textContent = Ip;
+  let VL, IL;
+  if(conn==="Y"){ VL = Vp*Math.sqrt(3); IL = Ip; }
+  else { VL = Vp; IL = Ip*Math.sqrt(3); }
+  $("vp").textContent = Vp+" V";
+  $("vl").textContent = VL.toFixed(1)+" V";
+  $("ip").textContent = Ip+" A";
+  $("il").textContent = IL.toFixed(1)+" A";
+  $("pDisp").textContent = (Math.sqrt(3)*VL*IL/1000).toFixed(2)+" kW";
+  draw(conn, Vp, Ip, VL, IL);
+}
+function draw(c, Vp, Ip, VL, IL){
+  const svg = $("diagram");
+  const cx = 300, cy = 200;
+  let s = "";
+  // 3 phase windings
+  const colors = ["#dc2626","#10b981","#2563eb"];
+  const labels = ["A","B","C"];
+  const angles = [-Math.PI/2, -Math.PI/2 + 2*Math.PI/3, -Math.PI/2 + 4*Math.PI/3];
+  const r = 120;
+  if(c==="Y"){
+    // common neutral at center
+    s += `<circle cx="${cx}" cy="${cy}" r="6" fill="#0f172a"/>`;
+    s += `<text x="${cx+10}" y="${cy+20}" font-size="11" fill="#64748b">N (중성점)</text>`;
+    angles.forEach((a,i)=>{
+      const x1 = cx, y1 = cy;
+      const x2 = cx + r*Math.cos(a), y2 = cy + r*Math.sin(a);
+      s += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${colors[i]}" stroke-width="6"/>`;
+      // 권선 (zigzag로 표현)
+      const mx = cx + (r*0.5)*Math.cos(a), my = cy + (r*0.5)*Math.sin(a);
+      s += `<circle cx="${mx}" cy="${my}" r="20" fill="white" stroke="${colors[i]}" stroke-width="2"/>`;
+      s += `<text x="${mx}" y="${my+4}" text-anchor="middle" font-size="13" font-weight="bold" fill="${colors[i]}">${labels[i]}</text>`;
+      // 단자
+      const tx = cx + (r+30)*Math.cos(a), ty = cy + (r+30)*Math.sin(a);
+      s += `<circle cx="${tx}" cy="${ty}" r="8" fill="${colors[i]}"/>`;
+      s += `<text x="${cx + (r+50)*Math.cos(a)}" y="${cy + (r+50)*Math.sin(a)+5}" text-anchor="middle" font-size="13" font-weight="bold" fill="${colors[i]}">${labels[i]}</text>`;
+    });
+  } else {
+    // delta — connect points in triangle
+    const points = angles.map(a => [cx + r*Math.cos(a), cy + r*Math.sin(a)]);
+    points.forEach((p, i) => {
+      const next = points[(i+1)%3];
+      s += `<line x1="${p[0]}" y1="${p[1]}" x2="${next[0]}" y2="${next[1]}" stroke="${colors[i]}" stroke-width="6"/>`;
+      // 권선
+      const mx = (p[0]+next[0])/2, my = (p[1]+next[1])/2;
+      s += `<circle cx="${mx}" cy="${my}" r="20" fill="white" stroke="${colors[i]}" stroke-width="2"/>`;
+      s += `<text x="${mx}" y="${my+4}" text-anchor="middle" font-size="13" font-weight="bold" fill="${colors[i]}">${labels[i]}</text>`;
+    });
+    // 단자
+    points.forEach((p,i)=>{
+      s += `<circle cx="${p[0]}" cy="${p[1]}" r="8" fill="${colors[i]}"/>`;
+      const lx = cx + (r+30)*Math.cos(angles[i]), ly = cy + (r+30)*Math.sin(angles[i]);
+      s += `<text x="${lx}" y="${ly+5}" text-anchor="middle" font-size="13" font-weight="bold" fill="${colors[i]}">${labels[i]}</text>`;
+    });
+  }
+  s += `<text x="${cx}" y="40" text-anchor="middle" font-size="16" font-weight="bold" fill="#0f172a">${c==="Y"?"Y 결선 (성형)":"Δ 결선 (삼각)"}</text>`;
+  svg.innerHTML = s;
+}
+render();
+</script>
+</body>
+</html>

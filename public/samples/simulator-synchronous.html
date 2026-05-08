@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>동기기 위상 시뮬레이터</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>body{font-family:'Pretendard',system-ui,sans-serif;background:#f8fafc}.panel{background:#fff;border-radius:12px;box-shadow:0 4px 6px -1px rgb(0 0 0 / 0.08)}canvas{background:#fff;border-radius:8px}input[type=range]{accent-color:#7c3aed}</style>
+</head>
+<body class="p-4 md:p-8">
+<div class="max-w-6xl mx-auto">
+<header class="mb-6 text-center">
+<h1 class="text-3xl font-bold text-slate-800">⚙️ 동기기 위상 시뮬레이터</h1>
+<p class="text-slate-600 mt-2">동기 발전기의 부하각(δ)에 따른 출력 전력 변화를 살펴보세요.</p>
+</header>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<div class="lg:col-span-2 panel p-6">
+<canvas id="cv" width="800" height="380" class="w-full border border-slate-100"></canvas>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-5 text-center">
+<div class="bg-violet-50 rounded-lg p-3"><div class="text-xs text-violet-700">부하각 δ</div><div id="delta" class="text-lg font-bold text-violet-900">-</div></div>
+<div class="bg-blue-50 rounded-lg p-3"><div class="text-xs text-blue-700">출력 전력 P</div><div id="pOut" class="text-lg font-bold text-blue-900">-</div></div>
+<div class="bg-emerald-50 rounded-lg p-3"><div class="text-xs text-emerald-700">최대 전력 P<sub>max</sub></div><div id="pMax" class="text-lg font-bold text-emerald-900">-</div></div>
+<div class="bg-rose-50 rounded-lg p-3"><div class="text-xs text-rose-700">동기 한계</div><div id="limit" class="text-lg font-bold text-rose-900">정상</div></div>
+</div>
+</div>
+<div class="panel p-6 space-y-4">
+<h2 class="font-bold text-slate-800">변수 조절</h2>
+<div><label class="text-sm flex justify-between"><span>유기 기전력 E</span><span id="eVal" class="font-mono">220</span> V</label><input type="range" id="e" min="100" max="400" value="220" class="w-full"></div>
+<div><label class="text-sm flex justify-between"><span>단자 전압 V</span><span id="vVal" class="font-mono">200</span> V</label><input type="range" id="v" min="100" max="400" value="200" class="w-full"></div>
+<div><label class="text-sm flex justify-between"><span>동기 임피던스 X<sub>s</sub></span><span id="xsVal" class="font-mono">5</span> Ω</label><input type="range" id="xs" min="1" max="20" value="5" class="w-full"></div>
+<div><label class="text-sm flex justify-between"><span>부하각 δ</span><span id="dVal" class="font-mono">30</span>°</label><input type="range" id="d" min="0" max="180" value="30" class="w-full"></div>
+<div class="bg-slate-50 rounded-lg p-3 text-xs text-slate-600 space-y-1">
+<p>P = (E·V/X<sub>s</sub>) × sinδ</p>
+<p>최대 출력은 δ = 90°에서 발생</p>
+<p class="text-rose-600">δ &gt; 90°: 동기 이탈 위험</p>
+</div>
+</div>
+</div>
+</div>
+<script>
+const $ = id => document.getElementById(id);
+const cv = $("cv"), ctx = cv.getContext("2d");
+["e","v","xs","d"].forEach(id => $(id).addEventListener("input", render));
+function render(){
+  const E=+$("e").value, V=+$("v").value, Xs=+$("xs").value, dDeg=+$("d").value;
+  $("eVal").textContent=E; $("vVal").textContent=V; $("xsVal").textContent=Xs; $("dVal").textContent=dDeg;
+  const dRad = dDeg*Math.PI/180;
+  const Pmax = (E*V)/Xs;
+  const P = Pmax*Math.sin(dRad);
+  $("delta").textContent = dDeg+"°";
+  $("pOut").textContent = (P/1000).toFixed(2)+" kW";
+  $("pMax").textContent = (Pmax/1000).toFixed(2)+" kW";
+  $("limit").textContent = dDeg>90 ? "이탈 영역 ⚠" : (dDeg>75 ? "위험" : "정상");
+  $("limit").className = "text-lg font-bold " + (dDeg>90 ? "text-rose-700" : (dDeg>75 ? "text-amber-700" : "text-emerald-700"));
+  draw(E,V,Xs,dDeg,P,Pmax);
+}
+function draw(E,V,Xs,dDeg,P,Pmax){
+  const W = cv.width, H = cv.height;
+  ctx.clearRect(0,0,W,H);
+  // 좌측: 위상 다이어그램
+  const cx = 200, cy = 200;
+  ctx.fillStyle = "#475569"; ctx.font="13px sans-serif"; ctx.textAlign="center";
+  ctx.fillText("위상 다이어그램", cx, 30);
+  // V 벡터 (고정, 우측 방향)
+  const Vlen = V*0.5;
+  ctx.strokeStyle = "#2563eb"; ctx.lineWidth=4;
+  ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(cx+Vlen, cy); ctx.stroke();
+  // arrow head
+  ctx.beginPath();
+  ctx.moveTo(cx+Vlen, cy);
+  ctx.lineTo(cx+Vlen-10, cy-5);
+  ctx.lineTo(cx+Vlen-10, cy+5);
+  ctx.fillStyle = "#2563eb";
+  ctx.fill();
+  ctx.fillStyle = "#2563eb"; ctx.fillText("V", cx+Vlen+15, cy+5);
+  // E 벡터 (각도 δ 위쪽)
+  const Elen = E*0.5;
+  const dRad = dDeg*Math.PI/180;
+  const ex = cx + Elen*Math.cos(-dRad);
+  const ey = cy + Elen*Math.sin(-dRad);
+  ctx.strokeStyle = "#dc2626"; ctx.lineWidth=4;
+  ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(ex, ey); ctx.stroke();
+  ctx.fillStyle = "#dc2626"; ctx.fillText("E", ex+12, ey-5);
+  // 각도 호
+  ctx.strokeStyle = "#94a3b8"; ctx.lineWidth=1.5;
+  ctx.beginPath(); ctx.arc(cx, cy, 30, -dRad, 0); ctx.stroke();
+  ctx.fillStyle = "#475569"; ctx.font="11px sans-serif";
+  ctx.fillText(`δ=${dDeg}°`, cx+45, cy-15);
+
+  // 우측: P-δ 곡선
+  const gX=470, gY=60, gW=300, gH=280;
+  ctx.fillStyle="#fff"; ctx.fillRect(gX,gY,gW,gH);
+  ctx.strokeStyle="#cbd5e1"; ctx.strokeRect(gX,gY,gW,gH);
+  ctx.fillStyle="#475569"; ctx.font="13px sans-serif"; ctx.textAlign="center";
+  ctx.fillText("P-δ 곡선", gX+gW/2, gY-8);
+  // x axis labels
+  ctx.font="10px sans-serif";
+  for(let dd=0; dd<=180; dd+=45){
+    const x = gX + (dd/180)*gW;
+    ctx.fillText(dd+"°", x, gY+gH+15);
+    ctx.beginPath(); ctx.moveTo(x, gY+gH); ctx.lineTo(x, gY+gH+5); ctx.stroke();
+  }
+  // 곡선
+  ctx.strokeStyle="#7c3aed"; ctx.lineWidth=2.5;
+  ctx.beginPath();
+  for(let dd=0; dd<=180; dd++){
+    const r = dd*Math.PI/180;
+    const p = Pmax*Math.sin(r);
+    const x = gX + (dd/180)*gW;
+    const y = gY + gH - (p/Pmax)*gH;
+    if(dd===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+  }
+  ctx.stroke();
+  // 90도 line
+  const x90 = gX + (90/180)*gW;
+  ctx.strokeStyle="#dc2626"; ctx.setLineDash([4,3]);
+  ctx.beginPath(); ctx.moveTo(x90, gY); ctx.lineTo(x90, gY+gH); ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle="#dc2626"; ctx.fillText("동기 한계 90°", x90, gY+12);
+  // 현재 점
+  const xCur = gX + (dDeg/180)*gW;
+  const yCur = gY + gH - (P/Pmax)*gH;
+  ctx.fillStyle="#0f172a";
+  ctx.beginPath(); ctx.arc(xCur, yCur, 6, 0, Math.PI*2); ctx.fill();
+  ctx.fillStyle="#0f172a"; ctx.font="11px sans-serif";
+  ctx.fillText(`현재 ${(P/1000).toFixed(2)} kW`, xCur, yCur-12);
+}
+render();
+</script>
+</body>
+</html>

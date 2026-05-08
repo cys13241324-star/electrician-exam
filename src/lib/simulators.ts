@@ -91,6 +91,50 @@ export const simulators: Simulator[] = [
     htmlPath: "/samples/simulator-induction-motor.html",
     emoji: "🌀",
   },
+  {
+    id: "ohms-law",
+    title: "옴의 법칙",
+    description:
+      "전압·전류·저항 중 두 변수를 잡으면 나머지가 즉시 계산됩니다. 전류 흐름 애니메이션으로 직관 강화.",
+    subject: "전기이론",
+    topic: "직류회로",
+    status: "available",
+    htmlPath: "/samples/simulator-ohms-law.html",
+    emoji: "⚡",
+  },
+  {
+    id: "kirchhoff",
+    title: "키르히호프 법칙 (KCL/KVL)",
+    description:
+      "병렬 회로의 분기점에서 KCL을, 폐회로 합으로 KVL을 동시에 검증합니다.",
+    subject: "전기이론",
+    topic: "직류회로",
+    status: "available",
+    htmlPath: "/samples/simulator-kirchhoff.html",
+    emoji: "🔗",
+  },
+  {
+    id: "transformer-connection",
+    title: "변압기 결선 (Y/Δ)",
+    description:
+      "Y(성형)·Δ(삼각) 결선의 선간/상 전압·전류 관계를 그림과 함께 비교합니다.",
+    subject: "전기기기",
+    topic: "변압기",
+    status: "available",
+    htmlPath: "/samples/simulator-transformer-connection.html",
+    emoji: "🔺",
+  },
+  {
+    id: "synchronous",
+    title: "동기기 위상 (P-δ 곡선)",
+    description:
+      "동기 발전기의 부하각 변화에 따른 출력 전력과 동기 한계를 시각화합니다.",
+    subject: "전기기기",
+    topic: "동기기",
+    status: "available",
+    htmlPath: "/samples/simulator-synchronous.html",
+    emoji: "⚙️",
+  },
   // 전기설비
   {
     id: "grounding",
