@@ -69,3 +69,22 @@ body {
   background: #dbeafe;
   color: #1e3a8a;
 }
+
+/* 카드/패널 부드러운 등장 (플립카드 정답 노출 시) */
+@keyframes flashUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @keyframes flashUp {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+}

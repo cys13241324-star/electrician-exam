@@ -218,7 +218,10 @@ export default function CardStudy({
 
       {/* 관련 예제 (뒤집은 후에만 노출) */}
       {flipped && card.example && (
-        <div className="mx-auto mb-6 max-w-3xl overflow-hidden rounded-2xl border-2 border-amber-200 bg-white shadow-md">
+        <div
+          className="mx-auto mb-6 max-w-3xl overflow-hidden rounded-2xl border-2 border-amber-200 bg-white shadow-md"
+          style={{ animation: "flashUp 350ms ease-out 280ms backwards" }}
+        >
           <header className="flex items-center gap-2 border-b border-amber-200 bg-amber-50 px-5 py-2.5">
             <span className="rounded-md bg-amber-500 px-2 py-0.5 text-[10px] font-black tracking-wider text-white">
               ✏️ 관련 예제
@@ -270,7 +273,12 @@ export default function CardStudy({
 
       {/* 평가 버튼 또는 안내 */}
       {flipped ? (
-        <div className="mx-auto max-w-3xl">
+        <div
+          className="mx-auto max-w-3xl"
+          style={{
+            animation: `flashUp 350ms ease-out ${card.example ? "440ms" : "280ms"} backwards`,
+          }}
+        >
           <p className="mb-3 text-center text-sm font-semibold text-zinc-700">
             맞췄나요? 정답을 보고 솔직하게 평가해주세요.
           </p>
