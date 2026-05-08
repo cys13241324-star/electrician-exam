@@ -258,17 +258,31 @@ export default function FeatureDetails() {
       className="relative scroll-mt-24 overflow-hidden bg-zinc-50"
     >
       <BackgroundPattern variant="dots" color="#3b82f6" opacity={0.07} />
-      <div className="relative mx-auto max-w-6xl px-6 py-20">
+      {/* 거대 워터마크 */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-8 select-none text-center text-[120px] font-black leading-none tracking-tight text-blue-600/[0.04] sm:text-[180px]"
+      >
+        DETAILS
+      </div>
+      <div className="relative mx-auto max-w-6xl px-6 py-24">
         <Reveal>
-          <div className="mb-14 text-center">
-            <p className="text-sm font-semibold tracking-wide text-blue-600">
-              특장점 자세히 보기
-            </p>
-            <h2 className="mt-2 text-2xl font-bold tracking-tight text-zinc-900 sm:text-3xl">
-              5가지 학습 도구, 한 가지씩 들여다보기
+          <div className="mb-16 text-center">
+            <span className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-blue-600 via-violet-600 to-pink-600 px-4 py-1.5 text-xs font-bold tracking-widest text-white shadow-lg">
+              🔍 특장점 자세히 보기
+            </span>
+            <h2 className="mt-5 text-3xl font-black tracking-tight text-zinc-900 sm:text-5xl">
+              <span className="bg-gradient-to-r from-blue-600 to-violet-600 bg-clip-text text-transparent">
+                5가지 학습 도구
+              </span>
+              <span className="text-zinc-900">, 한 가지씩</span>
+              <br />
+              들여다보기
             </h2>
-            <p className="mt-3 text-sm text-zinc-600">
-              각 도구가 왜 합격에 효과적인지, 어떤 기능을 제공하는지 자세히 살펴보세요.
+            <p className="mx-auto mt-4 max-w-xl text-sm leading-7 text-zinc-700 sm:text-base">
+              각 도구가 왜 합격에 효과적인지, 어떤 기능을 제공하는지
+              <br className="hidden sm:block" />
+              하나하나 자세히 풀어드립니다.
             </p>
           </div>
         </Reveal>

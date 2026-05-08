@@ -72,16 +72,34 @@ export default function HowItWorks() {
     <section id="how" className="relative scroll-mt-24 overflow-hidden bg-gradient-to-br from-blue-50 via-white to-zinc-50">
       <BackgroundPattern variant="mesh-blue" />
       <BackgroundPattern variant="grid" color="#1e3a8a" opacity={0.04} />
-      <div className="relative mx-auto max-w-6xl px-6 py-20">
-        <div className="mb-12 text-center">
-          <p className="text-sm font-semibold tracking-wide text-blue-600">
+      {/* 거대 워터마크 텍스트 */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-6 select-none text-center text-[140px] font-black leading-none tracking-tight text-blue-600/[0.04] sm:text-[200px]"
+      >
+        ROADMAP
+      </div>
+      <div className="relative mx-auto max-w-6xl px-6 py-24">
+        <div className="mb-14 text-center">
+          <span className="inline-flex items-center gap-2 rounded-full bg-blue-600 px-4 py-1.5 text-xs font-bold tracking-widest text-white shadow-lg shadow-blue-600/20">
+            <span className="text-amber-300">★</span>
             합격 로드맵
-          </p>
-          <h2 className="mt-2 text-2xl font-bold tracking-tight text-zinc-900 sm:text-3xl">
-            합격까지, 단 3단계
+            <span className="text-amber-300">★</span>
+          </span>
+          <h2 className="mt-5 text-3xl font-black tracking-tight text-zinc-900 sm:text-5xl">
+            합격까지,{" "}
+            <span className="relative inline-block">
+              <span className="relative z-10 text-blue-600">단 3단계</span>
+              <span
+                aria-hidden="true"
+                className="absolute inset-x-0 bottom-1 -z-0 h-3 bg-amber-300/70 sm:bottom-2 sm:h-4"
+              />
+            </span>
           </h2>
-          <p className="mt-3 text-sm text-zinc-600">
-            교재로 기초를 다지고, 모의고사로 실력을 검증하고, 부가 서비스로 마무리합니다.
+          <p className="mx-auto mt-4 max-w-xl text-sm leading-7 text-zinc-700 sm:text-base">
+            교재로 기초를 다지고, 모의고사로 실력을 검증하고,
+            <br className="hidden sm:block" />
+            부가 서비스로 마무리합니다. 복잡할 필요 없습니다.
           </p>
         </div>
 
@@ -92,19 +110,41 @@ export default function HowItWorks() {
               {i < steps.length - 1 && (
                 <div className="absolute right-0 top-12 hidden h-px w-full translate-x-1/2 bg-gradient-to-r from-blue-300 to-transparent md:block" />
               )}
-              <article className="relative flex h-full flex-col rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm transition hover:shadow-lg">
-                <div className="flex items-center justify-between">
+              <article
+                className={`group relative flex h-full flex-col overflow-hidden rounded-2xl border-2 bg-white p-7 shadow-md transition hover:-translate-y-1 hover:shadow-2xl ${
+                  step.n === 1
+                    ? "border-amber-200 hover:border-amber-400"
+                    : step.n === 2
+                      ? "border-blue-200 hover:border-blue-400"
+                      : "border-violet-200 hover:border-violet-400"
+                }`}
+              >
+                {/* 거대 STEP 번호 워터마크 */}
+                <span
+                  aria-hidden="true"
+                  className={`pointer-events-none absolute -right-4 -top-8 select-none text-[140px] font-black leading-none ${
+                    step.n === 1
+                      ? "text-amber-100"
+                      : step.n === 2
+                        ? "text-blue-100"
+                        : "text-violet-100"
+                  }`}
+                >
+                  {step.n}
+                </span>
+
+                <div className="relative flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <span
-                      className={`flex h-9 w-9 items-center justify-center rounded-full text-sm font-bold text-white ${
+                      className={`flex h-10 w-10 items-center justify-center rounded-xl text-base font-black text-white shadow-lg ${
                         step.n === 1
-                          ? "bg-amber-500"
+                          ? "bg-gradient-to-br from-amber-500 to-orange-500 shadow-amber-500/30"
                           : step.n === 2
-                            ? "bg-blue-600"
-                            : "bg-violet-600"
+                            ? "bg-gradient-to-br from-blue-600 to-indigo-600 shadow-blue-500/30"
+                            : "bg-gradient-to-br from-violet-600 to-fuchsia-600 shadow-violet-500/30"
                       }`}
                     >
-                      {step.n}
+                      0{step.n}
                     </span>
                     <span
                       className={`rounded-full px-2.5 py-0.5 text-[11px] font-bold ${step.accentBg} ${step.accentText}`}
@@ -112,7 +152,9 @@ export default function HowItWorks() {
                       {step.label}
                     </span>
                   </div>
-                  <span className="text-3xl leading-none">{step.emoji}</span>
+                  <span className="text-4xl leading-none transition group-hover:scale-110">
+                    {step.emoji}
+                  </span>
                 </div>
 
                 <h3 className="mt-5 text-lg font-bold text-zinc-900">

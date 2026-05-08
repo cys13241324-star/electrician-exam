@@ -229,18 +229,38 @@ export default function Home() {
 
       <HowItWorks />
 
-      <section id="features" className="mx-auto max-w-6xl px-6 py-20">
-        <div className="mb-10">
-          <p className="text-sm font-semibold tracking-wide text-blue-600">
-            전체 기능
-          </p>
-          <h2 className="mt-2 text-2xl font-bold tracking-tight text-zinc-900 sm:text-3xl">
-            전기기능사 합격을 위한 5가지 학습 도구
-          </h2>
-          <p className="mt-2 text-sm text-zinc-600">
-            카드를 클릭하면 미리보기를 확인할 수 있습니다.
-          </p>
+      <section
+        id="features"
+        className="relative overflow-hidden border-y border-zinc-100 bg-white"
+      >
+        <BackgroundPattern variant="dots" color="#2563eb" opacity={0.06} />
+        {/* 거대 워터마크 */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 top-12 select-none text-center text-[140px] font-black leading-none tracking-tight text-blue-600/[0.04] sm:text-[200px]"
+        >
+          FEATURES
         </div>
+        <div className="relative mx-auto max-w-6xl px-6 py-24">
+          <div className="mb-12 text-center">
+            <span className="inline-flex items-center gap-2 rounded-full bg-zinc-900 px-4 py-1.5 text-xs font-bold tracking-widest text-white shadow-lg">
+              <span className="text-amber-300">⚡</span>
+              전체 기능
+              <span className="text-amber-300">⚡</span>
+            </span>
+            <h2 className="mt-5 text-3xl font-black tracking-tight text-zinc-900 sm:text-5xl">
+              전기기능사 합격을 위한
+              <br />
+              <span className="bg-gradient-to-r from-blue-600 via-violet-600 to-pink-600 bg-clip-text text-transparent">
+                5가지 학습 도구
+              </span>
+            </h2>
+            <p className="mx-auto mt-4 max-w-xl text-sm leading-7 text-zinc-700 sm:text-base">
+              교재만으로 부족한 모든 부분, 사이트가 채웁니다.
+              <br className="hidden sm:block" />
+              카드를 클릭하면 실제 동작하는 미리보기를 볼 수 있어요.
+            </p>
+          </div>
 
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {features.map((feature, idx) => {
@@ -309,14 +329,15 @@ export default function Home() {
           })}
         </div>
 
-        <div className="mt-10 flex justify-center">
-          <Link
-            href="#feature-details"
-            className="group inline-flex items-center gap-2 rounded-full border border-zinc-300 bg-white px-5 py-2.5 text-sm font-semibold text-zinc-700 shadow-sm transition hover:border-blue-400 hover:text-blue-700"
-          >
-            각 도구의 특장점 자세히 보기
-            <span className="transition group-hover:translate-y-0.5">↓</span>
-          </Link>
+          <div className="mt-10 flex justify-center">
+            <Link
+              href="#feature-details"
+              className="group inline-flex items-center gap-2 rounded-full bg-zinc-900 px-6 py-3 text-sm font-bold text-white shadow-lg transition hover:bg-zinc-700"
+            >
+              <span>각 도구의 특장점 자세히 보기</span>
+              <span className="transition group-hover:translate-y-0.5">↓</span>
+            </Link>
+          </div>
         </div>
       </section>
 
