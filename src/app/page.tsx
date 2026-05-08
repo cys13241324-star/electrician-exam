@@ -127,13 +127,12 @@ export default function Home() {
               >
                 CBT 모의고사 풀기
               </Link>
-              <button
-                type="button"
-                onClick={() => setActiveId("lecture")}
-                className="rounded-md border border-zinc-300 bg-white px-6 py-3 text-sm font-semibold text-zinc-700 transition hover:bg-zinc-50"
+              <span
+                className="cursor-not-allowed rounded-md border border-zinc-200 bg-zinc-50 px-6 py-3 text-sm font-semibold text-zinc-400"
+                title="준비중"
               >
-                해설강의 둘러보기
-              </button>
+                해설강의 (Coming Soon)
+              </span>
             </div>
           </div>
         </div>
@@ -152,19 +151,16 @@ export default function Home() {
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {features.map((feature) => {
             const isComingSoon = feature.status === "coming_soon";
-            return (
-              <button
-                key={feature.id}
-                type="button"
-                onClick={() => setActiveId(feature.id)}
-                className="group relative rounded-xl border border-zinc-200 bg-white p-6 text-left transition hover:border-blue-300 hover:shadow-md"
-              >
-                {isComingSoon && (
+            const hasModal = feature.preview.kind !== "info";
+            const goesToPage = feature.id === "cbt";
+
+            const cardInner = (
+              <>
+                {isComingSoon ? (
                   <span className="absolute right-4 top-4 rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-bold tracking-wide text-amber-800">
                     Coming Soon
                   </span>
-                )}
-                {!isComingSoon && (
+                ) : (
                   <span className="absolute right-4 top-4 rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-bold tracking-wide text-emerald-800">
                     이용 가능
                   </span>
@@ -176,10 +172,50 @@ export default function Home() {
                 <p className="mt-2 text-sm leading-6 text-zinc-600">
                   {feature.tagline}
                 </p>
-                <div className="mt-4 flex items-center gap-1 text-sm font-medium text-blue-600 opacity-0 transition group-hover:opacity-100">
-                  미리보기 →
-                </div>
-              </button>
+                {(hasModal || goesToPage) && (
+                  <div className="mt-4 flex items-center gap-1 text-sm font-medium text-blue-600 opacity-0 transition group-hover:opacity-100">
+                    {goesToPage ? "바로가기 →" : "미리보기 →"}
+                  </div>
+                )}
+              </>
+            );
+
+            const baseClass =
+              "group relative rounded-xl border border-zinc-200 bg-white p-6 text-left transition";
+            const interactiveClass = " hover:border-blue-300 hover:shadow-md";
+
+            if (goesToPage && feature.cta) {
+              return (
+                <Link
+                  key={feature.id}
+                  href={feature.cta.href}
+                  className={`${baseClass}${interactiveClass} block`}
+                >
+                  {cardInner}
+                </Link>
+              );
+            }
+
+            if (hasModal) {
+              return (
+                <button
+                  key={feature.id}
+                  type="button"
+                  onClick={() => setActiveId(feature.id)}
+                  className={`${baseClass}${interactiveClass}`}
+                >
+                  {cardInner}
+                </button>
+              );
+            }
+
+            return (
+              <div
+                key={feature.id}
+                className={`${baseClass} cursor-default opacity-80`}
+              >
+                {cardInner}
+              </div>
             );
           })}
         </div>
