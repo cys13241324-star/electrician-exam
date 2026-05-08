@@ -137,7 +137,7 @@ export default async function SimulatorDetailPage({
                     <p className="text-xs font-semibold tracking-wide text-blue-700">
                       {f.name}
                     </p>
-                    <p className="mt-3 rounded-lg bg-zinc-900 px-4 py-3 font-mono text-sm font-bold text-amber-300 sm:text-base">
+                    <p className="mt-3 rounded-lg border-2 border-blue-200 bg-blue-50 px-4 py-3 font-mono text-base font-bold text-blue-900 sm:text-lg">
                       {f.expression}
                     </p>
                     <p className="mt-3 text-xs leading-5 text-zinc-600">
@@ -201,12 +201,12 @@ export default async function SimulatorDetailPage({
                     {sim.example.solution.map((step, i) => (
                       <li
                         key={i}
-                        className="flex items-start gap-3 rounded-md bg-zinc-900 px-4 py-2.5"
+                        className="flex items-start gap-3 rounded-md border border-zinc-200 bg-white px-4 py-2.5"
                       >
-                        <span className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-amber-400 text-[11px] font-bold text-amber-950">
+                        <span className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-amber-500 text-[11px] font-bold text-white">
                           {i + 1}
                         </span>
-                        <span className="font-mono text-xs text-amber-300 sm:text-sm">
+                        <span className="font-mono text-sm text-zinc-900 sm:text-base">
                           {step}
                         </span>
                       </li>

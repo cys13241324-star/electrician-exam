@@ -402,9 +402,12 @@ function CardDetailModal({
                   {card.example.solution.map((step, i) => (
                     <li
                       key={i}
-                      className="rounded bg-zinc-900 px-2 py-1 font-mono text-[11px] text-amber-300"
+                      className="rounded border border-zinc-200 bg-white px-2.5 py-1.5 font-mono text-xs text-zinc-900"
                     >
-                      <span className="text-amber-400">{i + 1}.</span> {step}
+                      <span className="font-bold text-amber-600">
+                        {i + 1}.
+                      </span>{" "}
+                      {step}
                     </li>
                   ))}
                 </ol>

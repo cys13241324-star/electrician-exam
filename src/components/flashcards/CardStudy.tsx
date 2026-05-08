@@ -275,12 +275,12 @@ export default function CardStudy({
                 {card.example.solution.map((step, i) => (
                   <li
                     key={i}
-                    className="flex items-start gap-3 rounded-md bg-zinc-900 px-3 py-2"
+                    className="flex items-start gap-3 rounded-md border border-zinc-200 bg-white px-3 py-2"
                   >
-                    <span className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-amber-400 text-[10px] font-bold text-amber-950">
+                    <span className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-amber-500 text-[10px] font-bold text-white">
                       {i + 1}
                     </span>
-                    <span className="font-mono text-xs text-amber-300 sm:text-sm">
+                    <span className="font-mono text-sm text-zinc-900 sm:text-base">
                       {step}
                     </span>
                   </li>
