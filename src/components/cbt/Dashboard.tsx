@@ -11,6 +11,7 @@ import {
 import type { BoardPost, Notice } from "@/lib/cbt/mockBoard";
 import DDayWidget from "./DDayWidget";
 import RecentAttempts from "./RecentAttempts";
+import DailyChallenge from "./DailyChallenge";
 
 const COMMUNITY_BASELINE = {
   recentMonthMinutes: 156,
@@ -72,7 +73,7 @@ export default function Dashboard({
       </section>
 
       {/* Stats row */}
-      <div className="mb-6 grid grid-cols-1 gap-6 lg:grid-cols-5">
+      <div className="mb-6 grid grid-cols-1 gap-6 lg:grid-cols-7">
         <SectionCard
           title="학습 현황"
           subtitle="과목별 누적 정답률"
@@ -100,6 +101,10 @@ export default function Dashboard({
         >
           <StudyVolumeChart stats={stats} />
         </SectionCard>
+
+        <div className="lg:col-span-2">
+          <DailyChallenge />
+        </div>
       </div>
 
       {/* 취약 진단 + 최근 응시 */}
