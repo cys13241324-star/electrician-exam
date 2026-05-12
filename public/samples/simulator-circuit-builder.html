@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>회로 종합 분석 시뮬레이터</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  body { background:#f8fafc; font-family:'Pretendard',system-ui,sans-serif; }
+  .panel { background:#fff; border-radius:12px; box-shadow:0 4px 6px -1px rgb(0 0 0 / 0.08); }
+  input[type=range]{accent-color:#2563eb;}
+  .pattern-btn { transition: all 0.15s; }
+  .pattern-btn.active { background:#2563eb; color:white; }
+  #circuit line, #circuit rect { stroke-linecap: round; stroke-linejoin: round; }
+</style>
+</head>
+<body class="p-4 md:p-8">
+  <div class="max-w-6xl mx-auto">
+    <header class="mb-6 text-center">
+      <h1 class="text-3xl font-bold text-slate-800">🔧 회로 종합 분석</h1>
+      <p class="text-slate-600 mt-2">5가지 회로 패턴에서 옴의 법칙·KCL·KVL·전압분배·전류분배를 한 번에 학습합니다.</p>
+    </header>
+
+    <!-- 회로 패턴 선택 -->
+    <div class="panel p-4 mb-6">
+      <div class="text-xs font-semibold text-slate-500 mb-2">회로 패턴 선택</div>
+      <div class="flex flex-wrap gap-2">
+        <button data-pattern="single" class="pattern-btn px-3 py-2 rounded-md bg-slate-100 text-sm font-semibold text-slate-700">단일 저항</button>
+        <button data-pattern="series3" class="pattern-btn px-3 py-2 rounded-md bg-slate-100 text-sm font-semibold text-slate-700">직렬 3개</button>
+        <button data-pattern="parallel3" class="pattern-btn px-3 py-2 rounded-md bg-slate-100 text-sm font-semibold text-slate-700">병렬 3개</button>
+        <button data-pattern="hybrid-sp" class="pattern-btn px-3 py-2 rounded-md bg-slate-100 text-sm font-semibold text-slate-700">R₁ + (R₂∥R₃)</button>
+        <button data-pattern="hybrid-ps" class="pattern-btn px-3 py-2 rounded-md bg-slate-100 text-sm font-semibold text-slate-700">(R₁∥R₂) + R₃</button>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div class="lg:col-span-2 panel p-6">
+        <div class="text-sm font-semibold text-slate-600 mb-3">회로도</div>
+        <svg id="circuit" viewBox="0 0 720 320" preserveAspectRatio="xMidYMid meet" class="w-full h-auto bg-white rounded-lg border border-slate-100"></svg>
+
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-5 text-center">
+          <div class="bg-blue-50 rounded-lg p-3"><div class="text-xs text-blue-700">합성 저항</div><div id="rTotal" class="text-lg font-bold text-blue-900">0 Ω</div></div>
+          <div class="bg-emerald-50 rounded-lg p-3"><div class="text-xs text-emerald-700">총 전류 I</div><div id="iTotal" class="text-lg font-bold text-emerald-900">0 A</div></div>
+          <div class="bg-amber-50 rounded-lg p-3"><div class="text-xs text-amber-700">전압원 V</div><div id="vDisp" class="text-lg font-bold text-amber-900">0 V</div></div>
+          <div class="bg-rose-50 rounded-lg p-3"><div class="text-xs text-rose-700">총 전력 P</div><div id="pTotal" class="text-lg font-bold text-rose-900">0 W</div></div>
+        </div>
+      </div>
+
+      <div class="panel p-6 space-y-4">
+        <h2 class="font-bold text-slate-800">변수 조절</h2>
+        <div>
+          <label class="text-sm flex justify-between"><span>전압원 V</span><span id="vVal" class="font-mono text-slate-700">12</span> V</label>
+          <input type="range" id="v" min="1" max="30" value="12" class="w-full">
+        </div>
+        <div id="rControls" class="space-y-3"></div>
+
+        <div class="bg-slate-50 rounded-lg p-3 text-xs text-slate-600 space-y-1 mt-4">
+          <p class="font-semibold text-slate-800">학습 포인트</p>
+          <p>• 옴의 법칙: <strong>V = I·R</strong></p>
+          <p>• KCL: 분기점에서 ∑I_in = ∑I_out</p>
+          <p>• KVL: 폐회로에서 ∑V = 0</p>
+          <p>• 직렬↔병렬에서 V·I 분배 방향 반대</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 회로 분석 -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+      <div class="panel p-6">
+        <h3 class="font-bold text-slate-800 mb-3">각 저항별 측정값</h3>
+        <table class="w-full text-sm">
+          <thead><tr class="text-left text-slate-500 border-b"><th class="py-2">저항</th><th>값</th><th>전류</th><th>전압</th><th>전력</th></tr></thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+
+      <div class="panel p-6">
+        <h3 class="font-bold text-slate-800 mb-3">법칙 검증</h3>
+        <div id="lawCheck" class="space-y-2 text-sm"></div>
+      </div>
+    </div>
+  </div>
+
+<script>
+const $ = id => document.getElementById(id);
+const STROKE = "#0f172a";
+const SW = 2;
+const R_COLORS = ["#2563eb","#10b981","#f59e0b"];
+let pattern = "single";
+
+const PATTERNS = {
+  single:      { count: 1, defaults: [10] },
+  series3:     { count: 3, defaults: [10, 20, 30] },
+  parallel3:   { count: 3, defaults: [10, 20, 30] },
+  "hybrid-sp": { count: 3, defaults: [10, 20, 30] },
+  "hybrid-ps": { count: 3, defaults: [10, 20, 30] },
+};
+
+function setPattern(p) {
+  pattern = p;
+  document.querySelectorAll(".pattern-btn").forEach(b => b.classList.remove("active"));
+  document.querySelector(`[data-pattern="${p}"]`).classList.add("active");
+  renderControls();
+  render();
+}
+
+function renderControls() {
+  const def = PATTERNS[pattern];
+  const ctrl = $("rControls");
+  ctrl.innerHTML = "";
+  for (let i = 1; i <= def.count; i++) {
+    const div = document.createElement("div");
+    div.innerHTML = `
+      <label class="text-sm flex justify-between"><span>저항 R<sub>${i}</sub></span><span id="r${i}Val" class="font-mono text-slate-700">${def.defaults[i-1]}</span> Ω</label>
+      <input type="range" id="r${i}" min="1" max="100" value="${def.defaults[i-1]}" class="w-full">`;
+    ctrl.appendChild(div);
+    $(`r${i}`).addEventListener("input", render);
+  }
+}
+
+document.querySelectorAll(".pattern-btn").forEach(b => b.addEventListener("click", () => setPattern(b.dataset.pattern)));
+$("v").addEventListener("input", render);
+
+function R(x, y, label, color) {
+  return `
+    <rect x="${x}" y="${y-12}" width="60" height="24" fill="white" stroke="${color}" stroke-width="${SW}" rx="3"/>
+    <text x="${x+30}" y="${y+5}" text-anchor="middle" font-size="13" font-weight="bold" fill="${color}">${label}</text>`;
+}
+function L(x1, y1, x2, y2) {
+  return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${STROKE}" stroke-width="${SW}"/>`;
+}
+function source(V) {
+  return `
+    <circle cx="80" cy="160" r="32" fill="white" stroke="${STROKE}" stroke-width="${SW}"/>
+    <text x="80" y="166" text-anchor="middle" font-size="18" font-weight="bold" fill="${STROKE}">${V}V</text>
+    <text x="80" y="128" text-anchor="middle" font-size="13" font-weight="bold" fill="#dc2626">+</text>
+    <text x="80" y="206" text-anchor="middle" font-size="16" font-weight="bold" fill="${STROKE}">−</text>
+    ${L(80, 128, 80, 80)}
+    ${L(80, 80, 140, 80)}
+    ${L(80, 192, 80, 240)}
+    ${L(80, 240, 140, 240)}`;
+}
+
+function render() {
+  const V = +$("v").value;
+  $("vVal").textContent = V;
+  $("vDisp").textContent = V + " V";
+
+  const r1 = +($("r1")?.value ?? PATTERNS[pattern].defaults[0]);
+  const r2 = +($("r2")?.value ?? PATTERNS[pattern].defaults[1] ?? 0);
+  const r3 = +($("r3")?.value ?? PATTERNS[pattern].defaults[2] ?? 0);
+
+  if ($("r1Val")) $("r1Val").textContent = r1;
+  if ($("r2Val")) $("r2Val").textContent = r2;
+  if ($("r3Val")) $("r3Val").textContent = r3;
+
+  let Rt, branches, lawHtml;
+
+  if (pattern === "single") {
+    Rt = r1;
+    const I = V/Rt;
+    branches = [{r:r1,i:I,v:I*r1}];
+    lawHtml = `
+      <div class="rounded bg-blue-50 p-2.5 text-blue-900"><strong>옴의 법칙</strong>: V = I · R → ${V} = ${I.toFixed(3)} × ${r1}</div>
+      <div class="rounded bg-rose-50 p-2.5 text-rose-900"><strong>전력 (3가지 식)</strong>: P = VI = ${(V*I).toFixed(2)} W = I²R = ${(I*I*r1).toFixed(2)} W = V²/R = ${(V*V/r1).toFixed(2)} W ✓</div>
+    `;
+  } else if (pattern === "series3") {
+    Rt = r1 + r2 + r3;
+    const I = V/Rt;
+    branches = [{r:r1,i:I,v:I*r1},{r:r2,i:I,v:I*r2},{r:r3,i:I,v:I*r3}];
+    const vSum = I*r1 + I*r2 + I*r3;
+    lawHtml = `
+      <div class="rounded bg-blue-50 p-2.5 text-blue-900"><strong>합성저항</strong>: R = R₁+R₂+R₃ = ${r1}+${r2}+${r3} = ${Rt} Ω</div>
+      <div class="rounded bg-emerald-50 p-2.5 text-emerald-900"><strong>KVL</strong>: V₁+V₂+V₃ = ${(I*r1).toFixed(2)}+${(I*r2).toFixed(2)}+${(I*r3).toFixed(2)} = ${vSum.toFixed(2)} V ≈ ${V} V ✓</div>
+      <div class="rounded bg-amber-50 p-2.5 text-amber-900"><strong>전압분배</strong>: V_n = V·R_n/R. 큰 저항에 더 큰 전압.<br/>V₁ = ${V}×${r1}/${Rt} = ${(V*r1/Rt).toFixed(2)} V</div>
+    `;
+  } else if (pattern === "parallel3") {
+    Rt = 1/(1/r1 + 1/r2 + 1/r3);
+    const I = V/Rt;
+    const i1 = V/r1, i2 = V/r2, i3 = V/r3;
+    branches = [{r:r1,i:i1,v:V},{r:r2,i:i2,v:V},{r:r3,i:i3,v:V}];
+    lawHtml = `
+      <div class="rounded bg-blue-50 p-2.5 text-blue-900"><strong>합성저항</strong>: 1/R = 1/${r1}+1/${r2}+1/${r3} → R = ${Rt.toFixed(2)} Ω</div>
+      <div class="rounded bg-emerald-50 p-2.5 text-emerald-900"><strong>KCL</strong>: I = I₁+I₂+I₃ = ${i1.toFixed(3)}+${i2.toFixed(3)}+${i3.toFixed(3)} = ${(i1+i2+i3).toFixed(3)} A ≈ ${I.toFixed(3)} A ✓</div>
+      <div class="rounded bg-amber-50 p-2.5 text-amber-900"><strong>전류분배</strong>: 작은 저항에 더 큰 전류.<br/>I₁=${i1.toFixed(2)}, I₂=${i2.toFixed(2)}, I₃=${i3.toFixed(2)} A</div>
+    `;
+  } else if (pattern === "hybrid-sp") {
+    const Rp = (r2*r3)/(r2+r3);
+    Rt = r1 + Rp;
+    const I = V/Rt;
+    const Vp = I*Rp;
+    branches = [{r:r1,i:I,v:I*r1},{r:r2,i:Vp/r2,v:Vp},{r:r3,i:Vp/r3,v:Vp}];
+    lawHtml = `
+      <div class="rounded bg-blue-50 p-2.5 text-blue-900"><strong>합성저항</strong>: R = R₁ + (R₂∥R₃) = ${r1} + ${Rp.toFixed(2)} = ${Rt.toFixed(2)} Ω</div>
+      <div class="rounded bg-emerald-50 p-2.5 text-emerald-900"><strong>KVL</strong>: V = V_R₁ + V_(R₂∥R₃) = ${(I*r1).toFixed(2)} + ${Vp.toFixed(2)} = ${(I*r1+Vp).toFixed(2)} V ≈ ${V} V ✓</div>
+      <div class="rounded bg-amber-50 p-2.5 text-amber-900"><strong>KCL (분기점)</strong>: I = I_R₂ + I_R₃ = ${(Vp/r2).toFixed(3)} + ${(Vp/r3).toFixed(3)} = ${(Vp/r2+Vp/r3).toFixed(3)} A ≈ ${I.toFixed(3)} A ✓</div>
+    `;
+  } else {
+    const Rp = (r1*r2)/(r1+r2);
+    Rt = Rp + r3;
+    const I = V/Rt;
+    const Vp = I*Rp;
+    branches = [{r:r1,i:Vp/r1,v:Vp},{r:r2,i:Vp/r2,v:Vp},{r:r3,i:I,v:I*r3}];
+    lawHtml = `
+      <div class="rounded bg-blue-50 p-2.5 text-blue-900"><strong>합성저항</strong>: R = (R₁∥R₂) + R₃ = ${Rp.toFixed(2)} + ${r3} = ${Rt.toFixed(2)} Ω</div>
+      <div class="rounded bg-emerald-50 p-2.5 text-emerald-900"><strong>KVL</strong>: V = V_(R₁∥R₂) + V_R₃ = ${Vp.toFixed(2)} + ${(I*r3).toFixed(2)} = ${(Vp+I*r3).toFixed(2)} V ≈ ${V} V ✓</div>
+      <div class="rounded bg-amber-50 p-2.5 text-amber-900"><strong>KCL (분기점)</strong>: I = I_R₁ + I_R₂ = ${(Vp/r1).toFixed(3)} + ${(Vp/r2).toFixed(3)} = ${(Vp/r1+Vp/r2).toFixed(3)} A ≈ ${I.toFixed(3)} A ✓</div>
+    `;
+  }
+
+  const Itotal = V/Rt;
+  $("rTotal").textContent = Rt.toFixed(2)+" Ω";
+  $("iTotal").textContent = Itotal.toFixed(3)+" A";
+  $("pTotal").textContent = (V*Itotal).toFixed(2)+" W";
+
+  $("rows").innerHTML = branches.map((b,i)=>`<tr class="border-b border-slate-100"><td class="py-2 font-semibold" style="color:${R_COLORS[i]}">R<sub>${i+1}</sub></td><td>${b.r} Ω</td><td class="text-emerald-700">${b.i.toFixed(3)} A</td><td class="text-blue-700">${b.v.toFixed(2)} V</td><td class="text-rose-700">${(b.i*b.v).toFixed(2)} W</td></tr>`).join("");
+  $("lawCheck").innerHTML = lawHtml;
+
+  drawCircuit();
+}
+
+function drawCircuit() {
+  const svg = $("circuit");
+  const V = $("v").value;
+  let body = source(V);
+
+  if (pattern === "single") {
+    body += L(140, 80, 320, 80);
+    body += R(320, 80, "R₁", R_COLORS[0]);
+    body += L(380, 80, 580, 80);
+    body += L(580, 80, 580, 240);
+    body += L(580, 240, 140, 240);
+  } else if (pattern === "series3") {
+    body += L(140, 80, 200, 80);
+    body += R(200, 80, "R₁", R_COLORS[0]);
+    body += L(260, 80, 340, 80);
+    body += R(340, 80, "R₂", R_COLORS[1]);
+    body += L(400, 80, 480, 80);
+    body += R(480, 80, "R₃", R_COLORS[2]);
+    body += L(540, 80, 580, 80);
+    body += L(580, 80, 580, 240);
+    body += L(580, 240, 140, 240);
+  } else if (pattern === "parallel3") {
+    body += L(140, 80, 220, 80);
+    body += L(220, 80, 220, 240);
+    body += L(220, 80, 280, 80);
+    body += R(280, 80, "R₁", R_COLORS[0]);
+    body += L(340, 80, 500, 80);
+    body += L(220, 160, 280, 160);
+    body += R(280, 160, "R₂", R_COLORS[1]);
+    body += L(340, 160, 500, 160);
+    body += L(220, 240, 280, 240);
+    body += R(280, 240, "R₃", R_COLORS[2]);
+    body += L(340, 240, 500, 240);
+    body += L(500, 80, 500, 240);
+    body += L(500, 240, 140, 240);
+  } else if (pattern === "hybrid-sp") {
+    body += L(140, 80, 200, 80);
+    body += R(200, 80, "R₁", R_COLORS[0]);
+    body += L(260, 80, 340, 80);
+    body += L(340, 80, 340, 180);
+    body += L(340, 120, 380, 120);
+    body += R(380, 120, "R₂", R_COLORS[1]);
+    body += L(440, 120, 500, 120);
+    body += L(340, 180, 380, 180);
+    body += R(380, 180, "R₃", R_COLORS[2]);
+    body += L(440, 180, 500, 180);
+    body += L(500, 80, 500, 180);
+    body += L(500, 80, 580, 80);
+    body += L(580, 80, 580, 240);
+    body += L(580, 240, 140, 240);
+  } else {
+    body += L(140, 80, 220, 80);
+    body += L(220, 80, 220, 180);
+    body += L(220, 120, 260, 120);
+    body += R(260, 120, "R₁", R_COLORS[0]);
+    body += L(320, 120, 380, 120);
+    body += L(220, 180, 260, 180);
+    body += R(260, 180, "R₂", R_COLORS[1]);
+    body += L(320, 180, 380, 180);
+    body += L(380, 80, 380, 180);
+    body += L(380, 80, 440, 80);
+    body += R(440, 80, "R₃", R_COLORS[2]);
+    body += L(500, 80, 580, 80);
+    body += L(580, 80, 580, 240);
+    body += L(580, 240, 140, 240);
+  }
+  svg.innerHTML = body;
+}
+
+setPattern("single");
+</script>
+</body>
+</html>

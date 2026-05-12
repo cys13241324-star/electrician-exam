@@ -145,6 +145,54 @@ export const simulators: Simulator[] = [
     },
   },
   {
+    id: "circuit-builder",
+    title: "회로 종합 분석",
+    description:
+      "단일·직렬·병렬·직병렬 5가지 회로 패턴에서 옴의 법칙·KCL·KVL·전압분배·전류분배를 한 화면에서 검증하며 학습합니다.",
+    subject: "전기이론",
+    topic: "직류회로",
+    status: "available",
+    htmlPath: "/samples/simulator-circuit-builder.html",
+    emoji: "🔧",
+    formula: [
+      {
+        name: "옴의 법칙",
+        expression: "$V = I \\cdot R$",
+        meaning: "전압·전류·저항 중 둘을 알면 나머지가 결정",
+      },
+      {
+        name: "직렬 합성",
+        expression: "$R = R_1 + R_2 + \\cdots$",
+        meaning: "전류 동일, 전압 분배",
+      },
+      {
+        name: "병렬 합성",
+        expression: "$\\dfrac{1}{R} = \\dfrac{1}{R_1} + \\dfrac{1}{R_2} + \\cdots$",
+        meaning: "전압 동일, 전류 분배",
+      },
+      {
+        name: "KCL · KVL",
+        expression: "$\\sum I_{in} = \\sum I_{out}, \\quad \\sum V_{loop} = 0$",
+        meaning: "분기점·폐회로에서 보존되는 두 법칙",
+      },
+    ],
+    example: {
+      question:
+        "$V = 12$ V, $R_1 = 10\\ \\Omega$ 직렬 + ($R_2 = 20\\ \\Omega \\parallel R_3 = 30\\ \\Omega$) 회로의 합성저항과 총 전류는?",
+      given: [
+        "$V = 12$ V",
+        "$R_1 = 10\\ \\Omega$ (직렬)",
+        "$R_2 = 20\\ \\Omega$, $R_3 = 30\\ \\Omega$ (병렬)",
+      ],
+      solution: [
+        "$R_{23} = \\dfrac{R_2 \\cdot R_3}{R_2 + R_3} = \\dfrac{20 \\times 30}{50} = 12\\ \\Omega$",
+        "$R = R_1 + R_{23} = 10 + 12 = 22\\ \\Omega$",
+        "$I = \\dfrac{V}{R} = \\dfrac{12}{22} \\approx 0.545$ A",
+      ],
+      answer: "$R = 22\\ \\Omega$, $I \\approx 0.545$ A",
+    },
+  },
+  {
     id: "series-parallel",
     title: "직병렬 회로",
     description:

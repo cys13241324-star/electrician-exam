@@ -9,6 +9,9 @@
   body { background:#f8fafc; font-family:'Pretendard',system-ui,sans-serif; }
   .panel { background:#fff; border-radius:12px; box-shadow:0 4px 6px -1px rgb(0 0 0 / 0.08); }
   input[type=range]{accent-color:#2563eb;}
+  .mode-btn { transition: all 0.15s; }
+  .mode-btn.active { background:#fff; box-shadow:0 1px 3px rgb(0 0 0 / 0.12); color:#1e40af; }
+  #circuit line, #circuit rect { stroke-linecap: round; stroke-linejoin: round; }
 </style>
 </head>
 <body class="p-4 md:p-8">
@@ -22,13 +25,13 @@
       <div class="lg:col-span-2 panel p-6">
         <div class="flex justify-between items-center mb-4">
           <span class="text-sm font-semibold text-slate-600">회로 구성</span>
-          <div class="flex gap-1 rounded-md bg-slate-100 p-1 text-xs font-semibold">
+          <div class="flex gap-1 rounded-md bg-slate-100 p-1 text-xs font-semibold text-slate-600">
             <button data-mode="series" class="mode-btn px-3 py-1 rounded">직렬</button>
             <button data-mode="parallel" class="mode-btn px-3 py-1 rounded">병렬</button>
             <button data-mode="hybrid" class="mode-btn px-3 py-1 rounded">직병렬</button>
           </div>
         </div>
-        <svg id="circuit" viewBox="0 0 600 280" class="w-full h-auto bg-white rounded-lg border border-slate-100"></svg>
+        <svg id="circuit" viewBox="0 0 720 320" preserveAspectRatio="xMidYMid meet" class="w-full h-auto bg-white rounded-lg border border-slate-100"></svg>
 
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-5 text-center">
           <div class="bg-blue-50 rounded-lg p-3"><div class="text-xs text-blue-700">합성 저항</div><div id="rTotal" class="text-lg font-bold text-blue-900">0 Ω</div></div>
@@ -80,11 +83,11 @@ let mode = "series";
 
 document.querySelectorAll(".mode-btn").forEach(b => b.addEventListener("click", () => {
   mode = b.dataset.mode;
-  document.querySelectorAll(".mode-btn").forEach(x => x.classList.remove("bg-white","shadow"));
-  b.classList.add("bg-white","shadow");
+  document.querySelectorAll(".mode-btn").forEach(x => x.classList.remove("active"));
+  b.classList.add("active");
   render();
 }));
-document.querySelector('[data-mode="series"]').classList.add("bg-white","shadow");
+document.querySelector('[data-mode="series"]').classList.add("active");
 
 ["v","r1","r2","r3"].forEach(id => $(id).addEventListener("input", render));
 
@@ -120,59 +123,83 @@ function render() {
 
 function drawCircuit(m) {
   const svg = $("circuit");
-  let body = `
-    <text x="60" y="145" text-anchor="middle" font-size="22" font-weight="bold" fill="#0f172a">${$("v").value}V</text>
-    <circle cx="60" cy="140" r="30" fill="none" stroke="#0f172a" stroke-width="2"/>
-    <line x1="60" y1="110" x2="60" y2="100" stroke="#0f172a" stroke-width="2"/>
-    <line x1="60" y1="180" x2="60" y2="190" stroke="#0f172a" stroke-width="2"/>
-    <line x1="60" y1="100" x2="120" y2="100" stroke="#0f172a" stroke-width="2"/>
-    <line x1="60" y1="190" x2="120" y2="190" stroke="#0f172a" stroke-width="2"/>`;
+  const V = $("v").value;
+  const STROKE = "#0f172a";
+  const SW = 2;
 
-  function R(x,y,label,color){
-    return `<g><rect x="${x}" y="${y-12}" width="60" height="24" fill="white" stroke="${color}" stroke-width="2" rx="3"/><text x="${x+30}" y="${y+5}" text-anchor="middle" font-size="13" font-weight="bold" fill="${color}">${label}</text></g>`;
+  // 전원 (좌측 중앙)
+  let body = `
+    <circle cx="80" cy="160" r="32" fill="white" stroke="${STROKE}" stroke-width="${SW}"/>
+    <text x="80" y="166" text-anchor="middle" font-size="18" font-weight="bold" fill="${STROKE}">${V}V</text>
+    <text x="80" y="128" text-anchor="middle" font-size="13" font-weight="bold" fill="#dc2626">+</text>
+    <text x="80" y="206" text-anchor="middle" font-size="16" font-weight="bold" fill="${STROKE}">−</text>
+    <line x1="80" y1="128" x2="80" y2="80" stroke="${STROKE}" stroke-width="${SW}"/>
+    <line x1="80" y1="80" x2="140" y2="80" stroke="${STROKE}" stroke-width="${SW}"/>
+    <line x1="80" y1="192" x2="80" y2="240" stroke="${STROKE}" stroke-width="${SW}"/>
+    <line x1="80" y1="240" x2="140" y2="240" stroke="${STROKE}" stroke-width="${SW}"/>`;
+
+  function R(x, y, label, color) {
+    return `
+      <rect x="${x}" y="${y-12}" width="60" height="24" fill="white" stroke="${color}" stroke-width="${SW}" rx="3"/>
+      <text x="${x+30}" y="${y+5}" text-anchor="middle" font-size="13" font-weight="bold" fill="${color}">${label}</text>`;
+  }
+  function L(x1, y1, x2, y2) {
+    return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${STROKE}" stroke-width="${SW}"/>`;
   }
 
   if (m === "series") {
-    body += `<line x1="120" y1="100" x2="180" y2="100" stroke="#0f172a" stroke-width="2"/>`;
-    body += R(180,100,"R₁","#2563eb");
-    body += `<line x1="240" y1="100" x2="300" y2="100" stroke="#0f172a" stroke-width="2"/>`;
-    body += R(300,100,"R₂","#10b981");
-    body += `<line x1="360" y1="100" x2="420" y2="100" stroke="#0f172a" stroke-width="2"/>`;
-    body += R(420,100,"R₃","#f59e0b");
-    body += `<line x1="480" y1="100" x2="540" y2="100" stroke="#0f172a" stroke-width="2"/>`;
-    body += `<line x1="540" y1="100" x2="540" y2="190" stroke="#0f172a" stroke-width="2"/>`;
-    body += `<line x1="540" y1="190" x2="120" y2="190" stroke="#0f172a" stroke-width="2"/>`;
+    // 위 라인을 따라 R₁ → R₂ → R₃ 직렬
+    body += L(140, 80, 200, 80);
+    body += R(200, 80, "R₁", "#2563eb");
+    body += L(260, 80, 340, 80);
+    body += R(340, 80, "R₂", "#10b981");
+    body += L(400, 80, 480, 80);
+    body += R(480, 80, "R₃", "#f59e0b");
+    body += L(540, 80, 580, 80);
+    // 우측 외곽 + 아래 리턴
+    body += L(580, 80, 580, 240);
+    body += L(580, 240, 140, 240);
   } else if (m === "parallel") {
-    body += `<line x1="120" y1="100" x2="200" y2="100" stroke="#0f172a" stroke-width="2"/>`;
-    body += `<line x1="200" y1="50" x2="200" y2="240" stroke="#0f172a" stroke-width="2"/>`;
-    body += `<line x1="200" y1="60" x2="280" y2="60" stroke="#0f172a" stroke-width="2"/>`;
-    body += R(280,60,"R₁","#2563eb");
-    body += `<line x1="340" y1="60" x2="420" y2="60" stroke="#0f172a" stroke-width="2"/>`;
-    body += `<line x1="200" y1="140" x2="280" y2="140" stroke="#0f172a" stroke-width="2"/>`;
-    body += R(280,140,"R₂","#10b981");
-    body += `<line x1="340" y1="140" x2="420" y2="140" stroke="#0f172a" stroke-width="2"/>`;
-    body += `<line x1="200" y1="220" x2="280" y2="220" stroke="#0f172a" stroke-width="2"/>`;
-    body += R(280,220,"R₃","#f59e0b");
-    body += `<line x1="340" y1="220" x2="420" y2="220" stroke="#0f172a" stroke-width="2"/>`;
-    body += `<line x1="420" y1="60" x2="420" y2="220" stroke="#0f172a" stroke-width="2"/>`;
-    body += `<line x1="420" y1="100" x2="540" y2="100" stroke="#0f172a" stroke-width="2"/>`;
-    body += `<line x1="540" y1="100" x2="540" y2="190" stroke="#0f172a" stroke-width="2"/>`;
-    body += `<line x1="540" y1="190" x2="120" y2="190" stroke="#0f172a" stroke-width="2"/>`;
+    // 좌측 분기 노드 (220, 80~240)
+    body += L(140, 80, 220, 80);
+    body += L(220, 80, 220, 240);
+    // R₁ 가지 (y=80, 위 라인과 동일)
+    body += L(220, 80, 280, 80);
+    body += R(280, 80, "R₁", "#2563eb");
+    body += L(340, 80, 500, 80);
+    // R₂ 가지 (y=160, 중앙)
+    body += L(220, 160, 280, 160);
+    body += R(280, 160, "R₂", "#10b981");
+    body += L(340, 160, 500, 160);
+    // R₃ 가지 (y=240, 아래 라인과 동일)
+    body += L(220, 240, 280, 240);
+    body += R(280, 240, "R₃", "#f59e0b");
+    body += L(340, 240, 500, 240);
+    // 우측 합류 노드 (500, 80~240)
+    body += L(500, 80, 500, 240);
+    // 아래 리턴
+    body += L(500, 240, 140, 240);
   } else {
-    body += `<line x1="120" y1="100" x2="180" y2="100" stroke="#0f172a" stroke-width="2"/>`;
-    body += R(180,100,"R₁","#2563eb");
-    body += `<line x1="240" y1="100" x2="300" y2="100" stroke="#0f172a" stroke-width="2"/>`;
-    body += `<line x1="300" y1="60" x2="300" y2="160" stroke="#0f172a" stroke-width="2"/>`;
-    body += `<line x1="300" y1="60" x2="380" y2="60" stroke="#0f172a" stroke-width="2"/>`;
-    body += R(380,60,"R₂","#10b981");
-    body += `<line x1="440" y1="60" x2="500" y2="60" stroke="#0f172a" stroke-width="2"/>`;
-    body += `<line x1="300" y1="160" x2="380" y2="160" stroke="#0f172a" stroke-width="2"/>`;
-    body += R(380,160,"R₃","#f59e0b");
-    body += `<line x1="440" y1="160" x2="500" y2="160" stroke="#0f172a" stroke-width="2"/>`;
-    body += `<line x1="500" y1="60" x2="500" y2="160" stroke="#0f172a" stroke-width="2"/>`;
-    body += `<line x1="500" y1="100" x2="540" y2="100" stroke="#0f172a" stroke-width="2"/>`;
-    body += `<line x1="540" y1="100" x2="540" y2="190" stroke="#0f172a" stroke-width="2"/>`;
-    body += `<line x1="540" y1="190" x2="120" y2="190" stroke="#0f172a" stroke-width="2"/>`;
+    // 직병렬: R₁ 직렬 + (R₂ ∥ R₃) 병렬
+    body += L(140, 80, 200, 80);
+    body += R(200, 80, "R₁", "#2563eb");
+    body += L(260, 80, 340, 80);
+    // 분기 노드 (340, 80~180)
+    body += L(340, 80, 340, 180);
+    // R₂ 가지 (y=120)
+    body += L(340, 120, 380, 120);
+    body += R(380, 120, "R₂", "#10b981");
+    body += L(440, 120, 500, 120);
+    // R₃ 가지 (y=180)
+    body += L(340, 180, 380, 180);
+    body += R(380, 180, "R₃", "#f59e0b");
+    body += L(440, 180, 500, 180);
+    // 합류 노드 (500, 80~180)
+    body += L(500, 80, 500, 180);
+    // 우측 외곽 + 아래 리턴
+    body += L(500, 80, 580, 80);
+    body += L(580, 80, 580, 240);
+    body += L(580, 240, 140, 240);
   }
   svg.innerHTML = body;
 }
