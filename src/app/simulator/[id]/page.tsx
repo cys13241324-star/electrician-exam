@@ -34,7 +34,12 @@ export default async function SimulatorDetailPage({
   const { id } = await params;
   const sim = getSimulator(id);
   if (!sim) notFound();
-  if (sim.status !== "available" || !sim.htmlPath) {
+
+  const hasInteractive = sim.status === "available" && Boolean(sim.htmlPath);
+  const hasRichContent = Boolean(sim.formula?.length || sim.example);
+
+  // 인터랙티브도 없고 풍부한 콘텐츠도 없으면 기존 coming-soon 화면 그대로
+  if (!hasInteractive && !hasRichContent) {
     return (
       <div className="min-h-screen bg-zinc-50">
         <Header />
@@ -93,28 +98,47 @@ export default async function SimulatorDetailPage({
               </div>
             </div>
           </div>
-          <a
-            href={sim.htmlPath}
-            target="_blank"
-            rel="noreferrer"
-            className="hidden flex-shrink-0 rounded-md border border-zinc-300 bg-white px-3 py-1.5 text-xs text-zinc-700 hover:bg-zinc-50 sm:block"
-          >
-            새 창 ↗
-          </a>
+          {hasInteractive && (
+            <a
+              href={sim.htmlPath}
+              target="_blank"
+              rel="noreferrer"
+              className="hidden flex-shrink-0 rounded-md border border-zinc-300 bg-white px-3 py-1.5 text-xs text-zinc-700 hover:bg-zinc-50 sm:block"
+            >
+              새 창 ↗
+            </a>
+          )}
         </div>
       </section>
 
-      {/* 시뮬레이터 iframe */}
-      <section className="bg-zinc-100">
-        <div className="mx-auto max-w-7xl">
-          <iframe
-            src={sim.htmlPath}
-            title={sim.title}
-            className="h-[80vh] w-full bg-white shadow-md"
-            sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
-          />
-        </div>
-      </section>
+      {/* 시뮬레이터 iframe 또는 인터랙티브 준비중 안내 */}
+      {hasInteractive ? (
+        <section className="bg-zinc-100">
+          <div className="mx-auto max-w-7xl">
+            <iframe
+              src={sim.htmlPath}
+              title={sim.title}
+              className="h-[80vh] w-full bg-white shadow-md"
+              sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+            />
+          </div>
+        </section>
+      ) : (
+        <section className="bg-gradient-to-br from-amber-50 to-white">
+          <div className="mx-auto flex max-w-3xl flex-col items-center px-6 py-12 text-center">
+            <span className="rounded-full bg-amber-100 px-3 py-1 text-[11px] font-bold tracking-wider text-amber-800">
+              🛠️ 인터랙티브 시뮬 준비중
+            </span>
+            <h2 className="mt-4 text-xl font-bold text-zinc-900">
+              아직 손으로 조작할 수 있는 시뮬은 준비 중입니다
+            </h2>
+            <p className="mt-2 max-w-xl text-sm leading-6 text-zinc-600">
+              그 동안 아래 핵심 공식과 예제 풀이로 미리 학습해 두세요.
+              시뮬이 완성되면 이 자리에 바로 표시됩니다.
+            </p>
+          </div>
+        </section>
+      )}
 
       <main className="mx-auto max-w-5xl px-6 py-14">
         {/* 핵심 공식 */}

@@ -245,6 +245,464 @@ export const simulators: Simulator[] = [
       answer: "$I_1 = 3$ A, $I_2 = 2$ A, $I = 5$ A",
     },
   },
+  // 전기이론 — 추가 10종 (풀 메타데이터, 공식 + 예제 포함)
+  {
+    id: "voltage-divider",
+    title: "전압분배 법칙",
+    description:
+      "직렬 저항회로에서 각 저항이 어떻게 전압을 나눠 가지는지 슬라이더로 직접 조작해 확인합니다.",
+    subject: "전기이론",
+    topic: "직류회로",
+    status: "coming_soon",
+    emoji: "📊",
+    formula: [
+      {
+        name: "전압분배 공식",
+        expression: "$V_n = V \\cdot \\dfrac{R_n}{R_1 + R_2 + \\cdots + R_k}$",
+        meaning: "특정 저항에 걸리는 전압은 전체 저항 대비 비율만큼 분배",
+      },
+      {
+        name: "두 저항 직렬",
+        expression: "$V_1 = V \\cdot \\dfrac{R_1}{R_1 + R_2}$",
+        meaning: "가장 자주 나오는 형태. $V_2$는 $R_2$로 치환",
+      },
+    ],
+    example: {
+      question:
+        "12 V 전압원에 $R_1 = 4\\ \\Omega$과 $R_2 = 8\\ \\Omega$이 직렬로 연결되었을 때 $R_2$ 양단의 전압은?",
+      given: ["$V = 12$ V", "$R_1 = 4\\ \\Omega$", "$R_2 = 8\\ \\Omega$"],
+      solution: [
+        "$V_2 = V \\cdot \\dfrac{R_2}{R_1 + R_2}$",
+        "$V_2 = 12 \\times \\dfrac{8}{4 + 8}$",
+        "$V_2 = 12 \\times \\dfrac{8}{12} = 8$ V",
+      ],
+      answer: "$V_2 = 8$ V",
+    },
+  },
+  {
+    id: "current-divider",
+    title: "전류분배 법칙",
+    description:
+      "병렬회로에서 각 가지로 흐르는 전류 비율을 시각화. 저항이 작은 쪽에 더 많은 전류가 흐른다는 직관을 굳혀줍니다.",
+    subject: "전기이론",
+    topic: "직류회로",
+    status: "coming_soon",
+    emoji: "🔀",
+    formula: [
+      {
+        name: "두 저항 병렬 분배",
+        expression: "$I_1 = I \\cdot \\dfrac{R_2}{R_1 + R_2}$",
+        meaning: "주의: 분자에 자신이 아닌 상대 저항이 옴 (반비례 관계)",
+      },
+      {
+        name: "$N$개 병렬 일반식",
+        expression: "$I_n = I \\cdot \\dfrac{1/R_n}{\\sum 1/R_k}$",
+        meaning: "컨덕턴스 $G = 1/R$에 비례",
+      },
+    ],
+    example: {
+      question:
+        "전체 전류 6 A가 흐르는 회로에 $R_1 = 2\\ \\Omega$, $R_2 = 4\\ \\Omega$이 병렬일 때 $R_1$에 흐르는 전류는?",
+      given: ["$I = 6$ A", "$R_1 = 2\\ \\Omega$", "$R_2 = 4\\ \\Omega$"],
+      solution: [
+        "$I_1 = I \\cdot \\dfrac{R_2}{R_1 + R_2}$",
+        "$I_1 = 6 \\times \\dfrac{4}{2 + 4}$",
+        "$I_1 = 6 \\times \\dfrac{4}{6} = 4$ A",
+      ],
+      answer: "$I_1 = 4$ A",
+    },
+  },
+  {
+    id: "capacitor",
+    title: "정전용량 (커패시터)",
+    description:
+      "극판 면적·간격·유전체에 따른 정전용량 변화와 충전된 전하·에너지를 함께 학습합니다.",
+    subject: "전기이론",
+    topic: "정전계",
+    status: "coming_soon",
+    emoji: "🔋",
+    formula: [
+      {
+        name: "정전용량",
+        expression: "$C = \\dfrac{Q}{V} = \\dfrac{\\varepsilon A}{d}$",
+        meaning: "$\\varepsilon$ 유전율, $A$ 극판 면적, $d$ 극판 간격",
+      },
+      {
+        name: "축적 에너지",
+        expression: "$W = \\dfrac{1}{2} C V^2 = \\dfrac{Q^2}{2C}$",
+        meaning: "전기장 안에 저장되는 에너지 [J]",
+      },
+    ],
+    example: {
+      question:
+        "정전용량 $C = 100\\ \\mu$F의 커패시터에 50 V를 인가했을 때 축적되는 전하량과 에너지는?",
+      given: ["$C = 100 \\times 10^{-6}$ F", "$V = 50$ V"],
+      solution: [
+        "$Q = CV = 100 \\times 10^{-6} \\times 50 = 5 \\times 10^{-3}$ C",
+        "$W = \\dfrac{1}{2}CV^2 = \\dfrac{1}{2} \\times 10^{-4} \\times 2500$",
+        "$W = 0.125$ J",
+      ],
+      answer: "$Q = 5$ mC, $W = 0.125$ J",
+    },
+  },
+  {
+    id: "inductor",
+    title: "인덕턴스",
+    description:
+      "코일에 흐르는 전류 변화가 만들어내는 유도 기전력과 코일에 저장되는 자기 에너지를 시각화합니다.",
+    subject: "전기이론",
+    topic: "자계",
+    status: "coming_soon",
+    emoji: "🌀",
+    formula: [
+      {
+        name: "자기 인덕턴스",
+        expression: "$L = \\dfrac{N \\Phi}{I}$",
+        meaning: "$N$ 권수, $\\Phi$ 자속, 단위 [H]",
+      },
+      {
+        name: "유도 기전력",
+        expression: "$e = -L \\dfrac{dI}{dt}$",
+        meaning: "전류 변화율에 비례, 부호는 변화에 대항(렌츠)",
+      },
+      {
+        name: "축적 에너지",
+        expression: "$W = \\dfrac{1}{2} L I^2$",
+        meaning: "자기장 안에 저장 [J]",
+      },
+    ],
+    example: {
+      question:
+        "$L = 0.5$ H 코일에 흐르는 전류가 0.01초 동안 2 A에서 6 A로 변할 때 유도 기전력 크기는?",
+      given: ["$L = 0.5$ H", "$dI = 4$ A", "$dt = 0.01$ s"],
+      solution: [
+        "$|e| = L \\dfrac{dI}{dt} = 0.5 \\times \\dfrac{4}{0.01}$",
+        "$|e| = 0.5 \\times 400 = 200$ V",
+      ],
+      answer: "$|e| = 200$ V",
+    },
+  },
+  {
+    id: "rc-transient",
+    title: "RC 과도현상 (시정수)",
+    description:
+      "저항과 커패시터가 직렬일 때 충전·방전 곡선과 시정수 $\\tau = RC$의 의미를 그래프로 익힙니다.",
+    subject: "전기이론",
+    topic: "과도현상",
+    status: "coming_soon",
+    emoji: "📉",
+    formula: [
+      {
+        name: "시정수",
+        expression: "$\\tau = R \\cdot C$",
+        meaning: "$\\tau$ 시간이 지나면 최종값의 63.2% 도달",
+      },
+      {
+        name: "충전 전압",
+        expression: "$v_C(t) = V \\left(1 - e^{-t/\\tau}\\right)$",
+        meaning: "$5\\tau$ 시점에 약 99% 도달 (실용적 정상상태)",
+      },
+      {
+        name: "방전 전압",
+        expression: "$v_C(t) = V_0 \\cdot e^{-t/\\tau}$",
+        meaning: "초기 전압 $V_0$에서 지수 감쇠",
+      },
+    ],
+    example: {
+      question:
+        "$R = 1\\ k\\Omega$, $C = 100\\ \\mu$F의 RC 회로에 10 V를 인가한 직후 시정수와 1 시정수 후의 전압은?",
+      given: ["$R = 10^3\\ \\Omega$", "$C = 10^{-4}$ F", "$V = 10$ V"],
+      solution: [
+        "$\\tau = RC = 10^3 \\times 10^{-4} = 0.1$ s",
+        "$v_C(\\tau) = V(1 - e^{-1}) = 10 \\times (1 - 0.368)$",
+        "$v_C(\\tau) \\approx 6.32$ V",
+      ],
+      answer: "$\\tau = 0.1$ s, $v_C(\\tau) \\approx 6.32$ V",
+    },
+  },
+  {
+    id: "rl-transient",
+    title: "RL 과도현상",
+    description:
+      "저항과 인덕터가 직렬일 때 전류가 0에서 정상값까지 도달하는 과정을 시정수와 함께 시각화합니다.",
+    subject: "전기이론",
+    topic: "과도현상",
+    status: "coming_soon",
+    emoji: "📈",
+    formula: [
+      {
+        name: "시정수",
+        expression: "$\\tau = \\dfrac{L}{R}$",
+        meaning: "RL 회로의 시정수. 단위 [s]",
+      },
+      {
+        name: "전류 상승",
+        expression: "$i(t) = \\dfrac{V}{R}\\left(1 - e^{-t/\\tau}\\right)$",
+        meaning: "정상값 $V/R$로 수렴",
+      },
+    ],
+    example: {
+      question:
+        "$L = 2$ H, $R = 100\\ \\Omega$, $V = 20$ V인 RL 회로에서 1 시정수 후의 전류값은?",
+      given: ["$L = 2$ H", "$R = 100\\ \\Omega$", "$V = 20$ V"],
+      solution: [
+        "$\\tau = L/R = 2/100 = 0.02$ s",
+        "$I_{max} = V/R = 20/100 = 0.2$ A",
+        "$i(\\tau) = 0.2 \\times (1 - 0.368) = 0.2 \\times 0.632$",
+        "$i(\\tau) \\approx 0.126$ A",
+      ],
+      answer: "$i(\\tau) \\approx 0.126$ A",
+    },
+  },
+  {
+    id: "rms-average",
+    title: "실효값과 평균값",
+    description:
+      "정현파 교류의 최댓값·평균값·실효값의 관계를 파형 위에서 동시에 확인합니다.",
+    subject: "전기이론",
+    topic: "교류회로",
+    status: "coming_soon",
+    emoji: "〰️",
+    formula: [
+      {
+        name: "실효값 (RMS)",
+        expression: "$V_{rms} = \\dfrac{V_m}{\\sqrt{2}}$",
+        meaning: "발열 효과 기준. 단상 220 V는 실효값",
+      },
+      {
+        name: "평균값",
+        expression: "$V_{avg} = \\dfrac{2 V_m}{\\pi}$",
+        meaning: "반파 평균 기준 (전파정류 후 값)",
+      },
+      {
+        name: "파형률 · 파고율",
+        expression: "$\\text{파형률} = \\dfrac{V_{rms}}{V_{avg}}, \\ \\text{파고율} = \\dfrac{V_m}{V_{rms}}$",
+        meaning: "정현파: 파형률 1.11, 파고율 1.414",
+      },
+    ],
+    example: {
+      question:
+        "최댓값 311 V의 정현파 전압의 실효값과 평균값을 구하시오.",
+      given: ["$V_m = 311$ V (정현파)"],
+      solution: [
+        "$V_{rms} = \\dfrac{V_m}{\\sqrt{2}} = \\dfrac{311}{1.414}$",
+        "$V_{rms} \\approx 220$ V",
+        "$V_{avg} = \\dfrac{2 V_m}{\\pi} = \\dfrac{622}{3.14}$",
+        "$V_{avg} \\approx 198$ V",
+      ],
+      answer: "$V_{rms} \\approx 220$ V, $V_{avg} \\approx 198$ V",
+    },
+  },
+  {
+    id: "impedance-vector",
+    title: "임피던스 벡터",
+    description:
+      "$R$, $X_L$, $X_C$를 벡터로 합성해 임피던스의 크기와 위상각을 직관적으로 이해합니다.",
+    subject: "전기이론",
+    topic: "교류회로",
+    status: "coming_soon",
+    emoji: "📐",
+    formula: [
+      {
+        name: "임피던스 크기",
+        expression: "$|Z| = \\sqrt{R^2 + (X_L - X_C)^2}$",
+        meaning: "직각삼각형의 빗변과 동일한 구조",
+      },
+      {
+        name: "위상각",
+        expression: "$\\theta = \\tan^{-1}\\!\\dfrac{X_L - X_C}{R}$",
+        meaning: "+면 유도성(전류 지상), −면 용량성(전류 진상)",
+      },
+      {
+        name: "역률",
+        expression: "$\\cos\\theta = \\dfrac{R}{|Z|}$",
+        meaning: "유효전력 비율. 1에 가까울수록 효율적",
+      },
+    ],
+    example: {
+      question:
+        "$R = 8\\ \\Omega$, $X_L = 12\\ \\Omega$, $X_C = 6\\ \\Omega$인 직렬 회로의 임피던스와 역률은?",
+      given: ["$R = 8\\ \\Omega$", "$X_L = 12\\ \\Omega$", "$X_C = 6\\ \\Omega$"],
+      solution: [
+        "$X = X_L - X_C = 6\\ \\Omega$ (유도성)",
+        "$|Z| = \\sqrt{8^2 + 6^2} = \\sqrt{100} = 10\\ \\Omega$",
+        "$\\cos\\theta = 8/10 = 0.8$",
+      ],
+      answer: "$|Z| = 10\\ \\Omega$, 역률 0.8 (유도성)",
+    },
+  },
+  {
+    id: "faraday-law",
+    title: "패러데이 전자유도 법칙",
+    description:
+      "코일 안의 자속 변화가 만들어내는 유도 기전력의 방향과 크기를 시각적으로 확인합니다.",
+    subject: "전기이론",
+    topic: "전자유도",
+    status: "coming_soon",
+    emoji: "🧲",
+    formula: [
+      {
+        name: "유도 기전력",
+        expression: "$e = -N \\dfrac{d\\Phi}{dt}$",
+        meaning: "$N$ 권수, 자속 변화율에 비례. 부호는 렌츠 법칙",
+      },
+      {
+        name: "운동 기전력",
+        expression: "$e = B L v$",
+        meaning: "자장 $B$ 내 길이 $L$ 도체가 속도 $v$로 운동",
+      },
+    ],
+    example: {
+      question:
+        "100회 감긴 코일을 통과하는 자속이 0.05초 동안 0.02 Wb에서 0.06 Wb로 증가했을 때 유도 기전력의 크기는?",
+      given: ["$N = 100$", "$d\\Phi = 0.04$ Wb", "$dt = 0.05$ s"],
+      solution: [
+        "$|e| = N \\dfrac{d\\Phi}{dt}$",
+        "$|e| = 100 \\times \\dfrac{0.04}{0.05}$",
+        "$|e| = 100 \\times 0.8 = 80$ V",
+      ],
+      answer: "$|e| = 80$ V",
+    },
+  },
+  {
+    id: "three-phase-power",
+    title: "3상 교류 전력",
+    description:
+      "Y/Δ 결선 모두에 통용되는 3상 전력 공식과 선간·상 전압·전류 관계를 실시간으로 비교합니다.",
+    subject: "전기이론",
+    topic: "교류회로",
+    status: "coming_soon",
+    emoji: "⚡",
+    formula: [
+      {
+        name: "3상 유효전력",
+        expression: "$P = \\sqrt{3}\\, V_L I_L \\cos\\theta$",
+        meaning: "결선 방식과 무관 (선간·선전류 기준)",
+      },
+      {
+        name: "3상 무효전력",
+        expression: "$Q = \\sqrt{3}\\, V_L I_L \\sin\\theta$",
+        meaning: "단위 [var]",
+      },
+      {
+        name: "3상 피상전력",
+        expression: "$S = \\sqrt{3}\\, V_L I_L$",
+        meaning: "단위 [VA]. $S^2 = P^2 + Q^2$",
+      },
+    ],
+    example: {
+      question:
+        "3상 380 V 평형 부하에 선전류 20 A, 역률 0.8 (지상)이 흐를 때 유효전력은?",
+      given: ["$V_L = 380$ V", "$I_L = 20$ A", "$\\cos\\theta = 0.8$"],
+      solution: [
+        "$P = \\sqrt{3}\\, V_L I_L \\cos\\theta$",
+        "$P = 1.732 \\times 380 \\times 20 \\times 0.8$",
+        "$P \\approx 10{,}530$ W $\\approx 10.5$ kW",
+      ],
+      answer: "$P \\approx 10.5$ kW",
+    },
+  },
+  // 전기이론 — 추가 10종 (템플릿, coming_soon)
+  {
+    id: "thevenin",
+    title: "테브난 정리",
+    description:
+      "복잡한 회로를 등가 전압원과 등가 저항으로 단순화하는 테브난의 정리를 시각화합니다.",
+    subject: "전기이론",
+    topic: "회로해석",
+    status: "coming_soon",
+    emoji: "🧩",
+  },
+  {
+    id: "norton",
+    title: "노턴 정리",
+    description:
+      "테브난의 쌍대 정리. 등가 전류원과 병렬 저항으로 회로를 단순화합니다.",
+    subject: "전기이론",
+    topic: "회로해석",
+    status: "coming_soon",
+    emoji: "🔁",
+  },
+  {
+    id: "superposition",
+    title: "중첩의 원리",
+    description:
+      "전원이 여러 개인 선형 회로에서 각 전원이 단독으로 만드는 전류·전압의 합을 시각화합니다.",
+    subject: "전기이론",
+    topic: "회로해석",
+    status: "coming_soon",
+    emoji: "🪞",
+  },
+  {
+    id: "capacitor-series-parallel",
+    title: "콘덴서 직병렬 합성",
+    description:
+      "여러 콘덴서를 직렬·병렬로 배치할 때 합성 용량과 전하 분배를 직관적으로 익힙니다.",
+    subject: "전기이론",
+    topic: "정전계",
+    status: "coming_soon",
+    emoji: "🔋",
+  },
+  {
+    id: "inductor-series-parallel",
+    title: "인덕터 직병렬 합성",
+    description:
+      "코일을 직렬·병렬로 연결할 때의 합성 인덕턴스를 슬라이더로 비교 학습합니다.",
+    subject: "전기이론",
+    topic: "자계",
+    status: "coming_soon",
+    emoji: "🌀",
+  },
+  {
+    id: "solenoid-field",
+    title: "솔레노이드 자기장",
+    description:
+      "솔레노이드 내부에 만들어지는 균일 자기장과 권선·전류·길이의 관계를 시각화합니다.",
+    subject: "전기이론",
+    topic: "자계",
+    status: "coming_soon",
+    emoji: "🧲",
+  },
+  {
+    id: "toroidal-field",
+    title: "환상자계",
+    description:
+      "도넛 모양 코어에 권선을 감았을 때 만들어지는 자기장 분포를 색상으로 확인합니다.",
+    subject: "전기이론",
+    topic: "자계",
+    status: "coming_soon",
+    emoji: "🍩",
+  },
+  {
+    id: "lenz-law",
+    title: "렌츠의 법칙",
+    description:
+      "유도 전류의 방향이 자속 변화에 어떻게 대항하는지 자석 운동과 함께 시각화합니다.",
+    subject: "전기이론",
+    topic: "전자유도",
+    status: "coming_soon",
+    emoji: "↩️",
+  },
+  {
+    id: "eddy-current",
+    title: "와전류 현상",
+    description:
+      "도체 내부에 흐르는 와전류와 그로 인한 발열·제동 효과를 동영상 슬라이더로 살펴봅니다.",
+    subject: "전기이론",
+    topic: "전자유도",
+    status: "coming_soon",
+    emoji: "🌪️",
+  },
+  {
+    id: "hysteresis",
+    title: "자기 히스테리시스",
+    description:
+      "자성 물질의 B-H 곡선과 잔류자기·보자력의 의미를 그래프로 학습합니다.",
+    subject: "전기이론",
+    topic: "자성체",
+    status: "coming_soon",
+    emoji: "🔄",
+  },
   // 전기기기
   {
     id: "transformer-ratio",
