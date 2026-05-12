@@ -39,7 +39,7 @@ export const simulators: Simulator[] = [
     description:
       "두 점전하에 의한 전기력선의 분포와 전기장의 세기를 마우스로 조작하며 시각적으로 익혀보세요.",
     subject: "전기이론",
-    topic: "전자기 · 정전계",
+    topic: "정전계",
     status: "available",
     htmlPath: "/samples/simulator-electric-field.html",
     emoji: "⚡",
@@ -79,7 +79,7 @@ export const simulators: Simulator[] = [
     description:
       "평행하게 놓인 두 도선에 흐르는 전류의 방향과 크기에 따라 변하는 자기력 작용을 확인합니다.",
     subject: "전기이론",
-    topic: "전자기 · 자계",
+    topic: "자계",
     status: "available",
     htmlPath: "/samples/simulator-parallel-wires.html",
     emoji: "🧲",
@@ -110,7 +110,7 @@ export const simulators: Simulator[] = [
     description:
       "주파수에 따른 임피던스 변화와 공진점에서의 전류·전압 응답을 그래프로 관찰합니다.",
     subject: "전기이론",
-    topic: "교류회로 · 공진",
+    topic: "교류회로",
     status: "available",
     htmlPath: "/samples/simulator-rlc-resonance.html",
     emoji: "📈",
