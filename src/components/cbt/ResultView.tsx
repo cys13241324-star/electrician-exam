@@ -75,6 +75,31 @@ export default function ResultView({ exam }: { exam: Exam }) {
     setLoading(false);
   }, [exam.id]);
 
+  // Hooks는 early return 이전에 모두 호출되어야 함 (React Rules of Hooks)
+  const stats = useMemo(
+    () => (attempt ? computeStats(exam, attempt) : null),
+    [exam, attempt],
+  );
+
+  const weakSubjects = useMemo(() => {
+    if (!stats) return [] as Subject[];
+    return stats.subjects
+      .filter((s) => s.total > 0 && s.correct / s.total < 0.5)
+      .map((s) => s.name);
+  }, [stats]);
+
+  const recommendedFlashcards = useMemo(() => {
+    if (weakSubjects.length === 0) return [];
+    return getAllCards().filter((card) => weakSubjects.includes(card.subject));
+  }, [weakSubjects]);
+
+  const recommendedSimulators = useMemo(() => {
+    if (weakSubjects.length === 0) return [];
+    return simulators.filter(
+      (sim) => sim.status === "available" && weakSubjects.includes(sim.subject),
+    );
+  }, [weakSubjects]);
+
   if (loading) {
     return (
       <div className="flex min-h-screen items-center justify-center text-sm text-zinc-500">
@@ -83,7 +108,7 @@ export default function ResultView({ exam }: { exam: Exam }) {
     );
   }
 
-  if (!attempt) {
+  if (!attempt || !stats) {
     return (
       <div className="mx-auto flex min-h-screen max-w-md flex-col items-center justify-center px-6 text-center">
         <h1 className="text-xl font-bold text-zinc-900">응시 기록이 없습니다</h1>
@@ -100,31 +125,8 @@ export default function ResultView({ exam }: { exam: Exam }) {
     );
   }
 
-  const stats = computeStats(exam, attempt);
   const elapsedMs = (attempt.submittedAt ?? Date.now()) - attempt.startedAt;
   const submittedDisplay = formatDate(attempt.submittedAt ?? Date.now());
-
-  // 취약 과목 찾기
-  const weakSubjects = useMemo(() => {
-    return stats.subjects
-      .filter((s) => s.total > 0 && s.correct / s.total < 0.5) // 정답률 50% 미만인 과목
-      .map((s) => s.name);
-  }, [stats.subjects]);
-
-  // 취약 과목 기반으로 관련 학습 자료 필터링
-  const recommendedFlashcards = useMemo(() => {
-    if (weakSubjects.length === 0) return [];
-    return getAllCards().filter(
-      (card) => weakSubjects.includes(card.subject)
-    );
-  }, [weakSubjects]);
-
-  const recommendedSimulators = useMemo(() => {
-    if (weakSubjects.length === 0) return [];
-    return simulators.filter(
-      (sim) => sim.status === "available" && weakSubjects.includes(sim.subject)
-    );
-  }, [weakSubjects]);
 
   return (
     <div className="min-h-screen bg-zinc-50">

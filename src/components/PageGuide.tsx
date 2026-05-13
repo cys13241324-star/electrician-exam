@@ -78,6 +78,7 @@ export default function PageGuide({
   tone = "indigo",
   storageKey,
   defaultOpen = true,
+  dismissible = true,
   footer,
   className = "",
 }: {
@@ -87,19 +88,22 @@ export default function PageGuide({
   tone?: Tone;
   storageKey: string;
   defaultOpen?: boolean;
+  dismissible?: boolean;
   footer?: React.ReactNode;
   className?: string;
 }) {
   // 첫 렌더는 SSR/hydration mismatch 방지 위해 defaultOpen 사용,
   // 마운트 후 localStorage 값으로 동기화
   const [open, setOpen] = useState<boolean>(defaultOpen);
+  const [dismissed, setDismissed] = useState(false);
   const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
     setHydrated(true);
     try {
       const stored = localStorage.getItem(`page-guide:${storageKey}`);
-      if (stored === "open") setOpen(true);
+      if (stored === "dismissed") setDismissed(true);
+      else if (stored === "open") setOpen(true);
       else if (stored === "closed") setOpen(false);
       // 기록 없으면 defaultOpen 그대로 (첫 방문은 펼침)
     } catch {
@@ -122,26 +126,44 @@ export default function PageGuide({
     }
   }
 
+  function dismiss(e: React.MouseEvent) {
+    e.stopPropagation();
+    setDismissed(true);
+    if (hydrated) {
+      try {
+        localStorage.setItem(`page-guide:${storageKey}`, "dismissed");
+      } catch {
+        /* ignore */
+      }
+    }
+  }
+
+  // 사용자가 영구 숨김한 경우 렌더하지 않음
+  if (dismissed) return null;
+
   const t = TONE_MAP[tone];
 
   return (
     <section
       className={`overflow-hidden rounded-2xl border shadow-sm ${t.wrap} ${className}`}
     >
-      <button
-        type="button"
-        onClick={toggle}
-        aria-expanded={open}
-        className={`flex w-full items-center justify-between gap-3 px-5 py-3.5 text-left transition sm:px-6 ${t.head}`}
+      <div
+        className={`flex w-full items-center justify-between gap-3 px-5 py-3.5 transition sm:px-6 ${t.head}`}
       >
-        <div className="flex items-center gap-3">
+        <button
+          type="button"
+          onClick={toggle}
+          aria-expanded={open}
+          aria-label={open ? "사용법 접기" : "사용법 펼치기"}
+          className="flex flex-1 items-center gap-3 text-left"
+        >
           <span
             className={`flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full text-sm font-bold ${t.badge}`}
             aria-hidden="true"
           >
             💡
           </span>
-          <div>
+          <div className="min-w-0">
             <p className="text-sm font-bold sm:text-base">{title}</p>
             {subtitle && (
               <p className="mt-0.5 text-[11px] font-medium opacity-70 sm:text-xs">
@@ -149,14 +171,34 @@ export default function PageGuide({
               </p>
             )}
           </div>
+        </button>
+        <div className="flex flex-shrink-0 items-center gap-1">
+          <button
+            type="button"
+            onClick={toggle}
+            aria-label={open ? "접기" : "펼치기"}
+            className={`flex h-8 w-8 items-center justify-center rounded-md text-lg font-bold transition hover:bg-white/60 ${t.chevron}`}
+          >
+            <span
+              className={`transition-transform ${open ? "rotate-180" : ""}`}
+              aria-hidden="true"
+            >
+              ⌄
+            </span>
+          </button>
+          {dismissible && (
+            <button
+              type="button"
+              onClick={dismiss}
+              aria-label="이 안내 다시 보지 않기"
+              title="다시 보지 않기"
+              className="flex h-8 w-8 items-center justify-center rounded-md text-sm text-zinc-500 transition hover:bg-white/60 hover:text-zinc-900"
+            >
+              <span aria-hidden="true">✕</span>
+            </button>
+          )}
         </div>
-        <span
-          className={`flex-shrink-0 text-lg font-bold transition-transform ${t.chevron} ${open ? "rotate-180" : ""}`}
-          aria-hidden="true"
-        >
-          ⌄
-        </span>
-      </button>
+      </div>
 
       {open && (
         <div className="border-t border-white/60 bg-white/70 px-5 py-5 sm:px-6 sm:py-6">
