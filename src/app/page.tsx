@@ -8,9 +8,12 @@ import HeroSlider, { type HeroSlide } from "@/components/HeroSlider";
 import Reveal from "@/components/Reveal";
 import BackgroundPattern from "@/components/BackgroundPattern";
 import HowItWorks from "@/components/HowItWorks";
+import FeatureDetails from "@/components/FeatureDetails";
 import Faq from "@/components/Faq";
 import TextbookFloatingPopup from "@/components/TextbookFloatingPopup";
 import StudyPlan from "@/components/StudyPlan";
+import TextbookTrust from "@/components/TextbookTrust";
+import FreeResources from "@/components/FreeResources";
 import FeaturePreviewModal, {
   type FeaturePreview,
 } from "@/components/FeaturePreviewModal";
@@ -340,6 +343,10 @@ export default function Home() {
         </div>
       </section>
 
+      <FeatureDetails />
+
+      <TextbookTrust />
+
       <StudyPlan />
 
       <section className="relative overflow-hidden border-y border-zinc-100 bg-zinc-50">
@@ -356,6 +363,39 @@ export default function Home() {
             </Reveal>
           ))}
         </div>
+      </section>
+
+      <FreeResources />
+
+      {/* /extras 진입 카드 — 별의 콘텐츠 */}
+      <section className="mx-auto max-w-6xl px-6 py-12">
+        <Reveal type="fade-up">
+          <Link
+            href="/extras"
+            className="group relative block overflow-hidden rounded-2xl border border-rose-200 bg-gradient-to-br from-rose-50 via-amber-50 to-white p-6 transition hover:-translate-y-0.5 hover:shadow-lg sm:p-8"
+          >
+            <div className="pointer-events-none absolute -right-8 -top-8 text-[140px] leading-none opacity-10 select-none sm:text-[180px]">
+              💬
+            </div>
+            <div className="relative flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <span className="inline-block rounded-full bg-rose-100 px-3 py-1 text-[11px] font-bold tracking-wide text-rose-700">
+                  🎁 별의 콘텐츠
+                </span>
+                <h3 className="mt-3 text-lg font-bold text-zinc-900 sm:text-xl">
+                  카톡방 · 신문 · 만화로 만나는 전기 이론
+                </h3>
+                <p className="mt-1.5 text-sm leading-6 text-zinc-600">
+                  교재·CBT 외에도 재미있게 학습할 수 있는 콘텐츠를 매주 추가하고 있어요.
+                </p>
+              </div>
+              <span className="inline-flex flex-shrink-0 items-center gap-2 rounded-full bg-rose-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition group-hover:bg-rose-700">
+                보러가기
+                <span className="transition group-hover:translate-x-0.5">→</span>
+              </span>
+            </div>
+          </Link>
+        </Reveal>
       </section>
 
       <Faq />

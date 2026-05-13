@@ -1,13 +1,6 @@
 import Reveal from "./Reveal";
 import BackgroundPattern from "./BackgroundPattern";
 
-const stats = [
-  { label: "누적 판매 부수", value: "12,400+", caption: "전기기능사 단권 기준" },
-  { label: "독자 합격률", value: "87%", caption: "최근 시즌 자가 응답" },
-  { label: "재판 횟수", value: "5쇄", caption: "출간 후 12개월" },
-  { label: "평균 평점", value: "4.8 / 5.0", caption: "온라인 서점 통합" },
-];
-
 const reasons = [
   {
     emoji: "📊",
@@ -33,6 +26,18 @@ const reasons = [
     description:
       "전기 산업 현장 종사자와 자격증 강사진의 공동 검수로, 시험과 실무의 간극을 줄였습니다.",
   },
+  {
+    emoji: "📑",
+    title: "단원별 출제 빈도 표시",
+    description:
+      "각 단원 첫 페이지에 출제 빈도와 학습 우선순위를 ★ 단계로 표기. 시간이 부족할 때 어디부터 봐야 할지 한눈에 보입니다.",
+  },
+  {
+    emoji: "🧭",
+    title: "이론 → 예제 → 실전 흐름",
+    description:
+      "단원마다 핵심 이론 정리 → 단계별 예제 풀이 → 실전 기출 → 오답 체크 노트로 매끄럽게 이어지는 학습 동선.",
+  },
 ];
 
 export default function TextbookTrust() {
@@ -53,33 +58,13 @@ export default function TextbookTrust() {
             <p className="mt-3 text-sm leading-7 text-zinc-300 sm:text-base">
               교재 한 권으로 시작해 합격까지 책임지는 통합 학습 시스템.
               <br className="hidden sm:block" />
-              숫자와 구조로 입증된 신뢰의 이유를 확인해 보세요.
+              아래 6가지 특장점이 합격까지의 거리를 가장 짧게 만듭니다.
             </p>
           </div>
         </Reveal>
 
-        {/* Stats */}
-        <Reveal type="fade-up" delay={100}>
-          <div className="mx-auto mt-12 grid max-w-5xl grid-cols-2 gap-4 sm:grid-cols-4">
-            {stats.map((s) => (
-              <div
-                key={s.label}
-                className="rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur-sm"
-              >
-                <p className="text-xs font-semibold tracking-wider text-amber-300">
-                  {s.label}
-                </p>
-                <p className="mt-2 text-2xl font-black text-white sm:text-3xl">
-                  {s.value}
-                </p>
-                <p className="mt-1 text-[11px] text-zinc-400">{s.caption}</p>
-              </div>
-            ))}
-          </div>
-        </Reveal>
-
         {/* Reasons */}
-        <div className="mt-14 grid grid-cols-1 gap-5 md:grid-cols-2">
+        <div className="mt-12 grid grid-cols-1 gap-5 md:grid-cols-2">
           {reasons.map((r, i) => (
             <Reveal key={i} type="fade-up" delay={i * 100}>
               <article className="group flex h-full gap-4 rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm transition hover:border-amber-400/40 hover:bg-white/10">
@@ -100,10 +85,10 @@ export default function TextbookTrust() {
         {/* Footer note */}
         <Reveal type="fade-up">
           <div className="mt-12 rounded-2xl border border-amber-400/30 bg-gradient-to-r from-amber-500/10 via-orange-500/10 to-rose-500/10 p-6 text-center backdrop-blur-sm">
-            <p className="text-sm text-zinc-300 sm:text-base">
-              <strong className="text-amber-300">안내</strong> · 위 수치는
-              출간 1주년 자료 기준의 자체 집계 mock 값입니다. 정식 통계는
-              출시 후 실시간으로 업데이트됩니다.
+            <p className="text-sm leading-6 text-zinc-300 sm:text-base">
+              <strong className="text-amber-300">📘 출시 준비 중</strong> · 교재
+              출간 일정과 사전 예약 정보는 곧 공지됩니다. 출간 시 사이트 학습
+              데이터와 함께 가장 빠른 합격 동선을 안내해 드릴게요.
             </p>
           </div>
         </Reveal>
