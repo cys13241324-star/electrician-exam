@@ -3,8 +3,6 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import ScrollToTop from "@/components/ScrollToTop";
 import ScrollProgress from "@/components/ScrollProgress";
-import TextbookBanner from "@/components/TextbookBanner";
-import ActivityTicker from "@/components/ActivityTicker";
 import AICoach from "@/components/AICoach";
 
 const geistSans = Geist({
@@ -84,10 +82,8 @@ export default function RootLayout({
           }}
         />
         <ScrollProgress />
-        <TextbookBanner />
         {children}
         <ScrollToTop />
-        <ActivityTicker />
         <AICoach />
       </body>
     </html>
