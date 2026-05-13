@@ -14,6 +14,7 @@ import RecentAttempts from "./RecentAttempts";
 import DailyChallenge from "./DailyChallenge";
 import LearningCurve from "./LearningCurve";
 import BackgroundPattern from "@/components/BackgroundPattern";
+import PageGuide from "@/components/PageGuide";
 
 const COMMUNITY_BASELINE = {
   recentMonthMinutes: 156,
@@ -74,6 +75,53 @@ export default function Dashboard({
           </Link>
         </div>
       </section>
+
+      {/* 사용 가이드 */}
+      <div className="mb-8">
+        <PageGuide
+          storageKey="cbt-dashboard"
+          tone="blue"
+          title="대시보드 둘러보기 — 학습 흐름 한눈에"
+          subtitle="이 화면 하나로 무엇을 더 공부할지, 어디가 약한지를 즉시 파악할 수 있습니다."
+          items={[
+            {
+              icon: "📊",
+              title: "학습 현황 (과목별 정답률)",
+              body: "삼각형 그래프로 전기이론·기기·설비 세 과목의 누적 정답률을 비교합니다. 가장 좁은 변이 가장 약한 과목.",
+            },
+            {
+              icon: "📈",
+              title: "학습량 카운트 — 이용자 평균과 비교",
+              body: "이번 달과 누적 학습 시간이 이용자 평균과 함께 표시됩니다. 평균보다 적다면 일일 도전부터 시작하세요.",
+            },
+            {
+              icon: "🎯",
+              title: "오늘의 일일 도전",
+              body: "매일 새 미션이 주어집니다. 짧지만 누적되면 합격선까지 가장 빠르게 도달하는 루트입니다.",
+            },
+            {
+              icon: "📝",
+              title: "최근 응시 기록",
+              body: "최근에 푼 CBT 회차와 점수가 표시됩니다. 같은 회차를 다시 풀거나, 해설 보기로 바로 이동할 수 있습니다.",
+            },
+            {
+              icon: "🗂",
+              title: "상단 탭 — 학습 / 응시 / 오답노트",
+              body: "'과목별 학습', 'CBT 응시', '오답노트'는 상단 탭과 배너 버튼에서 접근하세요. 오답노트는 응시 후 자동 누적됩니다.",
+            },
+            {
+              icon: "📅",
+              title: "D-Day 위젯",
+              body: "다음 시험일까지 남은 일수가 상단에 표시됩니다. 시험일 설정은 D-Day 위젯을 클릭해서 변경할 수 있습니다.",
+            },
+          ]}
+          footer={
+            <>
+              💡 처음이라면 → <strong>CBT 응시하기</strong>로 1회차를 한 번 풀어보세요. 결과 화면에서 약점 과목이 자동 진단되고, 보완 학습이 추천됩니다.
+            </>
+          }
+        />
+      </div>
 
       {/* Stats row */}
       <div className="mb-6 grid grid-cols-1 gap-6 lg:grid-cols-7">

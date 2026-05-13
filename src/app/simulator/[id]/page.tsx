@@ -6,7 +6,10 @@ import Footer from "@/components/Footer";
 import Reveal from "@/components/Reveal";
 import BackgroundPattern from "@/components/BackgroundPattern";
 import { MathText } from "@/components/Math";
+import PageGuide from "@/components/PageGuide";
 import { getSimulator, simulators } from "@/lib/simulators";
+import { buildPracticeId, countQuestionsBy } from "@/lib/cbt/mockData";
+import type { Subject } from "@/lib/cbt/types";
 
 export async function generateStaticParams() {
   return simulators.map((s) => ({ id: s.id }));
@@ -67,6 +70,19 @@ export default async function SimulatorDetailPage({
   const related = simulators
     .filter((s) => s.id !== sim.id && s.subject === sim.subject && s.status === "available")
     .slice(0, 3);
+
+  // 관련 CBT 모의고사 찾기
+  const cbtSubjectId = (sim.subject === "전기이론" ? "theory" : sim.subject === "전기기기" ? "machinery" : "facility");
+  const cbtTopicId = sim.topic.toLowerCase().replace(/[^a-z0-9]/g, '_');
+
+  const hasRelatedCbt = countQuestionsBy({
+    subjectId: cbtSubjectId,
+    topicId: cbtTopicId,
+  }) > 0;
+  const cbtPracticeId = buildPracticeId({
+    subjectId: cbtSubjectId,
+    topicId: cbtTopicId,
+  });
 
   return (
     <div className="min-h-screen bg-zinc-50">
@@ -141,6 +157,70 @@ export default async function SimulatorDetailPage({
       )}
 
       <main className="mx-auto max-w-5xl px-6 py-14">
+        {/* 사용 가이드 */}
+        <div className="mb-10">
+          {hasInteractive ? (
+            <PageGuide
+              storageKey={`sim-${sim.id}`}
+              tone="indigo"
+              title="이 시뮬레이터 사용법"
+              subtitle="조작 → 관찰 → 공식 확인 → 예제 풀이 순서로 학습하면 가장 효과적입니다."
+              items={[
+                {
+                  icon: "1",
+                  title: "변수를 끝까지 움직여 보세요",
+                  body: "슬라이더를 양 극단으로 밀면 식의 한계와 의미가 보입니다. 0이 되는 지점·발산하는 지점이 시험 함정 포인트.",
+                },
+                {
+                  icon: "2",
+                  title: "공식과 화면을 연결",
+                  body: "아래 '핵심 공식' 카드를 보면서, 시뮬에서 어떤 변수가 어떤 결과를 만들어내는지 직접 확인하세요.",
+                },
+                {
+                  icon: "3",
+                  title: "예제로 손풀이 연습",
+                  body: "'핵심 예제'의 풀이 단계를 따라가며 실제 시험에서 어떻게 적용되는지 익히세요.",
+                },
+                {
+                  icon: "↗",
+                  title: "새 창으로 크게 보기",
+                  body: "데스크탑이라면 우측 상단 '새 창 ↗' 버튼으로 시뮬레이터만 큰 화면으로 띄울 수 있습니다.",
+                },
+              ]}
+              footer={
+                <>
+                  💡 시뮬에서 본 현상은 같은 토픽의 CBT 기출에 그대로 녹아 있습니다. 학습 후 페이지 하단의 <strong>관련 CBT 모의고사</strong>로 바로 연결하세요.
+                </>
+              }
+            />
+          ) : (
+            <PageGuide
+              storageKey={`sim-${sim.id}`}
+              tone="amber"
+              title="공식 · 예제 학습 가이드"
+              subtitle="인터랙티브 시뮬은 준비 중이지만, 핵심 공식과 예제만으로도 충분히 학습할 수 있습니다."
+              defaultOpen={true}
+              items={[
+                {
+                  icon: "📐",
+                  title: "공식부터 외우기",
+                  body: "'핵심 공식' 카드를 보고 각 기호의 의미를 함께 외우세요. 식만 외우면 변형 문제에서 막힙니다.",
+                },
+                {
+                  icon: "✏",
+                  title: "예제 풀이 순서대로",
+                  body: "주어진 값을 확인한 뒤, 풀이 단계를 가리고 직접 풀어보세요. 막히는 단계가 진짜 약점입니다.",
+                },
+                {
+                  icon: "🔁",
+                  title: "다시 풀기",
+                  body: "한 번 본 예제는 며칠 뒤 빈 종이에 다시 풀어보면 기억이 굳어집니다.",
+                },
+              ]}
+            />
+          )}
+        </div>
+
         {/* 핵심 공식 */}
         {sim.formula && sim.formula.length > 0 && (
           <Reveal>
@@ -274,6 +354,32 @@ export default async function SimulatorDetailPage({
                     <p className="mt-1 text-[11px] text-zinc-500">{r.topic}</p>
                   </Link>
                 ))}
+              </div>
+            </section>
+          </Reveal>
+        )}
+
+        {/* 새로운 섹션: 관련 CBT 모의고사 */}
+        {hasRelatedCbt && (
+          <Reveal type="fade-up">
+            <section className="mt-12">
+              <h2 className="text-lg font-bold text-zinc-900">
+                실력 점검: 관련 CBT 모의고사
+              </h2>
+              <div className="mt-5 rounded-2xl border-2 border-green-200 bg-green-50 p-6 shadow-sm">
+                <p className="text-sm font-bold text-green-900">
+                  {sim.subject} · {sim.topic} 관련 문제가 있어요!
+                </p>
+                <p className="mt-2 text-sm leading-6 text-green-800">
+                  시뮬레이터에서 학습한 내용을 바탕으로 실제 문제에 도전해 보세요.
+                </p>
+                <Link
+                  href={`/cbt/${cbtPracticeId}/take`}
+                  className="mt-5 inline-flex items-center rounded-md bg-green-600 px-5 py-2 text-sm font-semibold text-white hover:bg-green-700"
+                >
+                  <span className="mr-2">시험 응시하기</span>
+                  <span>→</span>
+                </Link>
               </div>
             </section>
           </Reveal>

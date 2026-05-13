@@ -10,6 +10,7 @@ import CardStudy from "./CardStudy";
 import CardIndex from "./CardIndex";
 import AICardGenerator from "./AICardGenerator";
 import BackgroundPattern from "@/components/BackgroundPattern";
+import PageGuide from "@/components/PageGuide";
 
 type Mode = "today" | "index" | "stats";
 
@@ -164,6 +165,52 @@ export default function FlashcardApp() {
       </section>
 
       <main className="mx-auto max-w-6xl px-6 py-10">
+        <div className="mb-8">
+          <PageGuide
+            storageKey="flashcards"
+            tone="violet"
+            title="플립카드 200% 활용법"
+            subtitle="간격 반복(SRS)으로 가장 빠르게 외우는 학습 흐름"
+            items={[
+              {
+                icon: "1",
+                title: "카드를 뒤집어 정답 확인",
+                body: "카드를 탭하거나 Space / Enter 키를 누르면 뒷면(정답)이 보입니다. ← → 키로 이전·다음 카드.",
+              },
+              {
+                icon: "2",
+                title: "솔직하게 자가평가 (1~4)",
+                body: "정답을 본 후 '다시(1) / 어려움(2) / 보통(3) / 쉬움(4)'으로 평가하면, 다음 복습 시점이 자동으로 계산됩니다.",
+              },
+              {
+                icon: "3",
+                title: "오늘 학습 탭이 우선",
+                body: "복습 시기가 도래한 카드만 골라서 보여줍니다. 매일 이 탭의 카드만 끝내도 잊혀지지 않습니다.",
+              },
+              {
+                icon: "4",
+                title: "전체 인덱스에서 검색·필터",
+                body: "🗂 탭에서 과목·진도·즐겨찾기로 필터링하고, 키워드 검색으로 원하는 카드를 빠르게 찾으세요.",
+              },
+              {
+                icon: "★",
+                title: "헷갈리는 카드는 즐겨찾기",
+                body: "카드 우측 상단 ☆를 누르면 즐겨찾기. 시험 전날 즐겨찾기만 모아서 마지막 점검에 활용하세요.",
+              },
+              {
+                icon: "✨",
+                title: "AI로 내 약점 카드 만들기",
+                body: "우측 상단 '✨ AI로 카드 만들기'에서 개념을 입력하면 즉시 카드가 생성됩니다. CBT에서 틀린 문제는 자동으로 카드가 됩니다.",
+              },
+            ]}
+            footer={
+              <>
+                💡 <strong>학습 진도는 자동 저장</strong>됩니다 (이 브라우저에). 다른 기기에서 이어 학습하려면 로그인 기능이 곧 추가됩니다.
+              </>
+            }
+          />
+        </div>
+
         {mode === "today" && (
           <TodayMode deck={todayDeck} onProgress={bumpProgress} />
         )}

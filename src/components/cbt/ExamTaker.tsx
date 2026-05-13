@@ -11,6 +11,7 @@ import type {
 } from "@/lib/cbt/types";
 import CalculatorDialog from "./CalculatorDialog";
 import QuestionMapDialog from "./QuestionMapDialog";
+import PageGuide from "@/components/PageGuide";
 
 type FilterMode = "all" | "remaining" | "checked";
 
@@ -312,6 +313,51 @@ export default function ExamTaker({ exam }: { exam: Exam }) {
       <div className="mx-auto flex w-full max-w-7xl flex-1 gap-4 px-6 py-6">
         {/* Question area */}
         <div className="flex flex-1 flex-col gap-4">
+          <PageGuide
+            storageKey="cbt-take"
+            tone="blue"
+            defaultOpen={false}
+            title="CBT 응시 안내 — 처음이라면 펼쳐보세요"
+            subtitle="실제 시험과 동일한 환경입니다. 타이머·계산기·체크박스 활용법을 확인하세요."
+            items={[
+              {
+                icon: "⏱",
+                title: "제한시간 60분, 자동 제출",
+                body: "상단 우측 타이머가 0이 되면 자동 제출됩니다. 남은 시간이 1분 이하면 빨간색으로 강조됩니다.",
+              },
+              {
+                icon: "🔢",
+                title: "계산기 사용 가능",
+                body: "상단 툴바의 '계산기'를 누르면 화면 위에 계산기가 떠 있습니다. 실제 시험에서도 동일하게 제공됩니다.",
+              },
+              {
+                icon: "📐",
+                title: "화면배치 · 글자크기 조절",
+                body: "툴바에서 1단/2단/1문제 모드와 100%/130%/150% 글자크기를 선택할 수 있습니다. 가독성에 맞춰 조절하세요.",
+              },
+              {
+                icon: "☑",
+                title: "헷갈리는 문제는 '체크'",
+                body: "문제 상단 체크박스를 누르면 나중에 다시 볼 문제로 표시됩니다. 우측 상단 '체크 문제' 버튼으로 모아 보기.",
+              },
+              {
+                icon: "🗺",
+                title: "전체문제 / 남은문제로 이동",
+                body: "우측 상단 버튼으로 문제 맵을 열어 미응답 문제만 추려 빠르게 이동할 수 있습니다.",
+              },
+              {
+                icon: "💾",
+                title: "답안은 자동 저장",
+                body: "체크와 답안은 실시간으로 이 브라우저에 저장됩니다. 실수로 새로고침해도 이어서 풀 수 있습니다.",
+              },
+            ]}
+            footer={
+              <>
+                ⚠️ <strong>미응답 문제가 있으면 제출 시 경고</strong>가 한 번 더 표시됩니다. 60문항 중 36문항 이상 정답이면 합격(과목별 과락 없음).
+              </>
+            }
+          />
+
           <div
             className={`grid gap-4 ${
               layoutMode === "double" && visibleQuestions.length > 1

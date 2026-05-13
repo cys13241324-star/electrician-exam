@@ -1,8 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import Link from "next/link";
 import type { Attempt, Exam, Subject } from "@/lib/cbt/types";
+import { getAllCards } from "@/lib/flashcards/data";
+import { simulators } from "@/lib/simulators";
+import { findSubjectByDisplayName, curriculum } from "@/lib/cbt/curriculum";
+import { buildPracticeId } from "@/lib/cbt/mockData";
 
 const PASS_THRESHOLD = 36;
 
@@ -99,6 +103,28 @@ export default function ResultView({ exam }: { exam: Exam }) {
   const stats = computeStats(exam, attempt);
   const elapsedMs = (attempt.submittedAt ?? Date.now()) - attempt.startedAt;
   const submittedDisplay = formatDate(attempt.submittedAt ?? Date.now());
+
+  // 취약 과목 찾기
+  const weakSubjects = useMemo(() => {
+    return stats.subjects
+      .filter((s) => s.total > 0 && s.correct / s.total < 0.5) // 정답률 50% 미만인 과목
+      .map((s) => s.name);
+  }, [stats.subjects]);
+
+  // 취약 과목 기반으로 관련 학습 자료 필터링
+  const recommendedFlashcards = useMemo(() => {
+    if (weakSubjects.length === 0) return [];
+    return getAllCards().filter(
+      (card) => weakSubjects.includes(card.subject)
+    );
+  }, [weakSubjects]);
+
+  const recommendedSimulators = useMemo(() => {
+    if (weakSubjects.length === 0) return [];
+    return simulators.filter(
+      (sim) => sim.status === "available" && weakSubjects.includes(sim.subject)
+    );
+  }, [weakSubjects]);
 
   return (
     <div className="min-h-screen bg-zinc-50">
@@ -228,6 +254,78 @@ export default function ResultView({ exam }: { exam: Exam }) {
             </tbody>
           </table>
         </section>
+
+        {/* 새로운 섹션: 취약점 보완 학습 */}
+        {(recommendedFlashcards.length > 0 || recommendedSimulators.length > 0) && (
+          <section className="mt-8 rounded-2xl border-2 border-rose-200 bg-rose-50 p-6 shadow-sm">
+            <h2 className="text-lg font-bold text-rose-900">
+              🚨 취약점 보완 학습
+            </h2>
+            <p className="mt-2 text-sm leading-6 text-rose-800">
+              틀린 문제들이 많았던 과목들을 보완할 수 있는 학습 자료를 추천합니다.
+            </p>
+
+            {recommendedFlashcards.length > 0 && (
+              <div className="mt-6">
+                <h3 className="text-base font-bold text-rose-800">
+                  플립 암기카드
+                </h3>
+                <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
+                  {recommendedFlashcards.slice(0, 4).map((card) => (
+                    <Link
+                      key={card.id}
+                      href={`/flashcards?id=${card.id}`}
+                      className="group flex items-center gap-3 rounded-lg border border-zinc-200 bg-white p-3 transition hover:border-rose-400 hover:bg-rose-50"
+                    >
+                      <span className="text-xl">🃏</span>
+                      <div>
+                        <p className="text-sm font-bold text-zinc-900 group-hover:text-rose-800">
+                          {card.front}
+                        </p>
+                        <p className="text-xs text-zinc-600 group-hover:text-rose-700">
+                          {card.subject} · {card.topic}
+                        </p>
+                      </div>
+                      <span className="ml-auto text-zinc-400 group-hover:text-rose-600">
+                        ›
+                      </span>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {recommendedSimulators.length > 0 && (
+              <div className="mt-6">
+                <h3 className="text-base font-bold text-rose-800">
+                  이론 시뮬레이터
+                </h3>
+                <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
+                  {recommendedSimulators.slice(0, 4).map((sim) => (
+                    <Link
+                      key={sim.id}
+                      href={`/simulator/${sim.id}`}
+                      className="group flex items-center gap-3 rounded-lg border border-zinc-200 bg-white p-3 transition hover:border-rose-400 hover:bg-rose-50"
+                    >
+                      <span className="text-xl">{sim.emoji}</span>
+                      <div>
+                        <p className="text-sm font-bold text-zinc-900 group-hover:text-rose-800">
+                          {sim.title}
+                        </p>
+                        <p className="text-xs text-zinc-600 group-hover:text-rose-700">
+                          {sim.subject} · {sim.topic}
+                        </p>
+                      </div>
+                      <span className="ml-auto text-zinc-400 group-hover:text-rose-600">
+                        ›
+                      </span>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
+          </section>
+        )}
 
         {/* Action buttons */}
         <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-end">

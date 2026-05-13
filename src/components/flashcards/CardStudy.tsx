@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import {
   formatNextReview,
   rateCard,
@@ -16,6 +17,7 @@ import {
 import type { Flashcard, Rating } from "@/lib/flashcards/types";
 import { MathText } from "@/components/Math";
 import AIExplainPanel from "@/components/AIExplainPanel";
+import { simulators } from "@/lib/simulators";
 
 const SUBJECT_THEME: Record<
   string,
@@ -96,6 +98,16 @@ export default function CardStudy({
   }, [flipped, index]);
 
   if (!card) return null;
+
+  // 관련 시뮬레이터 필터링 (useMemo로 최적화)
+  const relatedSimulators = useMemo(() => {
+    return simulators.filter(
+      (s) =>
+        s.status === "available" &&
+        s.subject === card.subject &&
+        s.topic === card.topic
+    );
+  }, [card.subject, card.topic]);
 
   const map = loadProgress();
   const progress = getOrCreateProgress(map, card.id);
@@ -336,6 +348,45 @@ export default function CardStudy({
               cardBack: card.back,
             }}
           />
+        </div>
+      )}
+
+      {/* 새로운 섹션: 관련 시뮬레이터 */}
+      {flipped && relatedSimulators.length > 0 && (
+        <div
+          className="mx-auto mb-6 max-w-3xl overflow-hidden rounded-2xl border-2 border-indigo-200 bg-white shadow-md"
+          style={{ animation: "flashUp 350ms ease-out 500ms backwards" }}
+        >
+          <header className="flex items-center gap-2 border-b border-indigo-200 bg-indigo-50 px-5 py-2.5">
+            <span className="rounded-md bg-indigo-500 px-2 py-0.5 text-[10px] font-black tracking-wider text-white">
+              💡 관련 시뮬레이터
+            </span>
+            <p className="text-xs font-semibold text-indigo-900">
+              이론을 시각적으로 깊이 학습해 보세요
+            </p>
+          </header>
+          <div className="px-5 py-4 space-y-3 sm:px-6 sm:py-5">
+            {relatedSimulators.map((s) => (
+              <Link
+                key={s.id}
+                href={`/simulator/${s.id}`}
+                className="group flex items-center gap-4 rounded-lg border border-zinc-200 bg-zinc-50 p-3 transition hover:border-indigo-400 hover:bg-indigo-50"
+              >
+                <span className="text-2xl">{s.emoji}</span>
+                <div>
+                  <p className="text-sm font-bold text-zinc-900 group-hover:text-indigo-800">
+                    {s.title}
+                  </p>
+                  <p className="text-xs text-zinc-600 group-hover:text-indigo-700">
+                    {s.description}
+                  </p>
+                </div>
+                <span className="ml-auto text-zinc-400 group-hover:text-indigo-600">
+                  ›
+                </span>
+              </Link>
+            ))}
+          </div>
         </div>
       )}
 
