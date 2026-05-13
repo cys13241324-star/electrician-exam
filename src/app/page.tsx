@@ -8,16 +8,9 @@ import HeroSlider, { type HeroSlide } from "@/components/HeroSlider";
 import Reveal from "@/components/Reveal";
 import BackgroundPattern from "@/components/BackgroundPattern";
 import HowItWorks from "@/components/HowItWorks";
-import FeatureDetails from "@/components/FeatureDetails";
-import CbtSpotlight from "@/components/CbtSpotlight";
-import ElectricExtras from "@/components/ElectricExtras";
-import Testimonials from "@/components/Testimonials";
 import Faq from "@/components/Faq";
 import TextbookFloatingPopup from "@/components/TextbookFloatingPopup";
 import StudyPlan from "@/components/StudyPlan";
-import TextbookTrust from "@/components/TextbookTrust";
-import FreeResources from "@/components/FreeResources";
-import NewsletterCTA from "@/components/NewsletterCTA";
 import FeaturePreviewModal, {
   type FeaturePreview,
 } from "@/components/FeaturePreviewModal";
@@ -344,27 +337,10 @@ export default function Home() {
           })}
         </div>
 
-          <div className="mt-10 flex justify-center">
-            <Link
-              href="#feature-details"
-              className="group inline-flex items-center gap-2 rounded-full bg-zinc-900 px-6 py-3 text-sm font-bold text-white shadow-lg transition hover:bg-zinc-700"
-            >
-              <span>각 도구의 특장점 자세히 보기</span>
-              <span className="transition group-hover:translate-y-0.5">↓</span>
-            </Link>
-          </div>
         </div>
       </section>
 
-      <FeatureDetails />
-
-      <CbtSpotlight />
-
-      <TextbookTrust />
-
       <StudyPlan />
-
-      <ElectricExtras />
 
       <section className="relative overflow-hidden border-y border-zinc-100 bg-zinc-50">
         <BackgroundPattern variant="circuit" color="#3b82f6" opacity={0.08} />
@@ -382,13 +358,7 @@ export default function Home() {
         </div>
       </section>
 
-      <FreeResources />
-
-      <Testimonials />
-
       <Faq />
-
-      <NewsletterCTA />
 
       <section className="mx-auto max-w-6xl px-6 py-16">
         <Reveal type="scale">
