@@ -9,7 +9,7 @@ const categories = [
   { name: "공기업", href: "https://www.addto.co.kr/", external: true },
   { name: "자격증", href: "https://www.addto.co.kr/", external: true },
   { name: "대기업", href: "https://www.addto.co.kr/", external: true },
-  { name: "전기기능사", href: "/cbt", active: true },
+  { name: "전기기능사", href: "/", active: true },
 ];
 
 const utilityLinks = [
