@@ -301,8 +301,7 @@ export const simulators: Simulator[] = [
       "직렬 저항회로에서 각 저항이 어떻게 전압을 나눠 가지는지 슬라이더로 직접 조작해 확인합니다.",
     subject: "전기이론",
     topic: "직류회로",
-    status: "available",
-    htmlPath: "/samples/simulator-voltage-divider.html",
+    status: "coming_soon",
     emoji: "📊",
     formula: [
       {
@@ -335,8 +334,7 @@ export const simulators: Simulator[] = [
       "병렬회로에서 각 가지로 흐르는 전류 비율을 시각화. 저항이 작은 쪽에 더 많은 전류가 흐른다는 직관을 굳혀줍니다.",
     subject: "전기이론",
     topic: "직류회로",
-    status: "available",
-    htmlPath: "/samples/simulator-current-divider.html",
+    status: "coming_soon",
     emoji: "🔀",
     formula: [
       {
