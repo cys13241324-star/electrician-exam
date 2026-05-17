@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>전압분배 법칙 시뮬레이터</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  body { background:#f8fafc; font-family:'Pretendard',system-ui,sans-serif; }
+  .panel { background:#fff; border-radius:12px; box-shadow:0 4px 6px -1px rgb(0 0 0 / 0.08); }
+  input[type=range]{accent-color:#2563eb;}
+  .bar-cell{transition:height .25s ease, background .25s ease;}
+</style>
+</head>
+<body class="p-4 md:p-8">
+  <div class="max-w-6xl mx-auto">
+    <header class="mb-6 text-center">
+      <h1 class="text-3xl font-bold text-slate-800">📊 전압분배 법칙 시뮬레이터</h1>
+      <p class="text-slate-600 mt-2">직렬 저항 회로에서 각 저항이 전체 전압을 어떻게 나눠 가지는지 시각화합니다.</p>
+    </header>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div class="lg:col-span-2 panel p-6">
+        <svg id="diagram" viewBox="0 0 640 280" class="w-full bg-white rounded-lg border border-slate-100"></svg>
+
+        <div class="mt-6">
+          <p class="text-sm font-bold text-slate-700 mb-2">전압 분배 비율</p>
+          <div class="flex items-end gap-2 h-40 px-2 border-b-2 border-slate-200">
+            <div id="bar1" class="bar-cell flex-1 bg-blue-400 rounded-t flex items-end justify-center pb-1 text-white text-xs font-bold" style="height:0%">V₁</div>
+            <div id="bar2" class="bar-cell flex-1 bg-emerald-400 rounded-t flex items-end justify-center pb-1 text-white text-xs font-bold" style="height:0%">V₂</div>
+            <div id="bar3" class="bar-cell flex-1 bg-amber-400 rounded-t flex items-end justify-center pb-1 text-white text-xs font-bold" style="height:0%">V₃</div>
+          </div>
+          <div class="grid grid-cols-3 gap-2 text-center mt-2 text-xs text-slate-600">
+            <div>R₁</div><div>R₂</div><div>R₃</div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-5 text-center">
+          <div class="bg-rose-50 rounded-lg p-3"><div class="text-xs text-rose-700">전원 V</div><div id="vTot" class="text-lg font-bold text-rose-900">-</div></div>
+          <div class="bg-blue-50 rounded-lg p-3"><div class="text-xs text-blue-700">V₁</div><div id="v1Out" class="text-lg font-bold text-blue-900">-</div></div>
+          <div class="bg-emerald-50 rounded-lg p-3"><div class="text-xs text-emerald-700">V₂</div><div id="v2Out" class="text-lg font-bold text-emerald-900">-</div></div>
+          <div class="bg-amber-50 rounded-lg p-3"><div class="text-xs text-amber-700">V₃</div><div id="v3Out" class="text-lg font-bold text-amber-900">-</div></div>
+        </div>
+        <div class="grid grid-cols-2 gap-3 mt-3 text-center">
+          <div class="bg-slate-50 rounded-lg p-3"><div class="text-xs text-slate-600">합성 저항</div><div id="rTot" class="text-lg font-bold text-slate-800">-</div></div>
+          <div class="bg-violet-50 rounded-lg p-3"><div class="text-xs text-violet-700">전류 I</div><div id="iTot" class="text-lg font-bold text-violet-900">-</div></div>
+        </div>
+      </div>
+
+      <div class="panel p-6 space-y-4">
+        <h2 class="font-bold text-slate-800">변수 조절</h2>
+
+        <div>
+          <label class="text-sm flex justify-between"><span>전원 V</span><span id="vVal" class="font-mono">12</span> V</label>
+          <input type="range" id="v" min="1" max="50" value="12" class="w-full">
+        </div>
+        <div>
+          <label class="text-sm flex justify-between"><span class="text-blue-700">R₁</span><span id="r1Val" class="font-mono">4</span> Ω</label>
+          <input type="range" id="r1" min="1" max="50" value="4" class="w-full">
+        </div>
+        <div>
+          <label class="text-sm flex justify-between"><span class="text-emerald-700">R₂</span><span id="r2Val" class="font-mono">8</span> Ω</label>
+          <input type="range" id="r2" min="1" max="50" value="8" class="w-full">
+        </div>
+        <div>
+          <label class="text-sm flex justify-between"><span class="text-amber-700">R₃</span><span id="r3Val" class="font-mono">0</span> Ω</label>
+          <input type="range" id="r3" min="0" max="50" value="0" class="w-full">
+          <p class="text-[10px] text-slate-400 mt-1">R₃=0이면 단락 — 두 저항만 직렬로 동작</p>
+        </div>
+
+        <div class="bg-slate-50 rounded-lg p-3 text-xs text-slate-600 space-y-1">
+          <p class="font-bold text-slate-800">전압분배 공식</p>
+          <p>V<sub>n</sub> = V · R<sub>n</sub> / (R<sub>1</sub>+R<sub>2</sub>+R<sub>3</sub>)</p>
+          <p>큰 저항일수록 더 많은 전압을 가져갑니다.</p>
+          <p>모든 분배 전압의 합은 전원과 같습니다 (KVL).</p>
+        </div>
+
+        <div class="bg-amber-50 border border-amber-200 rounded-lg p-3 text-xs text-amber-800">
+          <p class="font-bold">💡 실험 포인트</p>
+          <p class="mt-1">R₂를 R₁의 두 배로 맞춰보세요. V₂가 V₁의 두 배가 되는지 확인.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+const $ = id => document.getElementById(id);
+["v","r1","r2","r3"].forEach(id => $(id).addEventListener("input", render));
+
+function render() {
+  const V = +$("v").value;
+  const R1 = +$("r1").value, R2 = +$("r2").value, R3 = +$("r3").value;
+  $("vVal").textContent = V;
+  $("r1Val").textContent = R1; $("r2Val").textContent = R2; $("r3Val").textContent = R3;
+
+  const Rtot = R1 + R2 + R3;
+  const I = Rtot > 0 ? V / Rtot : 0;
+  const V1 = I * R1, V2 = I * R2, V3 = I * R3;
+
+  $("vTot").textContent = V.toFixed(1) + " V";
+  $("v1Out").textContent = V1.toFixed(2) + " V";
+  $("v2Out").textContent = V2.toFixed(2) + " V";
+  $("v3Out").textContent = V3.toFixed(2) + " V";
+  $("rTot").textContent = Rtot + " Ω";
+  $("iTot").textContent = I.toFixed(3) + " A";
+
+  // bar heights (% of total V, max 100%)
+  const max = Math.max(V1, V2, V3, 0.001);
+  $("bar1").style.height = (V1/V*100).toFixed(1) + "%";
+  $("bar2").style.height = (V2/V*100).toFixed(1) + "%";
+  $("bar3").style.height = (V3/V*100).toFixed(1) + "%";
+  $("bar1").textContent = "V₁ " + V1.toFixed(1) + "V";
+  $("bar2").textContent = "V₂ " + V2.toFixed(1) + "V";
+  $("bar3").textContent = "V₃ " + V3.toFixed(1) + "V";
+
+  drawCircuit(V, R1, R2, R3, I);
+}
+
+function drawCircuit(V, R1, R2, R3, I) {
+  const svg = $("diagram");
+  let s = "";
+  // 전압원 (left)
+  s += `<rect x="40" y="100" width="50" height="80" fill="none" stroke="#0f172a" stroke-width="2" rx="6"/>`;
+  s += `<text x="65" y="135" text-anchor="middle" font-size="16" font-weight="bold" fill="#dc2626">${V}V</text>`;
+  s += `<text x="65" y="155" text-anchor="middle" font-size="10" fill="#64748b">전원</text>`;
+  // 위쪽 가로선
+  s += `<line x1="90" y1="120" x2="600" y2="120" stroke="#0f172a" stroke-width="2"/>`;
+  // 아래쪽 가로선
+  s += `<line x1="90" y1="180" x2="600" y2="180" stroke="#0f172a" stroke-width="2"/>`;
+  // 우측 세로선
+  s += `<line x1="600" y1="120" x2="600" y2="180" stroke="#0f172a" stroke-width="2"/>`;
+
+  // 저항 3개 (위쪽 라인에 직렬)
+  drawResistor(150, R1, "R₁", "#3b82f6");
+  drawResistor(310, R2, "R₂", "#10b981");
+  drawResistor(470, R3, "R₃", "#f59e0b");
+
+  function drawResistor(cx, R, label, color) {
+    // ziz-zag (간단하게 박스)
+    s += `<rect x="${cx-40}" y="105" width="80" height="30" fill="white" stroke="${color}" stroke-width="3" rx="4"/>`;
+    s += `<text x="${cx}" y="125" text-anchor="middle" font-size="13" font-weight="bold" fill="${color}">${label}=${R}Ω</text>`;
+    // 전압 표시 (저항 위쪽)
+    const Vn = I * R;
+    s += `<text x="${cx}" y="92" text-anchor="middle" font-size="11" fill="#475569">${Vn.toFixed(2)}V</text>`;
+  }
+
+  // 전류 흐름 애니메이션
+  const flow = Math.min(16, Math.max(2, I*8));
+  for (let n=0; n<flow; n++) {
+    const x = 95 + n*30;
+    if (x < 595) {
+      const dur = (0.4 + 1/Math.max(I,0.1)*0.05).toFixed(2);
+      s += `<circle cx="${x}" cy="120" r="3" fill="#8b5cf6"><animate attributeName="cx" from="${x}" to="${x+30}" dur="${dur}s" repeatCount="indefinite"/></circle>`;
+    }
+  }
+  s += `<text x="320" y="210" text-anchor="middle" font-size="13" font-weight="bold" fill="#8b5cf6">I = ${I.toFixed(3)} A →</text>`;
+  s += `<text x="320" y="235" text-anchor="middle" font-size="11" fill="#64748b">V = V₁ + V₂ + V₃ (KVL)</text>`;
+
+  svg.innerHTML = s;
+}
+
+render();
+</script>
+</body>
+</html>
