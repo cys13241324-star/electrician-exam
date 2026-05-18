@@ -48,7 +48,7 @@ type Question = {
   학습포인트블록?: Block[];
 };
 
-const ALL: Question[] = questionsData as Question[];
+const ALL: Question[] = questionsData as unknown as Question[];
 
 const 과목명 = {
   theory: "전기이론",

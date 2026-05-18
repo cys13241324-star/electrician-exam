@@ -19,7 +19,7 @@ import questionsData from "@/data/questions.json";
 import type { Question, AnswerNum } from "./types";
 import SolveResult from "./SolveResult";
 
-const ALL: Question[] = questionsData as Question[];
+const ALL: Question[] = questionsData as unknown as Question[];
 
 const 과목명: Record<string, string> = {
   theory: "전기이론",
