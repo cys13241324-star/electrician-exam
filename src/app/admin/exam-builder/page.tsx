@@ -11,6 +11,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import questionsData from "@/data/questions.json";
 
 type Question = {
@@ -49,6 +50,7 @@ function uniq(vals: (string | number | undefined)[]): string[] {
 }
 
 export default function ExamBuilderPage() {
+  const router = useRouter();
   const [title, setTitle] = useState("전기기능사 CBT 모의고사");
   const [duration, setDuration] = useState(60);
 
@@ -154,6 +156,11 @@ export default function ExamBuilderPage() {
     a.download = `exam_${title}_${picked.length}문항.json`;
     a.click();
     URL.revokeObjectURL(a.href);
+  }
+
+  function startExam() {
+    sessionStorage.setItem("cbt_exam_run", JSON.stringify(buildExam()));
+    router.push("/admin/exam-builder/run");
   }
 
   function saveLocal() {
@@ -333,6 +340,13 @@ export default function ExamBuilderPage() {
               <span>시험 구성 ({picked.length})</span>
               <span className="flex gap-2">
                 <button
+                  onClick={startExam}
+                  disabled={picked.length === 0}
+                  className="rounded bg-indigo-600 px-3 py-1 text-xs font-semibold text-white hover:bg-indigo-700 disabled:opacity-40"
+                >
+                  ▶ 응시 시작
+                </button>
+                <button
                   onClick={saveLocal}
                   disabled={picked.length === 0}
                   className="rounded bg-emerald-600 px-3 py-1 text-xs text-white hover:bg-emerald-700 disabled:opacity-40"
@@ -386,8 +400,10 @@ export default function ExamBuilderPage() {
         </div>
 
         <p className="mt-4 text-xs text-zinc-500">
-          ※ 생성된 시험은 JSON으로 내보내거나 브라우저에 저장됩니다. 라이브 시험
-          목록(/cbt/exams) 연동·DB 저장은 개발 작업 항목입니다.
+          ※ <b>정규 모드</b>: 60문항 코드를 그대로 선택. <b>소팅 모드</b>:
+          과목·빈출도·난이도·연도/회차 필터로 구성. “응시 시작” 시 결과는
+          <b> 점수 없이</b> 정답 수 + 취약점(과목·유형·빈출도별) + 해설로
+          제공됩니다. JSON/​localStorage 저장 후 라이브 연동은 개발 항목입니다.
         </p>
       </div>
     </div>
