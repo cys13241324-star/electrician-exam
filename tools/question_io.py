@@ -156,8 +156,7 @@ def json_list_to_xlsx(items: list[dict], path: str):
     from openpyxl.styles import Font, Alignment
     # 기본 헤더 (build_template_v3.py와 동일 순서)
     headers = [
-        '번호',
-        '과정', '연도', '회차', '사용교재', '교재구분',
+        '과정', '연도', '회차', '번호', '사용교재', '교재구분',
         '문항코드',
         '강의주소',
         '과목ID', '챕터', '대유형', '중유형', '내용',
