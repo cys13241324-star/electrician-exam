@@ -295,7 +295,7 @@ region_card(s, Inches(0.4), card_y, card_w, card_h, C_STEM,
             '📝', '발문 (3컬럼)',
             [
                 '· 발문 / 조건 / 발문그림',
-                '· HTML 허용 (<sub> <sup> <i>로 수식 표현)',
+                '· HTML + LaTeX 수식 ($…$ 인라인 / $$…$$ 디스플레이)',
                 '· 그림 필요 시 [필요: 회로도] 마커',
             ], title_size=12)
 

@@ -12,23 +12,14 @@
 
 import { useRef, useState, useEffect } from "react";
 import type { Question, AnswerNum, SolveResultProps, Block } from "./types";
+import HtmlBlock from "@/components/HtmlContent";
 
 const CIRCLED = ["①", "②", "③", "④"] as const;
 
 /* ------------------------------------------------------------------ */
 /* 헬퍼: HTML / 이미지 / 블록 시퀀스                                    */
 /* ------------------------------------------------------------------ */
-function HtmlBlock({ html, className }: { html: string; className?: string }) {
-  if (!html?.trim()) return null;
-  return (
-    <div
-      className={`prose prose-sm max-w-none [&_table]:my-2 [&_table]:border-collapse [&_th]:border [&_th]:border-slate-300 [&_th]:bg-slate-100 [&_th]:px-2 [&_th]:py-1 [&_td]:border [&_td]:border-slate-300 [&_td]:px-2 [&_td]:py-1 [&_sub]:text-[0.75em] [&_sup]:text-[0.75em] [&_ol]:list-decimal [&_ol]:pl-5 [&_ul]:list-disc [&_ul]:pl-5 [&_li]:my-1 ${
-        className ?? ""
-      }`}
-      dangerouslySetInnerHTML={{ __html: html }}
-    />
-  );
-}
+// HtmlBlock → 공용 컴포넌트(@/components/HtmlContent): HTML + KaTeX($…$/$$…$$) 렌더
 
 function ImgPlaceholder({ value, label }: { value: string; label: string }) {
   if (!value?.trim()) return null;

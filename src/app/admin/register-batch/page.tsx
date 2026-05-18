@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import Link from "next/link";
+import HtmlBlock from "@/components/HtmlContent";
 
 /**
  * 일괄 등록 페이지 — v3 양식 xlsx 업로드 → 여러 문항 한 번에 검수·등록.
@@ -47,17 +48,7 @@ type Question = {
   [k: string]: unknown;
 };
 
-function HtmlBlock({ html, className }: { html: string; className?: string }) {
-  if (!html?.trim()) return null;
-  return (
-    <div
-      className={`prose prose-sm max-w-none [&_table]:my-2 [&_table]:border-collapse [&_th]:border [&_th]:border-slate-300 [&_th]:bg-slate-100 [&_th]:px-2 [&_th]:py-1 [&_td]:border [&_td]:border-slate-300 [&_td]:px-2 [&_td]:py-1 ${
-        className ?? ""
-      }`}
-      dangerouslySetInnerHTML={{ __html: html }}
-    />
-  );
-}
+// HtmlBlock → 공용 컴포넌트(@/components/HtmlContent): HTML + KaTeX($…$/$$…$$) 렌더
 
 function ImgPlaceholder({ value, label }: { value: string; label: string }) {
   if (!value?.trim()) return null;

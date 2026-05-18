@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import questionsData from "@/data/questions.json";
+import HtmlBlock from "@/components/HtmlContent";
 
 /**
  * 시험 페이지 — 문항 카탈로그 / 라이브러리.
@@ -58,17 +59,7 @@ const 과목명 = {
 
 type SortKey = "문항코드" | "과목" | "출처" | "빈출도" | "난이도";
 
-function HtmlBlock({ html, className }: { html: string; className?: string }) {
-  if (!html?.trim()) return null;
-  return (
-    <div
-      className={`prose prose-sm max-w-none [&_table]:my-2 [&_table]:border-collapse [&_th]:border [&_th]:border-slate-300 [&_th]:bg-slate-100 [&_th]:px-2 [&_th]:py-1 [&_td]:border [&_td]:border-slate-300 [&_td]:px-2 [&_td]:py-1 ${
-        className ?? ""
-      }`}
-      dangerouslySetInnerHTML={{ __html: html }}
-    />
-  );
-}
+// HtmlBlock → 공용 컴포넌트(@/components/HtmlContent): HTML + KaTeX($…$/$$…$$) 렌더
 
 function ImgPlaceholder({ value, label }: { value: string; label: string }) {
   if (!value?.trim()) return null;

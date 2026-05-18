@@ -18,6 +18,7 @@ import { useRouter } from "next/navigation";
 import questionsData from "@/data/questions.json";
 import type { Question, AnswerNum } from "./types";
 import SolveResult from "./SolveResult";
+import HtmlBlock from "@/components/HtmlContent";
 
 const ALL: Question[] = questionsData as unknown as Question[];
 
@@ -28,23 +29,7 @@ const 과목명: Record<string, string> = {
 };
 
 /** 발문·보기·조건 등의 HTML(<i>, <sub>, <sup>, <strong>, <br>, <table>…)을 안전한 톤으로 렌더 */
-function HtmlBlock({
-  html,
-  className,
-}: {
-  html: string;
-  className?: string;
-}) {
-  if (!html?.trim()) return null;
-  return (
-    <div
-      className={`prose prose-sm max-w-none [&_table]:my-2 [&_table]:border-collapse [&_th]:border [&_th]:border-slate-300 [&_th]:bg-slate-100 [&_th]:px-2 [&_th]:py-1 [&_td]:border [&_td]:border-slate-300 [&_td]:px-2 [&_td]:py-1 ${
-        className ?? ""
-      }`}
-      dangerouslySetInnerHTML={{ __html: html }}
-    />
-  );
-}
+// HtmlBlock → 공용 컴포넌트(@/components/HtmlContent): HTML + KaTeX($…$/$$…$$) 렌더
 
 /** 그림 — 실제 파일이면 /questions/<filename>, "[필요: …]" 마커면 노란 점선 박스 */
 function ImgPlaceholder({ value, label }: { value: string; label: string }) {
