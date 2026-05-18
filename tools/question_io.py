@@ -113,8 +113,8 @@ def _add_ids(blocks: list[dict]) -> list[dict]:
 # ============== 엑셀 파일 → JSON 리스트 ==============
 # v3 양식 1행은 그룹 헤더(병합)라 "출처/코드/강의/..." 같은 한글 라벨이 옴.
 # 그 라벨이 컬럼명으로 다시 등장하는지 보고 v3(2단)인지 v2(1단)인지 자동 판별.
-_GROUP_HEADER_LABELS = {'출처', '코드', '강의', '분류', '속성', '발문', '보기',
-                         '정답', '해설', '오답분석', '학습POINT'}
+_GROUP_HEADER_LABELS = {'번호', '출처', '코드', '강의', '분류', '속성', '발문',
+                         '보기', '정답', '해설', '오답분석', '학습POINT'}
 
 def xlsx_to_json_list(path: str) -> list[dict]:
     """엑셀 v2/v3 양식 → 문항 JSON 배열. 1행이 그룹 헤더이면 2행을 헤더로."""
@@ -124,9 +124,14 @@ def xlsx_to_json_list(path: str) -> list[dict]:
         raise ValueError(f'시트 "문항등록" 없음: {wb.sheetnames}')
     ws = wb['문항등록']
 
-    # v3 판별: 1행 첫 셀이 그룹 헤더 라벨이면 2단 헤더 양식
-    first_cell = ws.cell(1, 1).value
-    header_row = 2 if first_cell in _GROUP_HEADER_LABELS else 1
+    # v3 판별: 2행에 컬럼 헤더('문항코드'/'발문')가 있으면 1행은 그룹 헤더(2단).
+    # ('번호'처럼 그룹 라벨과 컬럼명이 같을 수 있어 1행만으로는 판별 불가)
+    def _row_vals(r):
+        return {str(ws.cell(r, c).value or '').strip()
+                for c in range(1, ws.max_column + 1)}
+    row2 = _row_vals(2)
+    is_v3 = bool({'문항코드', '발문'} & row2)
+    header_row = 2 if is_v3 else 1
     data_start = header_row + 1
 
     headers = [ws.cell(header_row, c).value for c in range(1, ws.max_column + 1)]
@@ -151,6 +156,7 @@ def json_list_to_xlsx(items: list[dict], path: str):
     from openpyxl.styles import Font, Alignment
     # 기본 헤더 (build_template_v3.py와 동일 순서)
     headers = [
+        '번호',
         '과정', '연도', '회차', '사용교재', '교재구분',
         '문항코드',
         '강의주소',

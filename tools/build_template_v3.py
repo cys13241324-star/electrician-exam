@@ -2,7 +2,7 @@
 v3 양식 — 가시성 강화 버전.
 
 변경점 vs v2:
-  - "번호" 컬럼 제거 (시험 페이지가 문항코드 순으로 정렬)
+  - "번호" 컬럼: 문항 일련번호 (시험지 표시·정렬용)
   - 메타 영역 확장: 출처(5) + 코드(1) + 분류(5) + 속성(5) = 16컬럼
   - 해설·학습포인트는 단일 컬럼에 HTML 그대로 작성.
     · 그림은 본문 어디에나 `<img src="파일명">` 으로 삽입 (여러 개·교차 가능)
@@ -81,6 +81,8 @@ def lfill(key):
 # ============== 컬럼 정의 ==============
 # (헤더명, 너비, 카테고리키, 그룹라벨, 안내)
 COLS = [
+    # ----- 번호 (1) -----
+    ('번호',          6, 'code',  '번호',     '문항 일련번호 (1, 2, 3 …). 시험지 표시·정렬용'),
     # ----- 출처 (5) -----
     ('과정',         11, 'meta',  '출처',     '자격증/과정명'),
     ('연도',          7, 'meta',  '출처',     '4자리 (2022)'),
@@ -227,6 +229,7 @@ SAMPLES = [
 # ============== 사용가이드 ==============
 GUIDE_ROWS = [
     ('컬럼', '설명', '필수', '예시'),
+    ('번호', '문항 일련번호 (1, 2, 3 …). 시험지 표시·정렬용', '권장', '1'),
     ('과정', '자격증 / 과정명', '필수', '전기기능사'),
     ('연도', '시험 연도 (4자리)', '필수', '2022'),
     ('회차', '시험 회차 (1·2·3·4)', '필수', '1'),
@@ -343,15 +346,11 @@ def build_workbook(out_path):
     ws.row_dimensions[2].height = 32
 
     # ----- 컬럼 그룹화 (outline) — 출처/분류/속성은 접을 수 있게 -----
-    # 출처 (1~5)
-    for k in range(1, 6):
-        ws.column_dimensions[get_column_letter(k)].outlineLevel = 1
-    # 분류 (8~12)  — 코드(6)·강의(7)는 항상 보이게
-    for k in range(8, 13):
-        ws.column_dimensions[get_column_letter(k)].outlineLevel = 1
-    # 속성 (13~17)
-    for k in range(13, 18):
-        ws.column_dimensions[get_column_letter(k)].outlineLevel = 1
+    # 그룹 라벨 기준으로 계산 (컬럼 추가/이동에 안전)
+    _collapsible = {'출처', '분류', '속성'}
+    for c, (_n, _w, _t, group, _h) in enumerate(COLS, 1):
+        if group in _collapsible:
+            ws.column_dimensions[get_column_letter(c)].outlineLevel = 1
 
     # ----- 3행~ 샘플 데이터 -----
     def col_idx(name):
@@ -446,6 +445,7 @@ def build_workbook(out_path):
     leg = wb.create_sheet('색상범례')
     legend_rows = [
         ('영역', '컬러', '컬럼', '용도'),
+        ('번호', '인디고', '번호', '문항 일련번호 (시험지 표시·정렬용)'),
         ('출처', '회색', '과정·연도·회차·사용교재·교재구분', '시험 출처 정보'),
         ('코드', '인디고', '문항코드', '정렬·식별 키'),
         ('강의', '바이올렛', '강의주소', '문제 풀이 화면 상단 강의 버튼 URL'),
@@ -461,7 +461,7 @@ def build_workbook(out_path):
     ]
     for r in legend_rows:
         leg.append(r)
-    tones_for_legend = [None, 'meta', 'code', 'video', 'class', 'attr', 'stem', 'img', 'opt', 'ans', 'exp', 'wr', 'lp']
+    tones_for_legend = [None, 'code', 'meta', 'code', 'video', 'class', 'attr', 'stem', 'img', 'opt', 'ans', 'exp', 'wr', 'lp']
     for r, t in enumerate(tones_for_legend, 1):
         for c in range(1, 5):
             cell = leg.cell(r, c)
