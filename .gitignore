@@ -45,3 +45,11 @@ next-env.d.ts
 /example/_frontmatter/
 /example/_slides.txt
 /example/_frontmatter.txt
+
+# local agent / tooling junk
+/.claude/
+/npm-cache/
+/npm-global/
+
+# runtime uploads (operator-uploaded question images)
+/public/questions/

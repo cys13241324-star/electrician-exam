@@ -1,0 +1,1647 @@
+﻿
+> webpage@0.1.0 dev
+> next dev
+
+▲ Next.js 16.2.6 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.0.23:3000
+- Environments: .env.local
+✓ Ready in 6.4s
+
+ GET /admin/register 200 in 3.1s (next.js: 2.6s, application-code: 571ms)
+ GET /admin/register 200 in 253ms (next.js: 6ms, application-code: 247ms)
+ GET /manifest.webmanifest 200 in 251ms (next.js: 232ms, application-code: 18ms)
+✓ Compiled in 385ms
+ GET /admin/register 200 in 114ms (next.js: 55ms, application-code: 59ms)
+ GET /manifest.webmanifest 200 in 25ms (next.js: 20ms, application-code: 5ms)
+ GET /admin/register 200 in 226ms (next.js: 3ms, application-code: 223ms)
+ GET /admin/register 200 in 90ms (next.js: 4ms, application-code: 86ms)
+ GET /admin/register 200 in 152ms (next.js: 6ms, application-code: 146ms)
+ GET /manifest.webmanifest 200 in 19ms (next.js: 9ms, application-code: 10ms)
+✓ Compiled in 628ms
+ GET /admin/register 200 in 118ms (next.js: 58ms, application-code: 60ms)
+ GET /manifest.webmanifest 200 in 26ms (next.js: 21ms, application-code: 5ms)
+ GET /admin/register 200 in 236ms (next.js: 3ms, application-code: 233ms)
+ GET /admin/register 200 in 209ms (next.js: 5ms, application-code: 204ms)
+node.exe : [browser] Uncaught Error: Hydration failed because the server rendered text didn't match the client. As a re
+sult this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:
+At line:1 char:1
++ & "C:\nvm4w\nodejs/node.exe" "C:\nvm4w\nodejs/node_modules/npm/bin/np ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([browser] Uncau...Component used::String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <ErrorBoundary errorComponent={undefined} errorStyles={undefined} errorScripts={undefined}>
+      <LoadingBoundary name="register/" loading={null}>
+        <HTTPAccessFallbackBoundary notFound={undefined} forbidden={undefined} unauthorized={undefined}>
+          <RedirectBoundary>
+            <RedirectErrorBoundary router={{...}}>
+              <InnerLayoutRouter url="/admin/reg..." tree={[...]} params={{}} cacheNode={{rsc:{...}, ...}} ...>
+                <SegmentViewNode type="page" pagePath="admin/regi...">
+                  <SegmentTrieNode>
+                  <ClientPageRoot Component={function RegisterPage} serverProvidedParams={{...}}>
+                    <RegisterPage params={Promise} searchParams={Promise}>
+                      <main className="min-h-scre...">
+                        <header>
+                        <div className="mx-auto gr...">
+                          <section>
+                          <aside className="space-y-3 ...">
+                            <div>
+                            <details className="rounded-lg...">
+                              <summary>
+                              <pre className="max-h-96 overflow-auto p-4 font-mono text-xs text-slate-700">
++                               {"... \"id\": \"f9bff7f4-24ff-4177-8562-4e9848b43946\",\n      \"type\": \"text\",\n...
+"}
+-                               {"... \"id\": \"3bbbc08d-b2fd-4559-9f1a-7d607b5bd3b9\",\n      \"type\": \"text\",\n...
+"}
+                ...
+              ...
+
+    at <unknown> (https://react.dev/link/hydration-mismatch)
+    at pre (<anonymous>)
+    at RegisterPage (src/app/admin/register/page.tsx:1074:13)
+  1072 |               JSON 출력 (펼치기)
+  1073 |             </summary>
+> 1074 |             <pre className="max-h-96 overflow-auto p-4 font-mono text-xs text-slate-700">
+       |             ^
+  1075 |               {json}
+  1076 |             </pre>
+  1077 |           </details>
+ GET /admin/register 200 in 266ms (next.js: 7ms, application-code: 260ms)
+[browser] Uncaught Error: Hydration failed because the server rendered text didn't match the client. As a result this t
+ree will be regenerated on the client. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <ErrorBoundary errorComponent={undefined} errorStyles={undefined} errorScripts={undefined}>
+      <LoadingBoundary name="register/" loading={null}>
+        <HTTPAccessFallbackBoundary notFound={undefined} forbidden={undefined} unauthorized={undefined}>
+          <RedirectBoundary>
+            <RedirectErrorBoundary router={{...}}>
+              <InnerLayoutRouter url="/admin/reg..." tree={[...]} params={{}} cacheNode={{rsc:<Fragment>, ...}} ...>
+                <SegmentViewNode type="page" pagePath="admin/regi...">
+                  <SegmentTrieNode>
+                  <ClientPageRoot Component={function RegisterPage} serverProvidedParams={{...}}>
+                    <RegisterPage params={Promise} searchParams={Promise}>
+                      <main className="min-h-scre...">
+                        <header>
+                        <div className="mx-auto gr...">
+                          <section>
+                          <aside className="space-y-3 ...">
+                            <div>
+                            <details className="rounded-lg...">
+                              <summary>
+                              <pre className="max-h-96 overflow-auto p-4 font-mono text-xs text-slate-700">
++                               {"... \"id\": \"5c83184b-9227-4c1e-a312-17cf53ac74b4\",\n      \"type\": \"text\",\n...
+"}
+-                               {"... \"id\": \"3bbbc08d-b2fd-4559-9f1a-7d607b5bd3b9\",\n      \"type\": \"text\",\n...
+"}
+                ...
+              ...
+
+    at <unknown> (https://react.dev/link/hydration-mismatch)
+    at pre (<anonymous>)
+    at RegisterPage (src/app/admin/register/page.tsx:1074:13)
+  1072 |               JSON 출력 (펼치기)
+  1073 |             </summary>
+> 1074 |             <pre className="max-h-96 overflow-auto p-4 font-mono text-xs text-slate-700">
+       |             ^
+  1075 |               {json}
+  1076 |             </pre>
+  1077 |           </details>
+ GET /admin/register 200 in 183ms (next.js: 3ms, application-code: 180ms)
+[browser] Uncaught Error: Hydration failed because the server rendered text didn't match the client. As a result this t
+ree will be regenerated on the client. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <ErrorBoundary errorComponent={undefined} errorStyles={undefined} errorScripts={undefined}>
+      <LoadingBoundary name="register/" loading={null}>
+        <HTTPAccessFallbackBoundary notFound={undefined} forbidden={undefined} unauthorized={undefined}>
+          <RedirectBoundary>
+            <RedirectErrorBoundary router={{...}}>
+              <InnerLayoutRouter url="/admin/reg..." tree={[...]} params={{}} cacheNode={{rsc:{...}, ...}} ...>
+                <SegmentViewNode type="page" pagePath="admin/regi...">
+                  <SegmentTrieNode>
+                  <ClientPageRoot Component={function RegisterPage} serverProvidedParams={{...}}>
+                    <RegisterPage params={Promise} searchParams={Promise}>
+                      <main className="min-h-scre...">
+                        <header>
+                        <div className="mx-auto gr...">
+                          <section>
+                          <aside className="space-y-3 ...">
+                            <div>
+                            <details className="rounded-lg...">
+                              <summary>
+                              <pre className="max-h-96 overflow-auto p-4 font-mono text-xs text-slate-700">
++                               {"... \"id\": \"42d9e159-3e6f-4a97-9230-364148c3c979\",\n      \"type\": \"text\",\n...
+"}
+-                               {"... \"id\": \"3bbbc08d-b2fd-4559-9f1a-7d607b5bd3b9\",\n      \"type\": \"text\",\n...
+"}
+                ...
+              ...
+
+    at <unknown> (https://react.dev/link/hydration-mismatch)
+    at pre (<anonymous>)
+    at RegisterPage (src/app/admin/register/page.tsx:1074:13)
+  1072 |               JSON 출력 (펼치기)
+  1073 |             </summary>
+> 1074 |             <pre className="max-h-96 overflow-auto p-4 font-mono text-xs text-slate-700">
+       |             ^
+  1075 |               {json}
+  1076 |             </pre>
+  1077 |           </details>
+ GET /admin/register 200 in 144ms (next.js: 4ms, application-code: 141ms)
+[browser] Uncaught Error: Hydration failed because the server rendered text didn't match the client. As a result this t
+ree will be regenerated on the client. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <ErrorBoundary errorComponent={undefined} errorStyles={undefined} errorScripts={undefined}>
+      <LoadingBoundary name="register/" loading={null}>
+        <HTTPAccessFallbackBoundary notFound={undefined} forbidden={undefined} unauthorized={undefined}>
+          <RedirectBoundary>
+            <RedirectErrorBoundary router={{...}}>
+              <InnerLayoutRouter url="/admin/reg..." tree={[...]} params={{}} cacheNode={{rsc:{...}, ...}} ...>
+                <SegmentViewNode type="page" pagePath="admin/regi...">
+                  <SegmentTrieNode>
+                  <ClientPageRoot Component={function RegisterPage} serverProvidedParams={{...}}>
+                    <RegisterPage params={Promise} searchParams={Promise}>
+                      <main className="min-h-scre...">
+                        <header>
+                        <div className="mx-auto gr...">
+                          <section>
+                          <aside className="space-y-3 ...">
+                            <div>
+                            <details className="rounded-lg...">
+                              <summary>
+                              <pre className="max-h-96 overflow-auto p-4 font-mono text-xs text-slate-700">
++                               {"...\"id\": \"319273d2-008b-4e5d-be72-b07ad0a50746\",\n      \"type\": \"text\",\n ...
+"}
+-                               {"...\"id\": \"3bbbc08d-b2fd-4559-9f1a-7d607b5bd3b9\",\n      \"type\": \"text\",\n ...
+"}
+                ...
+              ...
+
+    at <unknown> (https://react.dev/link/hydration-mismatch)
+    at pre (<anonymous>)
+    at RegisterPage (src/app/admin/register/page.tsx:1074:13)
+  1072 |               JSON 출력 (펼치기)
+  1073 |             </summary>
+> 1074 |             <pre className="max-h-96 overflow-auto p-4 font-mono text-xs text-slate-700">
+       |             ^
+  1075 |               {json}
+  1076 |             </pre>
+  1077 |           </details>
+ GET /admin/register 200 in 328ms (next.js: 3ms, application-code: 325ms)
+[browser] Uncaught Error: Hydration failed because the server rendered text didn't match the client. As a result this t
+ree will be regenerated on the client. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <ErrorBoundary errorComponent={undefined} errorStyles={undefined} errorScripts={undefined}>
+      <LoadingBoundary name="register/" loading={null}>
+        <HTTPAccessFallbackBoundary notFound={undefined} forbidden={undefined} unauthorized={undefined}>
+          <RedirectBoundary>
+            <RedirectErrorBoundary router={{...}}>
+              <InnerLayoutRouter url="/admin/reg..." tree={[...]} params={{}} cacheNode={{rsc:<Fragment>, ...}} ...>
+                <SegmentViewNode type="page" pagePath="admin/regi...">
+                  <SegmentTrieNode>
+                  <ClientPageRoot Component={function RegisterPage} serverProvidedParams={{...}}>
+                    <RegisterPage params={Promise} searchParams={Promise}>
+                      <main className="min-h-scre...">
+                        <header>
+                        <div className="mx-auto gr...">
+                          <section>
+                          <aside className="space-y-3 ...">
+                            <div>
+                            <details className="rounded-lg...">
+                              <summary>
+                              <pre className="max-h-96 overflow-auto p-4 font-mono text-xs text-slate-700">
++                               {"... \"id\": \"25fbd808-19f2-48e7-b80d-e6a00ff1470b\",\n      \"type\": \"text\",\n...
+"}
+-                               {"... \"id\": \"3bbbc08d-b2fd-4559-9f1a-7d607b5bd3b9\",\n      \"type\": \"text\",\n...
+"}
+                ...
+              ...
+
+    at <unknown> (https://react.dev/link/hydration-mismatch)
+    at pre (<anonymous>)
+    at RegisterPage (src/app/admin/register/page.tsx:1074:13)
+  1072 |               JSON 출력 (펼치기)
+  1073 |             </summary>
+> 1074 |             <pre className="max-h-96 overflow-auto p-4 font-mono text-xs text-slate-700">
+       |             ^
+  1075 |               {json}
+  1076 |             </pre>
+  1077 |           </details>
+ GET /admin/register 200 in 270ms (next.js: 132ms, application-code: 138ms)
+ GET /admin/register 200 in 336ms (next.js: 20ms, application-code: 316ms)
+ GET /admin/register 200 in 441ms (next.js: 6ms, application-code: 435ms)
+ GET /admin/register 200 in 380ms (next.js: 13ms, application-code: 368ms)
+ GET /admin/register 200 in 384ms (next.js: 67ms, application-code: 317ms)
+ GET /admin/register 200 in 436ms (next.js: 9ms, application-code: 427ms)
+ GET /admin/register 200 in 377ms (next.js: 10ms, application-code: 368ms)
+ GET /admin/register 200 in 378ms (next.js: 75ms, application-code: 303ms)
+ GET /admin/register 200 in 448ms (next.js: 15ms, application-code: 433ms)
+ GET /admin/register 200 in 384ms (next.js: 67ms, application-code: 316ms)
+ GET /admin/register 200 in 385ms (next.js: 7ms, application-code: 378ms)
+ GET /admin/register 200 in 451ms (next.js: 7ms, application-code: 444ms)
+ GET /admin/register 200 in 387ms (next.js: 5ms, application-code: 383ms)
+ GET /admin/register 200 in 390ms (next.js: 66ms, application-code: 324ms)
+ GET /admin/register 200 in 424ms (next.js: 127ms, application-code: 297ms)
+ GET /admin/register 200 in 434ms (next.js: 12ms, application-code: 422ms)
+ GET /admin/register 200 in 430ms (next.js: 60ms, application-code: 370ms)
+ GET /admin/register 200 in 425ms (next.js: 9ms, application-code: 416ms)
+ GET /admin/register 200 in 352ms (next.js: 7ms, application-code: 345ms)
+ GET /admin/register 200 in 352ms (next.js: 65ms, application-code: 287ms)
+ GET /admin/register 200 in 390ms (next.js: 65ms, application-code: 324ms)
+ GET /admin/register 200 in 389ms (next.js: 12ms, application-code: 376ms)
+ GET /admin/register 200 in 269ms (next.js: 7ms, application-code: 263ms)
+ GET /admin/register 200 in 408ms (next.js: 10ms, application-code: 398ms)
+ GET /admin/register 200 in 360ms (next.js: 7ms, application-code: 354ms)
+ GET /admin/register 200 in 367ms (next.js: 57ms, application-code: 309ms)
+ GET /admin/register 200 in 431ms (next.js: 58ms, application-code: 372ms)
+ GET /admin/register 200 in 433ms (next.js: 117ms, application-code: 316ms)
+ GET /admin/register 200 in 436ms (next.js: 5ms, application-code: 431ms)
+ GET /admin/register 200 in 396ms (next.js: 12ms, application-code: 384ms)
+ GET /admin/register 200 in 342ms (next.js: 9ms, application-code: 333ms)
+ GET /admin/register 200 in 341ms (next.js: 56ms, application-code: 285ms)
+ GET /admin/register 200 in 386ms (next.js: 4ms, application-code: 382ms)
+ GET /admin/register 200 in 388ms (next.js: 58ms, application-code: 330ms)
+ GET /admin/register 200 in 392ms (next.js: 121ms, application-code: 271ms)
+ GET /admin/register 200 in 398ms (next.js: 10ms, application-code: 388ms)
+ GET /admin/register 200 in 365ms (next.js: 10ms, application-code: 355ms)
+ GET /admin/register 200 in 362ms (next.js: 55ms, application-code: 307ms)
+ GET /admin/register 200 in 487ms (next.js: 10ms, application-code: 478ms)
+ GET /admin/register 200 in 506ms (next.js: 58ms, application-code: 448ms)
+ GET /admin/register 200 in 414ms (next.js: 9ms, application-code: 405ms)
+ GET /admin/register 200 in 439ms (next.js: 14ms, application-code: 425ms)
+ GET /admin/register 200 in 486ms (next.js: 102ms, application-code: 383ms)
+ GET /admin/register 200 in 490ms (next.js: 25ms, application-code: 465ms)
+ GET /admin/register 200 in 435ms (next.js: 13ms, application-code: 423ms)
+ GET /admin/register 200 in 440ms (next.js: 77ms, application-code: 363ms)
+ GET /admin/register 200 in 360ms (next.js: 11ms, application-code: 349ms)
+ GET /admin/register 200 in 348ms (next.js: 7ms, application-code: 341ms)
+ GET /admin/register 200 in 330ms (next.js: 4ms, application-code: 325ms)
+ GET /admin/register 200 in 381ms (next.js: 78ms, application-code: 303ms)
+ GET /admin/register 200 in 323ms (next.js: 5ms, application-code: 317ms)
+ GET /admin/register 200 in 274ms (next.js: 5ms, application-code: 268ms)
+ GET /admin/register 200 in 227ms (next.js: 5ms, application-code: 223ms)
+ GET /admin/register 200 in 173ms (next.js: 8ms, application-code: 165ms)
+ GET /admin/register 200 in 115ms (next.js: 6ms, application-code: 110ms)
+ GET /admin/register 200 in 74ms (next.js: 12ms, application-code: 62ms)
+ GET /manifest.webmanifest 200 in 66ms (next.js: 48ms, application-code: 18ms)
+✓ Compiled in 76ms
+ GET /admin/register 200 in 248ms (next.js: 108ms, application-code: 140ms)
+ GET /manifest.webmanifest 200 in 62ms (next.js: 46ms, application-code: 16ms)
+✓ Compiled in 66ms
+ GET /admin/register 200 in 199ms (next.js: 99ms, application-code: 100ms)
+ GET /manifest.webmanifest 200 in 59ms (next.js: 48ms, application-code: 11ms)
+✓ Compiled in 43ms
+ GET /admin/register 200 in 159ms (next.js: 91ms, application-code: 68ms)
+ GET /manifest.webmanifest 200 in 61ms (next.js: 50ms, application-code: 12ms)
+✓ Compiled in 49ms
+ GET /admin/register 200 in 239ms (next.js: 105ms, application-code: 134ms)
+ GET /manifest.webmanifest 200 in 63ms (next.js: 51ms, application-code: 12ms)
+✓ Compiled in 122ms
+ GET /admin/register 200 in 246ms (next.js: 111ms, application-code: 135ms)
+ GET /manifest.webmanifest 200 in 60ms (next.js: 48ms, application-code: 12ms)
+✓ Compiled in 194ms
+ GET /admin/register 200 in 262ms (next.js: 91ms, application-code: 171ms)
+ GET /admin/register 200 in 64ms (next.js: 4ms, application-code: 61ms)
+ GET /manifest.webmanifest 200 in 79ms (next.js: 64ms, application-code: 15ms)
+✓ Compiled in 102ms
+ GET /admin/register 200 in 279ms (next.js: 111ms, application-code: 168ms)
+ GET /manifest.webmanifest 200 in 64ms (next.js: 51ms, application-code: 13ms)
+✓ Compiled in 94ms
+ GET /admin/register 200 in 176ms (next.js: 95ms, application-code: 80ms)
+ GET /manifest.webmanifest 200 in 57ms (next.js: 46ms, application-code: 11ms)
+✓ Compiled in 56ms
+ GET /admin/register 200 in 187ms (next.js: 103ms, application-code: 84ms)
+ GET /manifest.webmanifest 200 in 57ms (next.js: 48ms, application-code: 10ms)
+✓ Compiled in 78ms
+ GET /admin/register 200 in 180ms (next.js: 106ms, application-code: 74ms)
+ GET /manifest.webmanifest 200 in 61ms (next.js: 50ms, application-code: 11ms)
+✓ Compiled in 49ms
+ GET /admin/register 200 in 177ms (next.js: 102ms, application-code: 75ms)
+ GET /manifest.webmanifest 200 in 55ms (next.js: 46ms, application-code: 9ms)
+✓ Compiled in 93ms
+ GET /admin/register 200 in 202ms (next.js: 116ms, application-code: 86ms)
+ GET /manifest.webmanifest 200 in 64ms (next.js: 52ms, application-code: 11ms)
+✓ Compiled in 94ms
+ GET /admin/register 200 in 290ms (next.js: 108ms, application-code: 182ms)
+ GET /manifest.webmanifest 200 in 62ms (next.js: 49ms, application-code: 13ms)
+ GET /admin/register 200 in 302ms (next.js: 3ms, application-code: 299ms)
+ GET /admin/register 200 in 186ms (next.js: 4ms, application-code: 182ms)
+[browser] Uncaught Error: Hydration failed because the server rendered text didn't match the client. As a result this t
+ree will be regenerated on the client. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <ErrorBoundary errorComponent={undefined} errorStyles={undefined} errorScripts={undefined}>
+      <LoadingBoundary name="register/" loading={null}>
+        <HTTPAccessFallbackBoundary notFound={undefined} forbidden={undefined} unauthorized={undefined}>
+          <RedirectBoundary>
+            <RedirectErrorBoundary router={{...}}>
+              <InnerLayoutRouter url="/admin/reg..." tree={[...]} params={{}} cacheNode={{rsc:{...}, ...}} ...>
+                <SegmentViewNode type="page" pagePath="admin/regi...">
+                  <SegmentTrieNode>
+                  <ClientPageRoot Component={function RegisterPage} serverProvidedParams={{...}}>
+                    <RegisterPage params={Promise} searchParams={Promise}>
+                      <main className="min-h-scre...">
+                        <header>
+                        <div className="mx-auto gr...">
+                          <section>
+                          <aside className="space-y-3 ...">
+                            <div>
+                            <details className="rounded-lg...">
+                              <summary>
+                              <pre className="max-h-96 overflow-auto p-4 font-mono text-xs text-slate-700">
++                               {"...\"id\": \"6aeea62d-b7f4-42a3-ab86-c8f37aed4db1\",\n      \"type\": \"text\",\n ...
+"}
+-                               {"...\"id\": \"65593e8c-8b83-40b0-8567-179257aac37d\",\n      \"type\": \"text\",\n ...
+"}
+                ...
+              ...
+
+    at <unknown> (https://react.dev/link/hydration-mismatch)
+    at pre (<anonymous>)
+    at RegisterPage (src/app/admin/register/page.tsx:1151:13)
+  1149 |               JSON 출력 (펼치기)
+  1150 |             </summary>
+> 1151 |             <pre className="max-h-96 overflow-auto p-4 font-mono text-xs text-slate-700">
+       |             ^
+  1152 |               {json}
+  1153 |             </pre>
+  1154 |           </details>
+ GET /admin/register 200 in 226ms (next.js: 3ms, application-code: 223ms)
+[browser] Uncaught Error: Hydration failed because the server rendered text didn't match the client. As a result this t
+ree will be regenerated on the client. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <ErrorBoundary errorComponent={undefined} errorStyles={undefined} errorScripts={undefined}>
+      <LoadingBoundary name="register/" loading={null}>
+        <HTTPAccessFallbackBoundary notFound={undefined} forbidden={undefined} unauthorized={undefined}>
+          <RedirectBoundary>
+            <RedirectErrorBoundary router={{...}}>
+              <InnerLayoutRouter url="/admin/reg..." tree={[...]} params={{}} cacheNode={{rsc:{...}, ...}} ...>
+                <SegmentViewNode type="page" pagePath="admin/regi...">
+                  <SegmentTrieNode>
+                  <ClientPageRoot Component={function RegisterPage} serverProvidedParams={{...}}>
+                    <RegisterPage params={Promise} searchParams={Promise}>
+                      <main className="min-h-scre...">
+                        <header>
+                        <div className="mx-auto gr...">
+                          <section>
+                          <aside className="space-y-3 ...">
+                            <div>
+                            <details className="rounded-lg...">
+                              <summary>
+                              <pre className="max-h-96 overflow-auto p-4 font-mono text-xs text-slate-700">
++                               {"... \"id\": \"46408b38-932c-481b-87d1-604feac824e4\",\n      \"type\": \"text\",\n...
+"}
+-                               {"... \"id\": \"65593e8c-8b83-40b0-8567-179257aac37d\",\n      \"type\": \"text\",\n...
+"}
+                ...
+              ...
+
+    at <unknown> (https://react.dev/link/hydration-mismatch)
+    at pre (<anonymous>)
+    at RegisterPage (src/app/admin/register/page.tsx:1151:13)
+  1149 |               JSON 출력 (펼치기)
+  1150 |             </summary>
+> 1151 |             <pre className="max-h-96 overflow-auto p-4 font-mono text-xs text-slate-700">
+       |             ^
+  1152 |               {json}
+  1153 |             </pre>
+  1154 |           </details>
+ GET /admin/register 200 in 225ms (next.js: 3ms, application-code: 223ms)
+[browser] Uncaught Error: Hydration failed because the server rendered text didn't match the client. As a result this t
+ree will be regenerated on the client. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <ErrorBoundary errorComponent={undefined} errorStyles={undefined} errorScripts={undefined}>
+      <LoadingBoundary name="register/" loading={null}>
+        <HTTPAccessFallbackBoundary notFound={undefined} forbidden={undefined} unauthorized={undefined}>
+          <RedirectBoundary>
+            <RedirectErrorBoundary router={{...}}>
+              <InnerLayoutRouter url="/admin/reg..." tree={[...]} params={{}} cacheNode={{rsc:{...}, ...}} ...>
+                <SegmentViewNode type="page" pagePath="admin/regi...">
+                  <SegmentTrieNode>
+                  <ClientPageRoot Component={function RegisterPage} serverProvidedParams={{...}}>
+                    <RegisterPage params={Promise} searchParams={Promise}>
+                      <main className="min-h-scre...">
+                        <header>
+                        <div className="mx-auto gr...">
+                          <section>
+                          <aside className="space-y-3 ...">
+                            <div>
+                            <details className="rounded-lg...">
+                              <summary>
+                              <pre className="max-h-96 overflow-auto p-4 font-mono text-xs text-slate-700">
++                               {"... \"id\": \"93df7c64-9811-4823-be70-ee5b764c766d\",\n      \"type\": \"text\",\n...
+"}
+-                               {"... \"id\": \"65593e8c-8b83-40b0-8567-179257aac37d\",\n      \"type\": \"text\",\n...
+"}
+                ...
+              ...
+
+    at <unknown> (https://react.dev/link/hydration-mismatch)
+    at pre (<anonymous>)
+    at RegisterPage (src/app/admin/register/page.tsx:1151:13)
+  1149 |               JSON 출력 (펼치기)
+  1150 |             </summary>
+> 1151 |             <pre className="max-h-96 overflow-auto p-4 font-mono text-xs text-slate-700">
+       |             ^
+  1152 |               {json}
+  1153 |             </pre>
+  1154 |           </details>
+ POST /api/upload 200 in 494ms (next.js: 475ms, application-code: 19ms)
+ GET /admin/register 200 in 579ms (next.js: 116ms, application-code: 463ms)
+ GET /admin/register 200 in 381ms (next.js: 14ms, application-code: 367ms)
+ GET /admin/register 200 in 290ms (next.js: 9ms, application-code: 281ms)
+ GET /admin/register 200 in 290ms (next.js: 51ms, application-code: 238ms)
+ GET /admin/register 200 in 292ms (next.js: 92ms, application-code: 200ms)
+ GET /admin/register 200 in 344ms (next.js: 155ms, application-code: 189ms)
+ GET /admin/register 200 in 373ms (next.js: 9ms, application-code: 364ms)
+ GET /admin/register 200 in 326ms (next.js: 11ms, application-code: 315ms)
+ GET /admin/register 200 in 305ms (next.js: 20ms, application-code: 285ms)
+ GET /admin/register 200 in 342ms (next.js: 75ms, application-code: 267ms)
+ GET /admin/register 200 in 342ms (next.js: 117ms, application-code: 225ms)
+ GET /admin/register 200 in 278ms (next.js: 96ms, application-code: 183ms)
+ GET /admin/register 200 in 337ms (next.js: 12ms, application-code: 325ms)
+ GET /admin/register 200 in 287ms (next.js: 6ms, application-code: 281ms)
+ GET /admin/register 200 in 289ms (next.js: 6ms, application-code: 283ms)
+ GET /admin/register 200 in 291ms (next.js: 47ms, application-code: 244ms)
+ GET /admin/register 200 in 337ms (next.js: 98ms, application-code: 239ms)
+ GET /admin/register 200 in 207ms (next.js: 6ms, application-code: 201ms)
+ GET /admin/register 200 in 330ms (next.js: 6ms, application-code: 324ms)
+ GET /admin/register 200 in 283ms (next.js: 11ms, application-code: 272ms)
+ GET /admin/register 200 in 229ms (next.js: 10ms, application-code: 218ms)
+ GET /admin/register 200 in 272ms (next.js: 49ms, application-code: 223ms)
+ GET /admin/register 200 in 232ms (next.js: 5ms, application-code: 227ms)
+ GET /admin/register 200 in 239ms (next.js: 6ms, application-code: 233ms)
+ GET /admin/register 200 in 332ms (next.js: 8ms, application-code: 325ms)
+ GET /admin/register 200 in 289ms (next.js: 9ms, application-code: 280ms)
+ GET /admin/register 200 in 245ms (next.js: 9ms, application-code: 235ms)
+ GET /admin/register 200 in 246ms (next.js: 50ms, application-code: 196ms)
+ GET /admin/register 200 in 241ms (next.js: 11ms, application-code: 230ms)
+ GET /admin/register 200 in 230ms (next.js: 6ms, application-code: 224ms)
+ GET /admin/register 200 in 318ms (next.js: 9ms, application-code: 309ms)
+ GET /admin/register 200 in 317ms (next.js: 55ms, application-code: 263ms)
+ GET /admin/register 200 in 227ms (next.js: 10ms, application-code: 217ms)
+ GET /admin/register 200 in 232ms (next.js: 56ms, application-code: 176ms)
+ GET /admin/register 200 in 229ms (next.js: 8ms, application-code: 220ms)
+ GET /admin/register 200 in 266ms (next.js: 7ms, application-code: 259ms)
+ GET /admin/register 200 in 350ms (next.js: 7ms, application-code: 343ms)
+ GET /admin/register 200 in 349ms (next.js: 51ms, application-code: 299ms)
+ GET /admin/register 200 in 266ms (next.js: 6ms, application-code: 261ms)
+ GET /admin/register 200 in 223ms (next.js: 6ms, application-code: 217ms)
+ GET /admin/register 200 in 258ms (next.js: 8ms, application-code: 250ms)
+ GET /admin/register 200 in 258ms (next.js: 10ms, application-code: 248ms)
+ GET /admin/register 200 in 290ms (next.js: 4ms, application-code: 285ms)
+ GET /admin/register 200 in 247ms (next.js: 8ms, application-code: 239ms)
+ GET /admin/register 200 in 248ms (next.js: 43ms, application-code: 205ms)
+ GET /admin/register 200 in 249ms (next.js: 83ms, application-code: 167ms)
+ GET /admin/register 200 in 249ms (next.js: 138ms, application-code: 111ms)
+ GET /admin/register 200 in 293ms (next.js: 175ms, application-code: 118ms)
+ GET /admin/register 200 in 285ms (next.js: 12ms, application-code: 273ms)
+ GET /admin/register 200 in 239ms (next.js: 9ms, application-code: 231ms)
+ GET /admin/register 200 in 240ms (next.js: 45ms, application-code: 196ms)
+ GET /admin/register 200 in 242ms (next.js: 85ms, application-code: 157ms)
+ GET /admin/register 200 in 244ms (next.js: 123ms, application-code: 120ms)
+ GET /admin/register 200 in 166ms (next.js: 84ms, application-code: 82ms)
+ GET /admin/register 200 in 204ms (next.js: 10ms, application-code: 194ms)
+ GET /admin/register 200 in 206ms (next.js: 48ms, application-code: 158ms)
+ GET /admin/register 200 in 167ms (next.js: 65ms, application-code: 102ms)
+ GET /admin/register 200 in 110ms (next.js: 46ms, application-code: 63ms)
+ GET /manifest.webmanifest 200 in 73ms (next.js: 60ms, application-code: 13ms)
+ GET /admin/register 200 in 570ms (next.js: 109ms, application-code: 461ms)
+ GET /admin/register 200 in 399ms (next.js: 7ms, application-code: 392ms)
+ GET /admin/register 200 in 436ms (next.js: 90ms, application-code: 345ms)
+ GET /admin/register 200 in 438ms (next.js: 52ms, application-code: 386ms)
+ GET /admin/register 200 in 438ms (next.js: 156ms, application-code: 282ms)
+ GET /admin/register 200 in 442ms (next.js: 6ms, application-code: 435ms)
+ GET /admin/register 200 in 314ms (next.js: 11ms, application-code: 303ms)
+ GET /admin/register 200 in 266ms (next.js: 5ms, application-code: 261ms)
+ GET /admin/register 200 in 256ms (next.js: 6ms, application-code: 250ms)
+ GET /admin/register 200 in 256ms (next.js: 51ms, application-code: 205ms)
+ GET /admin/register 200 in 256ms (next.js: 130ms, application-code: 125ms)
+ GET /admin/register 200 in 259ms (next.js: 94ms, application-code: 165ms)
+ GET /admin/register 200 in 59ms (next.js: 7ms, application-code: 53ms)
+ GET /admin/register 200 in 322ms (next.js: 8ms, application-code: 314ms)
+ GET /admin/register 200 in 273ms (next.js: 6ms, application-code: 267ms)
+ GET /admin/register 200 in 276ms (next.js: 64ms, application-code: 213ms)
+ GET /admin/register 200 in 277ms (next.js: 109ms, application-code: 168ms)
+ GET /admin/register 200 in 277ms (next.js: 151ms, application-code: 126ms)
+ GET /admin/register 200 in 280ms (next.js: 195ms, application-code: 85ms)
+ GET /admin/register 200 in 290ms (next.js: 8ms, application-code: 282ms)
+ GET /admin/register 200 in 244ms (next.js: 44ms, application-code: 200ms)
+ GET /admin/register 200 in 246ms (next.js: 7ms, application-code: 239ms)
+ GET /admin/register 200 in 248ms (next.js: 80ms, application-code: 168ms)
+ GET /admin/register 200 in 249ms (next.js: 123ms, application-code: 126ms)
+ GET /admin/register 200 in 96ms (next.js: 9ms, application-code: 87ms)
+ GET /admin/register 200 in 284ms (next.js: 46ms, application-code: 237ms)
+ GET /admin/register 200 in 285ms (next.js: 10ms, application-code: 276ms)
+ GET /admin/register 200 in 285ms (next.js: 90ms, application-code: 195ms)
+ GET /admin/register 200 in 285ms (next.js: 130ms, application-code: 156ms)
+ GET /admin/register 200 in 123ms (next.js: 15ms, application-code: 109ms)
+ GET /admin/register 200 in 77ms (next.js: 7ms, application-code: 70ms)
+ GET /admin/register 200 in 289ms (next.js: 6ms, application-code: 283ms)
+ GET /admin/register 200 in 291ms (next.js: 44ms, application-code: 246ms)
+ GET /admin/register 200 in 291ms (next.js: 82ms, application-code: 209ms)
+ GET /admin/register 200 in 292ms (next.js: 119ms, application-code: 173ms)
+ GET /admin/register 200 in 139ms (next.js: 15ms, application-code: 124ms)
+ GET /admin/register 200 in 134ms (next.js: 44ms, application-code: 90ms)
+ GET /admin/register 200 in 285ms (next.js: 10ms, application-code: 275ms)
+ GET /admin/register 200 in 285ms (next.js: 46ms, application-code: 238ms)
+ GET /admin/register 200 in 288ms (next.js: 82ms, application-code: 206ms)
+ GET /admin/register 200 in 287ms (next.js: 116ms, application-code: 170ms)
+ GET /admin/register 200 in 141ms (next.js: 16ms, application-code: 125ms)
+ GET /admin/register 200 in 131ms (next.js: 5ms, application-code: 126ms)
+ GET /admin/register 200 in 281ms (next.js: 5ms, application-code: 276ms)
+ GET /admin/register 200 in 284ms (next.js: 48ms, application-code: 235ms)
+ GET /admin/register 200 in 242ms (next.js: 83ms, application-code: 159ms)
+ GET /admin/register 200 in 245ms (next.js: 44ms, application-code: 201ms)
+ GET /admin/register 200 in 133ms (next.js: 15ms, application-code: 118ms)
+ GET /admin/register 200 in 126ms (next.js: 6ms, application-code: 121ms)
+ GET /admin/register 200 in 455ms (next.js: 5ms, application-code: 450ms)
+ GET /admin/register 200 in 421ms (next.js: 9ms, application-code: 412ms)
+ GET /admin/register 200 in 420ms (next.js: 44ms, application-code: 376ms)
+ GET /admin/register 200 in 419ms (next.js: 82ms, application-code: 338ms)
+ GET /admin/register 200 in 421ms (next.js: 116ms, application-code: 304ms)
+ GET /admin/register 200 in 249ms (next.js: 49ms, application-code: 200ms)
+ GET /admin/register 200 in 241ms (next.js: 7ms, application-code: 234ms)
+ GET /admin/register 200 in 244ms (next.js: 52ms, application-code: 191ms)
+ GET /admin/register 200 in 243ms (next.js: 133ms, application-code: 110ms)
+ GET /admin/register 200 in 245ms (next.js: 94ms, application-code: 151ms)
+ GET /admin/register 200 in 245ms (next.js: 173ms, application-code: 73ms)
+ GET /manifest.webmanifest 200 in 59ms (next.js: 47ms, application-code: 11ms)
+ GET /admin/register-batch 200 in 1842ms (next.js: 1529ms, application-code: 314ms)
+ GET /admin/register-batch 200 in 174ms (next.js: 3ms, application-code: 171ms)
+ POST /api/bulk-parse 200 in 1255ms (next.js: 1186ms, application-code: 69ms)
+ GET /questions/q21_differential_diagram.png 404 in 248ms (next.js: 63ms, application-code: 185ms)
+ GET /admin/register 200 in 556ms (next.js: 102ms, application-code: 454ms)
+ GET /admin/register 200 in 411ms (next.js: 4ms, application-code: 407ms)
+ GET /admin/register 200 in 362ms (next.js: 45ms, application-code: 316ms)
+ GET /admin/register 200 in 364ms (next.js: 6ms, application-code: 358ms)
+ GET /admin/register 200 in 367ms (next.js: 83ms, application-code: 284ms)
+ GET /admin/register 200 in 367ms (next.js: 119ms, application-code: 248ms)
+ GET /admin/register 200 in 321ms (next.js: 5ms, application-code: 315ms)
+ GET /admin/register 200 in 278ms (next.js: 11ms, application-code: 267ms)
+ GET /admin/register 200 in 275ms (next.js: 5ms, application-code: 269ms)
+ GET /admin/register 200 in 276ms (next.js: 46ms, application-code: 230ms)
+ GET /admin/register 200 in 279ms (next.js: 88ms, application-code: 191ms)
+ GET /admin/register 200 in 200ms (next.js: 71ms, application-code: 129ms)
+ GET /admin/register 200 in 313ms (next.js: 10ms, application-code: 303ms)
+ GET /admin/register 200 in 308ms (next.js: 7ms, application-code: 301ms)
+ GET /admin/register 200 in 316ms (next.js: 51ms, application-code: 265ms)
+ GET /admin/register 200 in 310ms (next.js: 93ms, application-code: 217ms)
+ GET /admin/register 200 in 176ms (next.js: 8ms, application-code: 169ms)
+ GET /admin/register 200 in 180ms (next.js: 43ms, application-code: 137ms)
+ GET /admin/register 200 in 306ms (next.js: 4ms, application-code: 302ms)
+ GET /admin/register 200 in 301ms (next.js: 12ms, application-code: 288ms)
+ GET /admin/register 200 in 302ms (next.js: 47ms, application-code: 255ms)
+ GET /admin/register 200 in 265ms (next.js: 51ms, application-code: 213ms)
+ GET /admin/register 200 in 180ms (next.js: 16ms, application-code: 164ms)
+ GET /admin/register 200 in 181ms (next.js: 56ms, application-code: 125ms)
+ GET /admin/register 200 in 300ms (next.js: 5ms, application-code: 295ms)
+ GET /admin/register 200 in 293ms (next.js: 11ms, application-code: 282ms)
+ GET /admin/register 200 in 294ms (next.js: 47ms, application-code: 247ms)
+ GET /admin/register 200 in 203ms (next.js: 6ms, application-code: 197ms)
+ GET /admin/register 200 in 202ms (next.js: 82ms, application-code: 120ms)
+ GET /admin/register 200 in 207ms (next.js: 46ms, application-code: 162ms)
+ GET /admin/register 200 in 313ms (next.js: 6ms, application-code: 307ms)
+ GET /admin/register 200 in 277ms (next.js: 11ms, application-code: 266ms)
+ GET /admin/register 200 in 332ms (next.js: 50ms, application-code: 282ms)
+ GET /admin/register 200 in 236ms (next.js: 43ms, application-code: 193ms)
+ GET /admin/register 200 in 239ms (next.js: 7ms, application-code: 233ms)
+ GET /admin/register 200 in 282ms (next.js: 84ms, application-code: 199ms)
+ GET /admin/register 200 in 313ms (next.js: 12ms, application-code: 301ms)
+ GET /admin/register 200 in 258ms (next.js: 9ms, application-code: 249ms)
+ GET /admin/register 200 in 250ms (next.js: 7ms, application-code: 244ms)
+ GET /admin/register 200 in 252ms (next.js: 47ms, application-code: 205ms)
+ GET /admin/register 200 in 252ms (next.js: 81ms, application-code: 172ms)
+ GET /admin/register 200 in 254ms (next.js: 84ms, application-code: 170ms)
+ GET /admin/register 200 in 308ms (next.js: 6ms, application-code: 302ms)
+ GET /admin/register 200 in 265ms (next.js: 8ms, application-code: 257ms)
+ GET /admin/register 200 in 223ms (next.js: 6ms, application-code: 217ms)
+ GET /admin/register 200 in 268ms (next.js: 49ms, application-code: 219ms)
+ GET /admin/register 200 in 224ms (next.js: 50ms, application-code: 174ms)
+ GET /admin/register 200 in 228ms (next.js: 52ms, application-code: 176ms)
+ GET /admin/register 200 in 296ms (next.js: 9ms, application-code: 287ms)
+ GET /admin/register 200 in 250ms (next.js: 8ms, application-code: 241ms)
+ GET /admin/register 200 in 206ms (next.js: 8ms, application-code: 198ms)
+ GET /admin/register 200 in 248ms (next.js: 45ms, application-code: 204ms)
+ GET /admin/register 200 in 215ms (next.js: 42ms, application-code: 173ms)
+ GET /admin/register 200 in 225ms (next.js: 6ms, application-code: 219ms)
+ GET /admin/register 200 in 495ms (next.js: 9ms, application-code: 486ms)
+ GET /admin/register 200 in 447ms (next.js: 9ms, application-code: 438ms)
+ GET /admin/register 200 in 401ms (next.js: 56ms, application-code: 345ms)
+ GET /admin/register 200 in 356ms (next.js: 62ms, application-code: 294ms)
+ GET /admin/register 200 in 340ms (next.js: 99ms, application-code: 241ms)
+ GET /admin/register 200 in 199ms (next.js: 6ms, application-code: 193ms)
+ GET /admin/register 200 in 233ms (next.js: 10ms, application-code: 223ms)
+ GET /admin/register 200 in 188ms (next.js: 42ms, application-code: 146ms)
+ GET /admin/register 200 in 190ms (next.js: 7ms, application-code: 183ms)
+ GET /admin/register 200 in 113ms (next.js: 6ms, application-code: 107ms)
+ GET /admin/register 200 in 75ms (next.js: 7ms, application-code: 68ms)
+ GET /manifest.webmanifest 200 in 65ms (next.js: 55ms, application-code: 10ms)
+ GET /cbt/library 200 in 1593ms (next.js: 1262ms, application-code: 331ms)
+ GET /cbt/library 200 in 260ms (next.js: 3ms, application-code: 257ms)
+ GET /cbt/library 200 in 185ms (next.js: 4ms, application-code: 181ms)
+ GET /cbt/library 200 in 172ms (next.js: 6ms, application-code: 165ms)
+ GET /cbt/library 200 in 112ms (next.js: 3ms, application-code: 109ms)
+ GET /questions/q21_differential_diagram.png 404 in 128ms (next.js: 12ms, application-code: 116ms)
+ GET /cbt/library 200 in 406ms (next.js: 6ms, application-code: 400ms)
+ GET /questions/q21_differential_diagram.png 404 in 112ms (next.js: 9ms, application-code: 103ms)
+ GET /cbt/library 200 in 250ms (next.js: 3ms, application-code: 247ms)
+ GET /manifest.webmanifest 200 in 20ms (next.js: 15ms, application-code: 5ms)
+ GET /admin/register-batch 200 in 47ms (next.js: 14ms, application-code: 33ms)
+ GET /manifest.webmanifest 200 in 13ms (next.js: 8ms, application-code: 5ms)
+[browser] Detected `scroll-behavior: smooth` on the `<html>` element. To disable smooth scrolling during route transiti
+ons, add `data-scroll-behavior="smooth"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-d
+ata-scroll-behavior
+ GET /admin/register 200 in 23ms (next.js: 2ms, application-code: 21ms)
+ GET /manifest.webmanifest 200 in 7ms (next.js: 3ms, application-code: 4ms)
+ GET /manifest.webmanifest 200 in 15ms (next.js: 4ms, application-code: 11ms)
+ GET /manifest.webmanifest 200 in 15ms (next.js: 10ms, application-code: 6ms)
+ GET /questions/q21_differential_diagram.png 404 in 284ms (next.js: 21ms, application-code: 263ms)
+ GET /questions/q21_differential_diagram.png 404 in 271ms (next.js: 15ms, application-code: 256ms)
+ GET /questions/q21_differential_diagram.png 404 in 99ms (next.js: 5ms, application-code: 94ms)
+ GET /questions/q21_differential_diagram.png 404 in 120ms (next.js: 5ms, application-code: 114ms)
+ GET /cbt/library 200 in 505ms (next.js: 104ms, application-code: 401ms)
+ GET /cbt/library 200 in 296ms (next.js: 4ms, application-code: 292ms)
+ GET /admin/register 200 in 235ms (next.js: 23ms, application-code: 212ms)
+ GET /cbt/library 200 in 235ms (next.js: 72ms, application-code: 163ms)
+ GET /admin/register 200 in 114ms (next.js: 12ms, application-code: 102ms)
+ GET /manifest.webmanifest 200 in 58ms (next.js: 48ms, application-code: 11ms)
+ GET /admin/register 200 in 251ms (next.js: 125ms, application-code: 126ms)
+ GET /manifest.webmanifest 200 in 8ms (next.js: 1985µs, application-code: 6ms)
+ GET / 200 in 369ms (next.js: 36ms, application-code: 333ms)
+ GET /cbt/library 200 in 590ms (next.js: 212ms, application-code: 378ms)
+ GET /admin/register 200 in 480ms (next.js: 193ms, application-code: 286ms)
+ GET /cbt/library 200 in 277ms (next.js: 7ms, application-code: 271ms)
+ GET /admin/register 200 in 299ms (next.js: 6ms, application-code: 292ms)
+ GET /cbt/library 200 in 240ms (next.js: 6ms, application-code: 234ms)
+ GET /cbt/library 200 in 241ms (next.js: 44ms, application-code: 196ms)
+ GET /cbt/library 200 in 389ms (next.js: 4ms, application-code: 385ms)
+ GET /cbt/library 200 in 380ms (next.js: 9ms, application-code: 371ms)
+ GET /cbt/library 200 in 431ms (next.js: 22ms, application-code: 410ms)
+ GET /cbt/library 200 in 299ms (next.js: 8ms, application-code: 292ms)
+ GET /cbt/library 200 in 303ms (next.js: 43ms, application-code: 260ms)
+ GET /cbt/library 200 in 306ms (next.js: 94ms, application-code: 212ms)
+ GET /cbt/library 200 in 311ms (next.js: 9ms, application-code: 302ms)
+ GET /cbt/library 200 in 308ms (next.js: 43ms, application-code: 265ms)
+ GET /cbt/library 200 in 282ms (next.js: 14ms, application-code: 268ms)
+ GET /cbt/library 200 in 235ms (next.js: 41ms, application-code: 194ms)
+ GET /cbt/library 200 in 240ms (next.js: 6ms, application-code: 234ms)
+ GET /cbt/library 200 in 242ms (next.js: 78ms, application-code: 164ms)
+ GET /cbt/library 200 in 287ms (next.js: 7ms, application-code: 280ms)
+ GET /cbt/library 200 in 267ms (next.js: 7ms, application-code: 259ms)
+ GET /cbt/library 200 in 316ms (next.js: 13ms, application-code: 303ms)
+ GET /cbt/library 200 in 267ms (next.js: 4ms, application-code: 264ms)
+ GET /cbt/library 200 in 269ms (next.js: 37ms, application-code: 231ms)
+ GET /cbt/library 200 in 196ms (next.js: 7ms, application-code: 189ms)
+ GET /cbt/library 200 in 307ms (next.js: 5ms, application-code: 302ms)
+ GET /cbt/library 200 in 271ms (next.js: 10ms, application-code: 261ms)
+ GET /cbt/library 200 in 294ms (next.js: 13ms, application-code: 281ms)
+ GET /cbt/library 200 in 237ms (next.js: 4ms, application-code: 233ms)
+ GET /cbt/library 200 in 243ms (next.js: 41ms, application-code: 202ms)
+ GET /cbt/library 200 in 284ms (next.js: 77ms, application-code: 207ms)
+ GET /cbt/library 200 in 308ms (next.js: 5ms, application-code: 303ms)
+ GET /cbt/library 200 in 280ms (next.js: 7ms, application-code: 272ms)
+ GET /cbt/library 200 in 315ms (next.js: 8ms, application-code: 307ms)
+ GET /cbt/library 200 in 267ms (next.js: 6ms, application-code: 261ms)
+ GET /cbt/library 200 in 269ms (next.js: 60ms, application-code: 210ms)
+ GET /cbt/library 200 in 259ms (next.js: 52ms, application-code: 207ms)
+ GET /cbt/library 200 in 301ms (next.js: 6ms, application-code: 295ms)
+ GET /cbt/library 200 in 265ms (next.js: 5ms, application-code: 260ms)
+ GET /cbt/library 200 in 299ms (next.js: 8ms, application-code: 291ms)
+ GET /cbt/library 200 in 260ms (next.js: 17ms, application-code: 243ms)
+ GET /cbt/library 200 in 251ms (next.js: 15ms, application-code: 236ms)
+ GET /cbt/library 200 in 252ms (next.js: 42ms, application-code: 210ms)
+ GET /cbt/library 200 in 313ms (next.js: 4ms, application-code: 309ms)
+ GET /cbt/library 200 in 284ms (next.js: 9ms, application-code: 275ms)
+ GET /cbt/library 200 in 286ms (next.js: 5ms, application-code: 281ms)
+ GET /cbt/library 200 in 296ms (next.js: 5ms, application-code: 291ms)
+ GET /cbt/library 200 in 312ms (next.js: 10ms, application-code: 302ms)
+ GET /cbt/library 200 in 319ms (next.js: 43ms, application-code: 276ms)
+ GET /cbt/library 200 in 387ms (next.js: 5ms, application-code: 381ms)
+ GET /cbt/library 200 in 344ms (next.js: 9ms, application-code: 335ms)
+ GET /cbt/library 200 in 281ms (next.js: 6ms, application-code: 275ms)
+ GET /cbt/library 200 in 278ms (next.js: 8ms, application-code: 270ms)
+ GET /cbt/library 200 in 325ms (next.js: 8ms, application-code: 317ms)
+ GET /cbt/library 200 in 322ms (next.js: 58ms, application-code: 265ms)
+ GET /cbt/library 200 in 360ms (next.js: 13ms, application-code: 347ms)
+ GET /cbt/library 200 in 307ms (next.js: 10ms, application-code: 297ms)
+ GET /cbt/library 200 in 309ms (next.js: 55ms, application-code: 254ms)
+ GET /cbt/library 200 in 349ms (next.js: 4ms, application-code: 345ms)
+ GET /cbt/library 200 in 359ms (next.js: 63ms, application-code: 296ms)
+ GET /cbt/library 200 in 260ms (next.js: 14ms, application-code: 247ms)
+ GET /cbt/library 200 in 373ms (next.js: 10ms, application-code: 363ms)
+ GET /cbt/library 200 in 316ms (next.js: 6ms, application-code: 309ms)
+ GET /cbt/library 200 in 316ms (next.js: 51ms, application-code: 265ms)
+ GET /cbt/library 200 in 200ms (next.js: 9ms, application-code: 191ms)
+ GET /cbt/library 200 in 203ms (next.js: 57ms, application-code: 146ms)
+ GET /cbt/library 200 in 104ms (next.js: 8ms, application-code: 97ms)
+ GET /manifest.webmanifest 200 in 62ms (next.js: 50ms, application-code: 12ms)
+ GET /admin/register 200 in 491ms (next.js: 115ms, application-code: 376ms)
+ GET /admin/register 200 in 491ms (next.js: 210ms, application-code: 281ms)
+ GET /admin/register 200 in 495ms (next.js: 168ms, application-code: 327ms)
+ GET /admin/register 200 in 499ms (next.js: 268ms, application-code: 230ms)
+ GET /admin/register 200 in 501ms (next.js: 354ms, application-code: 147ms)
+ GET /admin/register 200 in 500ms (next.js: 310ms, application-code: 190ms)
+ GET /admin/register 200 in 358ms (next.js: 7ms, application-code: 351ms)
+ GET /admin/register 200 in 313ms (next.js: 10ms, application-code: 303ms)
+ GET /admin/register 200 in 313ms (next.js: 62ms, application-code: 251ms)
+ GET /admin/register 200 in 314ms (next.js: 110ms, application-code: 203ms)
+ GET /admin/register 200 in 314ms (next.js: 160ms, application-code: 154ms)
+ GET /admin/register 200 in 314ms (next.js: 209ms, application-code: 105ms)
+ GET /admin/register 200 in 398ms (next.js: 9ms, application-code: 388ms)
+ GET /admin/register 200 in 400ms (next.js: 65ms, application-code: 335ms)
+ GET /admin/register 200 in 397ms (next.js: 115ms, application-code: 282ms)
+ GET /admin/register 200 in 401ms (next.js: 181ms, application-code: 220ms)
+ GET /admin/register 200 in 183ms (next.js: 12ms, application-code: 171ms)
+ GET /admin/register 200 in 181ms (next.js: 56ms, application-code: 125ms)
+ GET /admin/register 200 in 378ms (next.js: 21ms, application-code: 357ms)
+ GET /admin/register 200 in 371ms (next.js: 66ms, application-code: 305ms)
+ GET /admin/register 200 in 313ms (next.js: 59ms, application-code: 254ms)
+ GET /admin/register 200 in 263ms (next.js: 60ms, application-code: 202ms)
+ GET /admin/register 200 in 212ms (next.js: 62ms, application-code: 150ms)
+ GET /admin/register 200 in 211ms (next.js: 110ms, application-code: 101ms)
+ GET /admin/register 200 in 350ms (next.js: 6ms, application-code: 344ms)
+ GET /admin/register 200 in 299ms (next.js: 6ms, application-code: 293ms)
+ GET /admin/register 200 in 299ms (next.js: 53ms, application-code: 246ms)
+ GET /admin/register 200 in 299ms (next.js: 150ms, application-code: 149ms)
+ GET /admin/register 200 in 303ms (next.js: 103ms, application-code: 201ms)
+ GET /admin/register 200 in 299ms (next.js: 214ms, application-code: 86ms)
+ GET /admin/register 200 in 335ms (next.js: 10ms, application-code: 326ms)
+ GET /admin/register 200 in 300ms (next.js: 12ms, application-code: 287ms)
+ GET /admin/register 200 in 301ms (next.js: 61ms, application-code: 241ms)
+ GET /admin/register 200 in 302ms (next.js: 103ms, application-code: 199ms)
+ GET /admin/register 200 in 302ms (next.js: 146ms, application-code: 156ms)
+ GET /admin/register 200 in 298ms (next.js: 186ms, application-code: 112ms)
+ GET /admin/register 200 in 361ms (next.js: 53ms, application-code: 307ms)
+ GET /admin/register 200 in 368ms (next.js: 12ms, application-code: 356ms)
+ GET /admin/register 200 in 266ms (next.js: 7ms, application-code: 258ms)
+ GET /admin/register 200 in 265ms (next.js: 103ms, application-code: 162ms)
+ GET /admin/register 200 in 270ms (next.js: 54ms, application-code: 216ms)
+ GET /admin/register 200 in 270ms (next.js: 152ms, application-code: 117ms)
+ GET /admin/register 200 in 331ms (next.js: 6ms, application-code: 325ms)
+ GET /admin/register 200 in 331ms (next.js: 114ms, application-code: 217ms)
+ GET /admin/register 200 in 336ms (next.js: 65ms, application-code: 270ms)
+ GET /admin/register 200 in 178ms (next.js: 6ms, application-code: 173ms)
+ GET /admin/register 200 in 180ms (next.js: 55ms, application-code: 125ms)
+ GET /admin/register 200 in 182ms (next.js: 98ms, application-code: 84ms)
+ GET /admin/register 200 in 385ms (next.js: 9ms, application-code: 376ms)
+ GET /admin/register 200 in 388ms (next.js: 61ms, application-code: 327ms)
+ GET /admin/register 200 in 389ms (next.js: 111ms, application-code: 278ms)
+ GET /admin/register 200 in 237ms (next.js: 8ms, application-code: 229ms)
+ GET /admin/register 200 in 239ms (next.js: 55ms, application-code: 185ms)
+ GET /admin/register 200 in 243ms (next.js: 102ms, application-code: 141ms)
+ GET /admin/register 200 in 358ms (next.js: 8ms, application-code: 350ms)
+ GET /admin/register 200 in 358ms (next.js: 62ms, application-code: 296ms)
+ GET /admin/register 200 in 361ms (next.js: 112ms, application-code: 248ms)
+ GET /admin/register 200 in 209ms (next.js: 6ms, application-code: 203ms)
+ GET /admin/register 200 in 210ms (next.js: 51ms, application-code: 158ms)
+ GET /admin/register 200 in 209ms (next.js: 96ms, application-code: 113ms)
+ GET /admin/register 200 in 125ms (next.js: 11ms, application-code: 114ms)
+ GET /admin/register 200 in 128ms (next.js: 56ms, application-code: 72ms)
+ GET /manifest.webmanifest 200 in 8ms (next.js: 2ms, application-code: 6ms)
+⨯ ./src/app/cbt/solve/[code]/page.tsx:20:1
+Export SolveResult doesn't exist in target module
+  [90m18 |[0m [36mimport[0m questionsData [36mfrom[0m [32m"@/data/questions.json"[0m;
+  [90m19 |[0m [36mimport[0m [36mtype[0m { [33mQuestion[0m, [33mAnswerNum[0m } [36mfrom[0m [32m"./types"[0
+m;
+[31m[1m>[0m [90m20 |[0m [36mimport[0m { [33mSolveResult[0m } [36mfrom[0m [32m"./SolveResult"[0m;
+  [90m   |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m21 |[0m
+  [90m22 |[0m [36mconst[0m [33mALL[0m: [33mQuestion[0m[] = questionsData [36mas[0m [33mQuestion[0m[];
+  [90m23 |[0m
+
+The export SolveResult was not found in module [project]/src/app/cbt/solve/[code]/SolveResult.tsx [app-client] (ecmascr
+ipt).
+Did you mean to import default?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the req
+uested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./src/app/cbt/solve/[code]/page.tsx [Client Component Browser]
+    ./src/app/cbt/solve/[code]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/cbt/solve/[code]/page.tsx [Client Component SSR]
+    ./src/app/cbt/solve/[code]/page.tsx [Server Component]
+
+
+
+./src/app/cbt/solve/[code]/page.tsx:20:1
+Export SolveResult doesn't exist in target module
+  [90m18 |[0m [36mimport[0m questionsData [36mfrom[0m [32m"@/data/questions.json"[0m;
+  [90m19 |[0m [36mimport[0m [36mtype[0m { [33mQuestion[0m, [33mAnswerNum[0m } [36mfrom[0m [32m"./types"[0
+m;
+[31m[1m>[0m [90m20 |[0m [36mimport[0m { [33mSolveResult[0m } [36mfrom[0m [32m"./SolveResult"[0m;
+  [90m   |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m21 |[0m
+  [90m22 |[0m [36mconst[0m [33mALL[0m: [33mQuestion[0m[] = questionsData [36mas[0m [33mQuestion[0m[];
+  [90m23 |[0m
+
+The export SolveResult was not found in module [project]/src/app/cbt/solve/[code]/SolveResult.tsx [app-ssr] (ecmascript
+).
+Did you mean to import default?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the req
+uested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./src/app/cbt/solve/[code]/page.tsx [Client Component Browser]
+    ./src/app/cbt/solve/[code]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/cbt/solve/[code]/page.tsx [Client Component SSR]
+    ./src/app/cbt/solve/[code]/page.tsx [Server Component]
+
+
+ GET /cbt/solve/elec_A_2022_01_01 500 in 2.7s (next.js: 2.5s, application-code: 176ms)
+[browser] ./src/app/cbt/solve/[code]/page.tsx:20:1
+Export SolveResult doesn't exist in target module
+  18 | import questionsData from "@/data/questions.json";
+  19 | import type { Question, AnswerNum } from "./types";
+> 20 | import { SolveResult } from "./SolveResult";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  21 |
+  22 | const ALL: Question[] = questionsData as Question[];
+  23 |
+
+The export SolveResult was not found in module [project]/src/app/cbt/solve/[code]/SolveResult.tsx [app-client] (ecmascr
+ipt).
+Did you mean to import default?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the req
+uested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./src/app/cbt/solve/[code]/page.tsx [Client Component Browser]
+    ./src/app/cbt/solve/[code]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/cbt/solve/[code]/page.tsx [Client Component SSR]
+    ./src/app/cbt/solve/[code]/page.tsx [Server Component] 
+[browser] ./src/app/cbt/solve/[code]/page.tsx:20:1
+Export SolveResult doesn't exist in target module
+  18 | import questionsData from "@/data/questions.json";
+  19 | import type { Question, AnswerNum } from "./types";
+> 20 | import { SolveResult } from "./SolveResult";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  21 |
+  22 | const ALL: Question[] = questionsData as Question[];
+  23 |
+
+The export SolveResult was not found in module [project]/src/app/cbt/solve/[code]/SolveResult.tsx [app-ssr] (ecmascript
+).
+Did you mean to import default?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the req
+uested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./src/app/cbt/solve/[code]/page.tsx [Client Component Browser]
+    ./src/app/cbt/solve/[code]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/cbt/solve/[code]/page.tsx [Client Component SSR]
+    ./src/app/cbt/solve/[code]/page.tsx [Server Component] 
+[browser] ./src/app/cbt/solve/[code]/page.tsx:20:1
+Export SolveResult doesn't exist in target module
+  18 | import questionsData from "@/data/questions.json";
+  19 | import type { Question, AnswerNum } from "./types";
+> 20 | import { SolveResult } from "./SolveResult";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  21 |
+  22 | const ALL: Question[] = questionsData as Question[];
+  23 |
+
+The export SolveResult was not found in module [project]/src/app/cbt/solve/[code]/SolveResult.tsx [app-client] (ecmascr
+ipt).
+Did you mean to import default?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the req
+uested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./src/app/cbt/solve/[code]/page.tsx [Client Component Browser]
+    ./src/app/cbt/solve/[code]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/cbt/solve/[code]/page.tsx [Client Component SSR]
+    ./src/app/cbt/solve/[code]/page.tsx [Server Component] 
+[browser] ./src/app/cbt/solve/[code]/page.tsx:20:1
+Export SolveResult doesn't exist in target module
+  18 | import questionsData from "@/data/questions.json";
+  19 | import type { Question, AnswerNum } from "./types";
+> 20 | import { SolveResult } from "./SolveResult";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  21 |
+  22 | const ALL: Question[] = questionsData as Question[];
+  23 |
+
+The export SolveResult was not found in module [project]/src/app/cbt/solve/[code]/SolveResult.tsx [app-ssr] (ecmascript
+).
+Did you mean to import default?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the req
+uested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./src/app/cbt/solve/[code]/page.tsx [Client Component Browser]
+    ./src/app/cbt/solve/[code]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/cbt/solve/[code]/page.tsx [Client Component SSR]
+    ./src/app/cbt/solve/[code]/page.tsx [Server Component] 
+[browser] ./src/app/cbt/solve/[code]/page.tsx:20:1
+Export SolveResult doesn't exist in target module
+  18 | import questionsData from "@/data/questions.json";
+  19 | import type { Question, AnswerNum } from "./types";
+> 20 | import { SolveResult } from "./SolveResult";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  21 |
+  22 | const ALL: Question[] = questionsData as Question[];
+  23 |
+
+The export SolveResult was not found in module [project]/src/app/cbt/solve/[code]/SolveResult.tsx [app-client] (ecmascr
+ipt).
+Did you mean to import default?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the req
+uested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./src/app/cbt/solve/[code]/page.tsx [Client Component Browser]
+    ./src/app/cbt/solve/[code]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/cbt/solve/[code]/page.tsx [Client Component SSR]
+    ./src/app/cbt/solve/[code]/page.tsx [Server Component] 
+[browser] ./src/app/cbt/solve/[code]/page.tsx:20:1
+Export SolveResult doesn't exist in target module
+  18 | import questionsData from "@/data/questions.json";
+  19 | import type { Question, AnswerNum } from "./types";
+> 20 | import { SolveResult } from "./SolveResult";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  21 |
+  22 | const ALL: Question[] = questionsData as Question[];
+  23 |
+
+The export SolveResult was not found in module [project]/src/app/cbt/solve/[code]/SolveResult.tsx [app-ssr] (ecmascript
+).
+Did you mean to import default?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the req
+uested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./src/app/cbt/solve/[code]/page.tsx [Client Component Browser]
+    ./src/app/cbt/solve/[code]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/cbt/solve/[code]/page.tsx [Client Component SSR]
+    ./src/app/cbt/solve/[code]/page.tsx [Server Component] 
+[browser] ./src/app/cbt/solve/[code]/page.tsx:20:1
+Export SolveResult doesn't exist in target module
+  18 | import questionsData from "@/data/questions.json";
+  19 | import type { Question, AnswerNum } from "./types";
+> 20 | import { SolveResult } from "./SolveResult";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  21 |
+  22 | const ALL: Question[] = questionsData as Question[];
+  23 |
+
+The export SolveResult was not found in module [project]/src/app/cbt/solve/[code]/SolveResult.tsx [app-client] (ecmascr
+ipt).
+Did you mean to import default?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the req
+uested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./src/app/cbt/solve/[code]/page.tsx [Client Component Browser]
+    ./src/app/cbt/solve/[code]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/cbt/solve/[code]/page.tsx [Client Component SSR]
+    ./src/app/cbt/solve/[code]/page.tsx [Server Component] 
+[browser] ./src/app/cbt/solve/[code]/page.tsx:20:1
+Export SolveResult doesn't exist in target module
+  18 | import questionsData from "@/data/questions.json";
+  19 | import type { Question, AnswerNum } from "./types";
+> 20 | import { SolveResult } from "./SolveResult";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  21 |
+  22 | const ALL: Question[] = questionsData as Question[];
+  23 |
+
+The export SolveResult was not found in module [project]/src/app/cbt/solve/[code]/SolveResult.tsx [app-ssr] (ecmascript
+).
+Did you mean to import default?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the req
+uested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./src/app/cbt/solve/[code]/page.tsx [Client Component Browser]
+    ./src/app/cbt/solve/[code]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/cbt/solve/[code]/page.tsx [Client Component SSR]
+    ./src/app/cbt/solve/[code]/page.tsx [Server Component] 
+⨯ ./src/app/cbt/solve/[code]/page.tsx:20:1
+Export SolveResult doesn't exist in target module
+  [90m18 |[0m [36mimport[0m questionsData [36mfrom[0m [32m"@/data/questions.json"[0m;
+  [90m19 |[0m [36mimport[0m [36mtype[0m { [33mQuestion[0m, [33mAnswerNum[0m } [36mfrom[0m [32m"./types"[0
+m;
+[31m[1m>[0m [90m20 |[0m [36mimport[0m { [33mSolveResult[0m } [36mfrom[0m [32m"./SolveResult"[0m;
+  [90m   |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m21 |[0m
+  [90m22 |[0m [36mconst[0m [33mALL[0m: [33mQuestion[0m[] = questionsData [36mas[0m [33mQuestion[0m[];
+  [90m23 |[0m
+
+The export SolveResult was not found in module [project]/src/app/cbt/solve/[code]/SolveResult.tsx [app-client] (ecmascr
+ipt).
+Did you mean to import default?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the req
+uested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./src/app/cbt/solve/[code]/page.tsx [Client Component Browser]
+    ./src/app/cbt/solve/[code]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/cbt/solve/[code]/page.tsx [Client Component SSR]
+    ./src/app/cbt/solve/[code]/page.tsx [Server Component]
+
+
+
+./src/app/cbt/solve/[code]/page.tsx:20:1
+Export SolveResult doesn't exist in target module
+  [90m18 |[0m [36mimport[0m questionsData [36mfrom[0m [32m"@/data/questions.json"[0m;
+  [90m19 |[0m [36mimport[0m [36mtype[0m { [33mQuestion[0m, [33mAnswerNum[0m } [36mfrom[0m [32m"./types"[0
+m;
+[31m[1m>[0m [90m20 |[0m [36mimport[0m { [33mSolveResult[0m } [36mfrom[0m [32m"./SolveResult"[0m;
+  [90m   |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m21 |[0m
+  [90m22 |[0m [36mconst[0m [33mALL[0m: [33mQuestion[0m[] = questionsData [36mas[0m [33mQuestion[0m[];
+  [90m23 |[0m
+
+The export SolveResult was not found in module [project]/src/app/cbt/solve/[code]/SolveResult.tsx [app-ssr] (ecmascript
+).
+Did you mean to import default?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the req
+uested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./src/app/cbt/solve/[code]/page.tsx [Client Component Browser]
+    ./src/app/cbt/solve/[code]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/cbt/solve/[code]/page.tsx [Client Component SSR]
+    ./src/app/cbt/solve/[code]/page.tsx [Server Component]
+
+
+ GET /cbt/solve/elec_A_2022_01_01 500 in 20ms (next.js: 9ms, application-code: 11ms)
+[browser] ./src/app/cbt/solve/[code]/page.tsx:20:1
+Export SolveResult doesn't exist in target module
+  18 | import questionsData from "@/data/questions.json";
+  19 | import type { Question, AnswerNum } from "./types";
+> 20 | import { SolveResult } from "./SolveResult";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  21 |
+  22 | const ALL: Question[] = questionsData as Question[];
+  23 |
+
+The export SolveResult was not found in module [project]/src/app/cbt/solve/[code]/SolveResult.tsx [app-client] (ecmascr
+ipt).
+Did you mean to import default?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the req
+uested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./src/app/cbt/solve/[code]/page.tsx [Client Component Browser]
+    ./src/app/cbt/solve/[code]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/cbt/solve/[code]/page.tsx [Client Component SSR]
+    ./src/app/cbt/solve/[code]/page.tsx [Server Component] 
+[browser] ./src/app/cbt/solve/[code]/page.tsx:20:1
+Export SolveResult doesn't exist in target module
+  18 | import questionsData from "@/data/questions.json";
+  19 | import type { Question, AnswerNum } from "./types";
+> 20 | import { SolveResult } from "./SolveResult";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  21 |
+  22 | const ALL: Question[] = questionsData as Question[];
+  23 |
+
+The export SolveResult was not found in module [project]/src/app/cbt/solve/[code]/SolveResult.tsx [app-ssr] (ecmascript
+).
+Did you mean to import default?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the req
+uested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./src/app/cbt/solve/[code]/page.tsx [Client Component Browser]
+    ./src/app/cbt/solve/[code]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/cbt/solve/[code]/page.tsx [Client Component SSR]
+    ./src/app/cbt/solve/[code]/page.tsx [Server Component] 
+[browser] ./src/app/cbt/solve/[code]/page.tsx:20:1
+Export SolveResult doesn't exist in target module
+  18 | import questionsData from "@/data/questions.json";
+  19 | import type { Question, AnswerNum } from "./types";
+> 20 | import { SolveResult } from "./SolveResult";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  21 |
+  22 | const ALL: Question[] = questionsData as Question[];
+  23 |
+
+The export SolveResult was not found in module [project]/src/app/cbt/solve/[code]/SolveResult.tsx [app-client] (ecmascr
+ipt).
+Did you mean to import default?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the req
+uested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./src/app/cbt/solve/[code]/page.tsx [Client Component Browser]
+    ./src/app/cbt/solve/[code]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/cbt/solve/[code]/page.tsx [Client Component SSR]
+    ./src/app/cbt/solve/[code]/page.tsx [Server Component] 
+[browser] ./src/app/cbt/solve/[code]/page.tsx:20:1
+Export SolveResult doesn't exist in target module
+  18 | import questionsData from "@/data/questions.json";
+  19 | import type { Question, AnswerNum } from "./types";
+> 20 | import { SolveResult } from "./SolveResult";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  21 |
+  22 | const ALL: Question[] = questionsData as Question[];
+  23 |
+
+The export SolveResult was not found in module [project]/src/app/cbt/solve/[code]/SolveResult.tsx [app-ssr] (ecmascript
+).
+Did you mean to import default?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the req
+uested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./src/app/cbt/solve/[code]/page.tsx [Client Component Browser]
+    ./src/app/cbt/solve/[code]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/cbt/solve/[code]/page.tsx [Client Component SSR]
+    ./src/app/cbt/solve/[code]/page.tsx [Server Component] 
+✓ Compiled in 51ms
+ GET /cbt/library 200 in 298ms (next.js: 80ms, application-code: 218ms)
+ GET /admin/register 200 in 157ms (next.js: 15ms, application-code: 143ms)
+ GET /cbt/library 200 in 107ms (next.js: 9ms, application-code: 97ms)
+ GET /admin/register 200 in 69ms (next.js: 5ms, application-code: 63ms)
+ GET /manifest.webmanifest 200 in 60ms (next.js: 49ms, application-code: 11ms)
+ GET /manifest.webmanifest 200 in 7ms (next.js: 3ms, application-code: 4ms)
+ GET /cbt/solve/elec_A_2022_01_01 200 in 1040ms (next.js: 761ms, application-code: 280ms)
+ GET /cbt/solve/elec_A_2022_01_21 200 in 96ms (next.js: 13ms, application-code: 83ms)
+ GET /cbt/solve/bogus_code 200 in 73ms (next.js: 3ms, application-code: 70ms)
+ GET /cbt/solve/elec_A_2022_01_01 200 in 210ms (next.js: 12ms, application-code: 198ms)
+ GET /cbt/solve/elec_A_2022_01_01 200 in 269ms (next.js: 14ms, application-code: 256ms)
+ GET /cbt/solve/elec_A_2022_01_01 200 in 546ms (next.js: 34ms, application-code: 512ms)
+ GET /cbt/solve/elec_A_2022_01_01 200 in 414ms (next.js: 22ms, application-code: 391ms)
+ GET /cbt/solve/elec_A_2022_01_01 200 in 366ms (next.js: 20ms, application-code: 345ms)
+ GET /cbt/solve/elec_A_2022_01_01 200 in 391ms (next.js: 14ms, application-code: 377ms)
+ GET /cbt/solve/elec_A_2022_01_01 200 in 253ms (next.js: 13ms, application-code: 240ms)
+ GET /cbt/solve/elec_A_2022_01_01 200 in 309ms (next.js: 13ms, application-code: 296ms)
+ GET /cbt/solve/elec_A_2022_01_01 200 in 304ms (next.js: 14ms, application-code: 290ms)
+ GET /cbt/solve/elec_A_2022_01_01 200 in 417ms (next.js: 13ms, application-code: 404ms)
+ GET /cbt/solve/elec_A_2022_01_01 200 in 432ms (next.js: 12ms, application-code: 419ms)
+ GET /cbt/solve/elec_A_2022_01_21 200 in 336ms (next.js: 13ms, application-code: 323ms)
+ GET /questions/q21_differential_diagram.png 404 in 138ms (next.js: 20ms, application-code: 118ms)
+ GET /cbt/solve/elec_A_2022_01_01 200 in 438ms (next.js: 17ms, application-code: 421ms)
+ GET /manifest.webmanifest 200 in 87ms (next.js: 75ms, application-code: 12ms)
+ GET /cbt/solve/elec_A_2022_01_02 200 in 43ms (next.js: 12ms, application-code: 31ms)
+[browser] Detected `scroll-behavior: smooth` on the `<html>` element. To disable smooth scrolling during route transiti
+ons, add `data-scroll-behavior="smooth"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-d
+ata-scroll-behavior
+ GET /manifest.webmanifest 200 in 17ms (next.js: 12ms, application-code: 5ms)
+ GET /cbt/solve/elec_A_2022_01_21 200 in 46ms (next.js: 13ms, application-code: 33ms)
+ GET /manifest.webmanifest 200 in 12ms (next.js: 3ms, application-code: 9ms)
+ GET /cbt/solve/elec_A_2022_01_41 200 in 41ms (next.js: 14ms, application-code: 27ms)
+ GET /manifest.webmanifest 200 in 16ms (next.js: 12ms, application-code: 4ms)
+ GET /cbt/solve/elec_A_2022_01_51 200 in 58ms (next.js: 3ms, application-code: 55ms)
+ GET /manifest.webmanifest 200 in 10ms (next.js: 6ms, application-code: 4ms)
+✓ Compiled in 85ms
+ GET /cbt/solve/elec_A_2022_01_51 200 in 410ms (next.js: 182ms, application-code: 228ms)
+ GET /manifest.webmanifest 200 in 158ms (next.js: 143ms, application-code: 15ms)
+ GET /admin/register 200 in 160ms (next.js: 18ms, application-code: 142ms)
+ GET /cbt/library 200 in 85ms (next.js: 22ms, application-code: 63ms)
+ GET /manifest.webmanifest 200 in 9ms (next.js: 2ms, application-code: 6ms)
+ GET /manifest.webmanifest 200 in 6ms (next.js: 1758µs, application-code: 4ms)
+ GET /cbt/solve/elec_A_2022_01_01 200 in 836ms (next.js: 13ms, application-code: 823ms)
+ GET /cbt/solve/elec_A_2022_01_01 200 in 463ms (next.js: 16ms, application-code: 447ms)
+ GET /cbt/solve/elec_A_2022_01_01 200 in 613ms (next.js: 14ms, application-code: 600ms)
+ GET /cbt/solve/elec_A_2022_01_21 200 in 834ms (next.js: 15ms, application-code: 819ms)
+ GET /questions/q21_differential_diagram.png 404 in 152ms (next.js: 21ms, application-code: 131ms)
+✓ Compiled in 31ms
+ GET /cbt/library 200 in 629ms (next.js: 114ms, application-code: 516ms)
+ GET /admin/register 200 in 433ms (next.js: 38ms, application-code: 395ms)
+ GET /cbt/solve/elec_A_2022_01_51 200 in 400ms (next.js: 137ms, application-code: 263ms)
+ GET /manifest.webmanifest 200 in 65ms (next.js: 52ms, application-code: 13ms)
+ GET /manifest.webmanifest 200 in 9ms (next.js: 2ms, application-code: 6ms)
+ GET /manifest.webmanifest 200 in 6ms (next.js: 1998µs, application-code: 4ms)
+ GET /cbt/solve/elec_A_2022_01_01 200 in 621ms (next.js: 20ms, application-code: 601ms)
+ GET /cbt/solve/elec_A_2022_01_01 200 in 614ms (next.js: 11ms, application-code: 602ms)
+ GET /cbt/solve/elec_A_2022_01_01 200 in 462ms (next.js: 14ms, application-code: 448ms)
+ GET /cbt/solve/elec_A_2022_01_21 200 in 383ms (next.js: 12ms, application-code: 370ms)
+ GET /questions/q21_differential_diagram.png 404 in 152ms (next.js: 21ms, application-code: 131ms)
+ GET /admin/register 200 in 119ms (next.js: 4ms, application-code: 115ms)
+ GET /admin/register-batch 200 in 86ms (next.js: 14ms, application-code: 73ms)
+ GET /cbt/library 200 in 80ms (next.js: 3ms, application-code: 77ms)
+ GET /cbt/solve/elec_A_2022_01_01 200 in 79ms (next.js: 11ms, application-code: 68ms)
+ GET /cbt/solve/elec_A_2022_01_21 200 in 77ms (next.js: 3ms, application-code: 74ms)
+ GET /cbt/solve/INVALID_CODE 200 in 70ms (next.js: 3ms, application-code: 67ms)
+ GET /api/upload 405 in 25ms (next.js: 21ms, application-code: 5ms)
+ GET /api/sample-batch 404 in 92ms (next.js: 4ms, application-code: 88ms)
+ GET /cbt/library 200 in 69ms (next.js: 3ms, application-code: 66ms)
+ POST /api/upload 400 in 10ms (next.js: 2ms, application-code: 7ms)
+[browser] ./src/app/cbt/solve/[code]/page.tsx:20:1
+Export SolveResult doesn't exist in target module
+  18 | import questionsData from "@/data/questions.json";
+  19 | import type { Question, AnswerNum } from "./types";
+> 20 | import { SolveResult } from "./SolveResult";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  21 |
+  22 | const ALL: Question[] = questionsData as Question[];
+  23 |
+
+The export SolveResult was not found in module [project]/src/app/cbt/solve/[code]/SolveResult.tsx [app-client] (ecmascr
+ipt).
+Did you mean to import default?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the req
+uested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./src/app/cbt/solve/[code]/page.tsx [Client Component Browser]
+    ./src/app/cbt/solve/[code]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/cbt/solve/[code]/page.tsx [Client Component SSR]
+    ./src/app/cbt/solve/[code]/page.tsx [Server Component] 
+[browser] ./src/app/cbt/solve/[code]/page.tsx:20:1
+Export SolveResult doesn't exist in target module
+  18 | import questionsData from "@/data/questions.json";
+  19 | import type { Question, AnswerNum } from "./types";
+> 20 | import { SolveResult } from "./SolveResult";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  21 |
+  22 | const ALL: Question[] = questionsData as Question[];
+  23 |
+
+The export SolveResult was not found in module [project]/src/app/cbt/solve/[code]/SolveResult.tsx [app-ssr] (ecmascript
+).
+Did you mean to import default?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the req
+uested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./src/app/cbt/solve/[code]/page.tsx [Client Component Browser]
+    ./src/app/cbt/solve/[code]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/cbt/solve/[code]/page.tsx [Client Component SSR]
+    ./src/app/cbt/solve/[code]/page.tsx [Server Component] 
+[browser] ./src/app/cbt/solve/[code]/page.tsx:20:1
+Export SolveResult doesn't exist in target module
+  18 | import questionsData from "@/data/questions.json";
+  19 | import type { Question, AnswerNum } from "./types";
+> 20 | import { SolveResult } from "./SolveResult";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  21 |
+  22 | const ALL: Question[] = questionsData as Question[];
+  23 |
+
+The export SolveResult was not found in module [project]/src/app/cbt/solve/[code]/SolveResult.tsx [app-client] (ecmascr
+ipt).
+Did you mean to import default?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the req
+uested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./src/app/cbt/solve/[code]/page.tsx [Client Component Browser]
+    ./src/app/cbt/solve/[code]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/cbt/solve/[code]/page.tsx [Client Component SSR]
+    ./src/app/cbt/solve/[code]/page.tsx [Server Component] 
+[browser] ./src/app/cbt/solve/[code]/page.tsx:20:1
+Export SolveResult doesn't exist in target module
+  18 | import questionsData from "@/data/questions.json";
+  19 | import type { Question, AnswerNum } from "./types";
+> 20 | import { SolveResult } from "./SolveResult";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  21 |
+  22 | const ALL: Question[] = questionsData as Question[];
+  23 |
+
+The export SolveResult was not found in module [project]/src/app/cbt/solve/[code]/SolveResult.tsx [app-ssr] (ecmascript
+).
+Did you mean to import default?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the req
+uested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./src/app/cbt/solve/[code]/page.tsx [Client Component Browser]
+    ./src/app/cbt/solve/[code]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/cbt/solve/[code]/page.tsx [Client Component SSR]
+    ./src/app/cbt/solve/[code]/page.tsx [Server Component] 
+[browser] ./src/app/cbt/solve/[code]/page.tsx:20:1
+Export SolveResult doesn't exist in target module
+  18 | import questionsData from "@/data/questions.json";
+  19 | import type { Question, AnswerNum } from "./types";
+> 20 | import { SolveResult } from "./SolveResult";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  21 |
+  22 | const ALL: Question[] = questionsData as Question[];
+  23 |
+
+The export SolveResult was not found in module [project]/src/app/cbt/solve/[code]/SolveResult.tsx [app-client] (ecmascr
+ipt).
+Did you mean to import default?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the req
+uested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./src/app/cbt/solve/[code]/page.tsx [Client Component Browser]
+    ./src/app/cbt/solve/[code]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/cbt/solve/[code]/page.tsx [Client Component SSR]
+    ./src/app/cbt/solve/[code]/page.tsx [Server Component] 
+[browser] ./src/app/cbt/solve/[code]/page.tsx:20:1
+Export SolveResult doesn't exist in target module
+  18 | import questionsData from "@/data/questions.json";
+  19 | import type { Question, AnswerNum } from "./types";
+> 20 | import { SolveResult } from "./SolveResult";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  21 |
+  22 | const ALL: Question[] = questionsData as Question[];
+  23 |
+
+The export SolveResult was not found in module [project]/src/app/cbt/solve/[code]/SolveResult.tsx [app-ssr] (ecmascript
+).
+Did you mean to import default?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the req
+uested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./src/app/cbt/solve/[code]/page.tsx [Client Component Browser]
+    ./src/app/cbt/solve/[code]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/cbt/solve/[code]/page.tsx [Client Component SSR]
+    ./src/app/cbt/solve/[code]/page.tsx [Server Component] 
+[browser] ./src/app/cbt/solve/[code]/page.tsx:20:1
+Export SolveResult doesn't exist in target module
+  18 | import questionsData from "@/data/questions.json";
+  19 | import type { Question, AnswerNum } from "./types";
+> 20 | import { SolveResult } from "./SolveResult";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  21 |
+  22 | const ALL: Question[] = questionsData as Question[];
+  23 |
+
+The export SolveResult was not found in module [project]/src/app/cbt/solve/[code]/SolveResult.tsx [app-client] (ecmascr
+ipt).
+Did you mean to import default?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the req
+uested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./src/app/cbt/solve/[code]/page.tsx [Client Component Browser]
+    ./src/app/cbt/solve/[code]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/cbt/solve/[code]/page.tsx [Client Component SSR]
+    ./src/app/cbt/solve/[code]/page.tsx [Server Component] 
+[browser] ./src/app/cbt/solve/[code]/page.tsx:20:1
+Export SolveResult doesn't exist in target module
+  18 | import questionsData from "@/data/questions.json";
+  19 | import type { Question, AnswerNum } from "./types";
+> 20 | import { SolveResult } from "./SolveResult";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  21 |
+  22 | const ALL: Question[] = questionsData as Question[];
+  23 |
+
+The export SolveResult was not found in module [project]/src/app/cbt/solve/[code]/SolveResult.tsx [app-ssr] (ecmascript
+).
+Did you mean to import default?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the req
+uested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./src/app/cbt/solve/[code]/page.tsx [Client Component Browser]
+    ./src/app/cbt/solve/[code]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/cbt/solve/[code]/page.tsx [Client Component SSR]
+    ./src/app/cbt/solve/[code]/page.tsx [Server Component] 
+[browser] ./src/app/cbt/solve/[code]/page.tsx:20:1
+Export SolveResult doesn't exist in target module
+  18 | import questionsData from "@/data/questions.json";
+  19 | import type { Question, AnswerNum } from "./types";
+> 20 | import { SolveResult } from "./SolveResult";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  21 |
+  22 | const ALL: Question[] = questionsData as Question[];
+  23 |
+
+The export SolveResult was not found in module [project]/src/app/cbt/solve/[code]/SolveResult.tsx [app-client] (ecmascr
+ipt).
+Did you mean to import default?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the req
+uested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./src/app/cbt/solve/[code]/page.tsx [Client Component Browser]
+    ./src/app/cbt/solve/[code]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/cbt/solve/[code]/page.tsx [Client Component SSR]
+    ./src/app/cbt/solve/[code]/page.tsx [Server Component] 
+[browser] ./src/app/cbt/solve/[code]/page.tsx:20:1
+Export SolveResult doesn't exist in target module
+  18 | import questionsData from "@/data/questions.json";
+  19 | import type { Question, AnswerNum } from "./types";
+> 20 | import { SolveResult } from "./SolveResult";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  21 |
+  22 | const ALL: Question[] = questionsData as Question[];
+  23 |
+
+The export SolveResult was not found in module [project]/src/app/cbt/solve/[code]/SolveResult.tsx [app-ssr] (ecmascript
+).
+Did you mean to import default?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the req
+uested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./src/app/cbt/solve/[code]/page.tsx [Client Component Browser]
+    ./src/app/cbt/solve/[code]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/cbt/solve/[code]/page.tsx [Client Component SSR]
+    ./src/app/cbt/solve/[code]/page.tsx [Server Component] 
+[browser] ./src/app/cbt/solve/[code]/page.tsx:20:1
+Export SolveResult doesn't exist in target module
+  18 | import questionsData from "@/data/questions.json";
+  19 | import type { Question, AnswerNum } from "./types";
+> 20 | import { SolveResult } from "./SolveResult";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  21 |
+  22 | const ALL: Question[] = questionsData as Question[];
+  23 |
+
+The export SolveResult was not found in module [project]/src/app/cbt/solve/[code]/SolveResult.tsx [app-client] (ecmascr
+ipt).
+Did you mean to import default?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the req
+uested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./src/app/cbt/solve/[code]/page.tsx [Client Component Browser]
+    ./src/app/cbt/solve/[code]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/cbt/solve/[code]/page.tsx [Client Component SSR]
+    ./src/app/cbt/solve/[code]/page.tsx [Server Component] 
+[browser] ./src/app/cbt/solve/[code]/page.tsx:20:1
+Export SolveResult doesn't exist in target module
+  18 | import questionsData from "@/data/questions.json";
+  19 | import type { Question, AnswerNum } from "./types";
+> 20 | import { SolveResult } from "./SolveResult";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  21 |
+  22 | const ALL: Question[] = questionsData as Question[];
+  23 |
+
+The export SolveResult was not found in module [project]/src/app/cbt/solve/[code]/SolveResult.tsx [app-ssr] (ecmascript
+).
+Did you mean to import default?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the req
+uested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./src/app/cbt/solve/[code]/page.tsx [Client Component Browser]
+    ./src/app/cbt/solve/[code]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/cbt/solve/[code]/page.tsx [Client Component SSR]
+    ./src/app/cbt/solve/[code]/page.tsx [Server Component] 

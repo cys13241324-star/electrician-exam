@@ -1,0 +1,219 @@
+"""일괄 등록 데모용 샘플 엑셀 — v3 양식 + 강의주소 5문항.
+출력: data/templates/sample_batch_5문항.xlsx
+"""
+import sys, os
+sys.stdout.reconfigure(encoding='utf-8')
+sys.path.insert(0, 'tools')
+
+from build_template_v3 import (
+    build_workbook, COLS, blocks_to_cell, set_print_landscape,
+    WHITE, DARK, INNER, THICK, COLOR, lfill, gfill,
+)
+import openpyxl
+from openpyxl.styles import Alignment, Font, PatternFill
+from openpyxl.utils import get_column_letter
+from openpyxl.comments import Comment
+
+OUT = 'data/templates/sample_batch_5문항.xlsx'
+
+SAMPLES = [
+    {
+        '과정': '전기기능사', '연도': 2022, '회차': 1,
+        '사용교재': '독끝 전기기능사 필기', '교재구분': 'A',
+        '문항코드': 'elec_A_2022_01_01',
+        '강의주소': 'https://youtu.be/elec01-capacitor',
+        '과목ID': 'theory', '챕터': '정전기',
+        '대유형': '콘덴서', '중유형': '정전용량', '내용': '정전용량 비례 관계',
+        '빈출도': 4, '난이도': 2, '문제유형': '단답형', '변형이력': 0, '비고': '',
+        '발문': '콘덴서의 정전용량에 대한 설명으로 틀린 것은?',
+        '조건': '', '발문그림': '',
+        '보기1': '전압에 반비례한다.', '보기1그림': '',
+        '보기2': '이동 전하량에 비례한다.', '보기2그림': '',
+        '보기3': '극판의 넓이에 비례한다.', '보기3그림': '',
+        '보기4': '극판의 간격에 비례한다.', '보기4그림': '',
+        '정답(1~4)': 4,
+        '해설_블록': [
+            {'type': 'text', 'value': '정전용량(<i>C</i>)은 극판의 넓이(<i>S</i>)에 비례하고 극판의 간격(<i>d</i>)에 반비례한다.'},
+        ],
+        '오답분석': '<ol><li>전압에 반비례한다.</li></ol>',
+        '학습포인트_블록': [
+            {'type': 'text', 'value': '<p><strong>정전용량 공식</strong></p><p><i>C</i> = <i>εS</i> / <i>d</i> [F]</p>'},
+        ],
+    },
+    {
+        '과정': '전기기능사', '연도': 2022, '회차': 1,
+        '사용교재': '독끝 전기기능사 필기', '교재구분': 'A',
+        '문항코드': 'elec_A_2022_01_02',
+        '강의주소': 'https://youtu.be/elec02-y-connection',
+        '과목ID': 'theory', '챕터': '교류회로',
+        '대유형': '3상 회로', '중유형': 'Y결선', '내용': '선간전압·상전압 관계',
+        '빈출도': 5, '난이도': 3, '문제유형': '계산형', '변형이력': 0, '비고': '',
+        '발문': '평형 3상 교류회로에서 Y결선할 때 선간전압과 상전압의 관계는?',
+        '조건': '', '발문그림': '',
+        '보기1': '<i>V<sub>l</sub></i> = <i>V<sub>p</sub></i>', '보기1그림': '',
+        '보기2': '<i>V<sub>l</sub></i> = <i>V<sub>p</sub></i> / √3', '보기2그림': '',
+        '보기3': '<i>V<sub>l</sub></i> = √3 <i>V<sub>p</sub></i>', '보기3그림': '',
+        '보기4': '<i>V<sub>l</sub></i> = 2<i>V<sub>p</sub></i>', '보기4그림': '',
+        '정답(1~4)': 3,
+        '해설_블록': [
+            {'type': 'text', 'value': 'Y 결선에서 선간전압은 상전압의 √3배이며 위상은 30° 앞선다.'},
+        ],
+        '오답분석': '',
+        '학습포인트_블록': [
+            {'type': 'text', 'value': '<p><strong>Y 결선의 특징</strong></p><p><i>V<sub>l</sub></i> = √3 <i>V<sub>p</sub></i> ∠ 30°</p>'},
+        ],
+    },
+    {
+        '과정': '전기기능사', '연도': 2022, '회차': 1,
+        '사용교재': '독끝 전기기능사 필기', '교재구분': 'A',
+        '문항코드': 'elec_A_2022_01_21',
+        '강의주소': 'https://youtu.be/elec21-differential-relay',
+        '과목ID': 'machinery', '챕터': '변압기',
+        '대유형': '보호 계전기', '중유형': '계전기 종류', '내용': '내부 고장 보호용 계전기',
+        '빈출도': 5, '난이도': 2, '문제유형': '단답형', '변형이력': 0, '비고': '',
+        '발문': '변압기 내부 고장 보호에 쓰이는 계전기로써 가장 알맞은 것은?',
+        '조건': '', '발문그림': '',
+        '보기1': '차동계전기', '보기1그림': '',
+        '보기2': '접지계전기', '보기2그림': '',
+        '보기3': '과전류계전기', '보기3그림': '',
+        '보기4': '역상계전기', '보기4그림': '',
+        '정답(1~4)': 1,
+        '해설_블록': [
+            {'type': 'text', 'value': '변압기 내부 권선의 층간 단락이나 지락 사고 시 입력·출력 전류 차이가 발생한다.'},
+            {'type': 'image', 'value': 'q21_differential_diagram.png'},
+            {'type': 'text', 'value': '이 차이를 검출하여 동작하는 <strong>차동 계전기</strong>가 가장 적합하다.'},
+        ],
+        '오답분석': '<ol><li value="2">접지계전기: 지락 영상 전류 검출.</li></ol>',
+        '학습포인트_블록': [
+            {'type': 'text', 'value': '<p><strong>주요 보호 계전기</strong></p><table><tr><th>계전기</th><th>보호 대상</th></tr><tr><td>차동</td><td>변압기 내부 권선</td></tr></table>'},
+        ],
+    },
+    {
+        '과정': '전기기능사', '연도': 2022, '회차': 1,
+        '사용교재': '독끝 전기기능사 필기', '교재구분': 'A',
+        '문항코드': 'elec_A_2022_01_41',
+        '강의주소': 'https://youtu.be/elec41-stage-voltage',
+        '과목ID': 'facility', '챕터': '저압 옥내배선',
+        '대유형': '사용전압 제한', '중유형': '흥행장 옥내배선',
+        '내용': '무대 등 저압 옥내배선 사용전압',
+        '빈출도': 3, '난이도': 1, '문제유형': '단답형', '변형이력': 0, '비고': '',
+        '발문': '무대ㆍ오케스트라 박스ㆍ영사실 기타 사람이나 무대 도구가 접촉될 우려가 있는 장소에 시설하는 저압 옥내배선의 사용전압은?',
+        '조건': '', '발문그림': '',
+        '보기1': '400[V] 이하', '보기1그림': '',
+        '보기2': '500[V] 이하', '보기2그림': '',
+        '보기3': '600[V] 이하', '보기3그림': '',
+        '보기4': '700[V] 이하', '보기4그림': '',
+        '정답(1~4)': 1,
+        '해설_블록': [
+            {'type': 'text', 'value': '흥행장의 저압 옥내 배선·이동 전선은 사람 접촉 우려가 크므로 400[V] 이하로 제한한다.'},
+        ],
+        '오답분석': '',
+        '학습포인트_블록': [
+            {'type': 'text', 'value': '<p><strong>특수 장소 사용전압</strong></p><ul><li>흥행장: 400[V] 이하</li><li>일반: 600[V] 이하</li></ul>'},
+        ],
+    },
+    {
+        '과정': '전기기능사', '연도': 2022, '회차': 1,
+        '사용교재': '독끝 전기기능사 필기', '교재구분': 'A',
+        '문항코드': 'elec_A_2022_01_51',
+        '강의주소': 'https://youtu.be/elec51-manual-contact-symbol',
+        '과목ID': 'facility', '챕터': '전기 도면',
+        '대유형': '접점 기호', '중유형': '수동 조작 접점', '내용': '그림기호 식별',
+        '빈출도': 3, '난이도': 2, '문제유형': '도식형', '변형이력': 0,
+        '비고': '발문그림 필요 — 수동 업로드',
+        '발문': '아래 그림기호가 나타내는 것은?',
+        '조건': '', '발문그림': '[필요: 기호심볼 — 수동조작 접점]',
+        '보기1': '한시 계전기 접점', '보기1그림': '',
+        '보기2': '전자 접속기 접점', '보기2그림': '',
+        '보기3': '수동 조작 접점', '보기3그림': '',
+        '보기4': '조작 개폐기 잔류 접점', '보기4그림': '',
+        '정답(1~4)': 3,
+        '해설_블록': [
+            {'type': 'text', 'value': '사용자가 손으로 직접 조작하여 회로를 개폐하는 <strong>수동 조작 접점</strong>이다.'},
+        ],
+        '오답분석': '',
+        '학습포인트_블록': [
+            {'type': 'text', 'value': '<p><strong>접점 기호 분류</strong></p>'},
+            {'type': 'image', 'value': '[필요: 접점 기호 4종 비교도]'},
+        ],
+    },
+]
+
+
+def build():
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    ws.title = '문항등록'
+
+    n_cols = len(COLS)
+    headers = [c[0] for c in COLS]
+    widths = [c[1] for c in COLS]
+    tones = [c[2] for c in COLS]
+    groups = [c[3] for c in COLS]
+    hints = [c[4] for c in COLS]
+
+    # 1행: 그룹 헤더 (병합)
+    i = 0
+    while i < n_cols:
+        g = groups[i]
+        j = i
+        while j + 1 < n_cols and groups[j + 1] == g:
+            j += 1
+        ws.cell(1, i + 1, g)
+        if j > i:
+            ws.merge_cells(start_row=1, start_column=i + 1, end_row=1, end_column=j + 1)
+        cell = ws.cell(1, i + 1)
+        cell.fill = gfill(tones[i])
+        cell.font = WHITE
+        cell.alignment = Alignment(horizontal='center', vertical='center')
+        from openpyxl.styles import Border
+        for k in range(i, j + 1):
+            ws.cell(1, k + 1).border = Border(
+                top=THICK, bottom=THICK,
+                left=THICK if k == i else INNER.left,
+                right=THICK if k == j else INNER.right,
+            )
+        i = j + 1
+    ws.row_dimensions[1].height = 26
+
+    # 2행: 컬럼 헤더
+    for c, (name, width, tone, group, hint) in enumerate(COLS, 1):
+        cell = ws.cell(2, c, name)
+        cell.fill = lfill(tone)
+        cell.font = DARK
+        cell.alignment = Alignment(horizontal='center', vertical='center', wrap_text=True)
+        cell.border = INNER
+        cell.comment = Comment(hint, '시스템')
+        ws.column_dimensions[get_column_letter(c)].width = width
+    ws.row_dimensions[2].height = 32
+
+    # 3행~: 샘플 데이터
+    for s in SAMPLES:
+        row = []
+        for header, *_ in COLS:
+            if header == '해설':
+                row.append(blocks_to_cell(s.get('해설_블록', [])))
+            elif header == '학습포인트':
+                row.append(blocks_to_cell(s.get('학습포인트_블록', [])))
+            else:
+                row.append(s.get(header, ''))
+        ws.append(row)
+
+    for r in range(3, ws.max_row + 1):
+        ws.row_dimensions[r].height = 130
+        for c in range(1, n_cols + 1):
+            cell = ws.cell(r, c)
+            cell.alignment = Alignment(wrap_text=True, vertical='top')
+            cell.border = INNER
+
+    # Freeze + 인쇄 (A3 가로)
+    ws.freeze_panes = ws.cell(3, headers.index('문항코드') + 2)
+    set_print_landscape(ws, paper_size=8)
+
+    wb.save(OUT)
+    print(f'WROTE: {OUT}')
+    print(f'  {ws.max_column}컬럼, {ws.max_row - 2}문항')
+
+
+if __name__ == '__main__':
+    build()
