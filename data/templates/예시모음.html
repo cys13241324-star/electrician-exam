@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>작성규칙 예시모음 — 엑셀 입력 → 화면 결과</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<style>
+  body{font-family:'Malgun Gothic',sans-serif;max-width:1080px;margin:28px auto;padding:0 20px;color:#1e293b;line-height:1.7;}
+  h1{font-size:22px;border-bottom:3px solid #334155;padding-bottom:10px;}
+  h2{font-size:16px;margin-top:34px;background:#0ea5e9;color:#fff;padding:6px 12px;border-radius:6px;}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:10px 0 4px;}
+  .cell{border:1px solid #cbd5e1;border-radius:8px;overflow:hidden;}
+  .cap{font-size:12px;font-weight:bold;padding:5px 10px;}
+  .capL{background:#1e293b;color:#fff;}
+  .capR{background:#ecfeff;color:#0e7490;border-bottom:1px solid #cbd5e1;}
+  pre{margin:0;padding:12px;background:#0f172a;color:#e2e8f0;font-size:12.5px;white-space:pre-wrap;word-break:break-all;line-height:1.5;}
+  .render{padding:12px 14px;background:#fff;font-size:14px;}
+  .render img{max-width:100%;}
+  .desc{font-size:12.5px;color:#64748b;margin:2px 0 0;}
+  .bad{color:#dc2626;font-weight:bold;} .good{color:#059669;font-weight:bold;}
+  .legend{background:#fffbeb;border:1px solid #fbbf24;border-radius:8px;padding:10px 14px;font-size:13px;}
+  table.lx{border-collapse:collapse;}
+</style>
+</head>
+<body>
+
+<h1>작성규칙 예시모음 <span style="font-size:14px;color:#64748b;">엑셀 셀 입력 → 실제 화면 결과</span></h1>
+<div class="legend">왼쪽(검정) = <b>운영자가 엑셀 셀에 그대로 입력하는 글자</b> · 오른쪽(하늘) = <b>학습자 화면에 나오는 결과</b>.
+수식(<code>$…$</code>/<code>$$…$$</code>)은 실제 앱과 동일한 KaTeX로 렌더됩니다. <span class="desc">(수식이 안 보이면 인터넷 연결 확인)</span></div>
+
+<!-- 1 발문 -->
+<h2>① 발문 — 한글 + 인라인 수식이 섞인 긴 문장</h2>
+<div class="row">
+  <div class="cell"><div class="cap capL">엑셀 「발문」 셀 입력</div>
+<pre>정격전압 $220\,\text{V}$, 정격전류 $5\,\text{A}$ 인 단상 유도전동기가 역률 $\cos\theta = 0.8$ 로 운전될 때, 이 전동기의 소비전력 $P = V I \cos\theta$ 는 약 몇 $\text{W}$ 인가? 단, 철손과 기계손은 무시하며 전압·전류는 실효값이다.</pre></div>
+  <div class="cell"><div class="cap capR">화면 결과</div>
+  <div class="render">정격전압 $220\,\text{V}$, 정격전류 $5\,\text{A}$ 인 단상 유도전동기가 역률 $\cos\theta = 0.8$ 로 운전될 때, 이 전동기의 소비전력 $P = V I \cos\theta$ 는 약 몇 $\text{W}$ 인가? 단, 철손과 기계손은 무시하며 전압·전류는 실효값이다.</div></div>
+</div>
+<p class="desc">→ 한글 문장 흐름 안에 수식 기호가 자연스럽게 끼어 들어감. 운영자는 그냥 <code>$ $</code> 로 감싸기만 함.</p>
+
+<!-- 2 해설 -->
+<h2>② 해설 — 긴 설명 + 디스플레이 수식 + 핵심공식 박스 + 그림</h2>
+<div class="row">
+  <div class="cell"><div class="cap capL">엑셀 「해설」 셀 입력</div>
+<pre>이 문제는 단상 전력 공식을 적용한다. 소비전력은 전압·전류·역률의 곱이므로,
+
+$$P = V I \cos\theta = 220 \times 5 \times 0.8 = 880\,\text{W}$$
+
+따라서 정답은 <strong>약 880 W</strong> 이다. 역률이 $1$ 이라면 $P = VI = 1100\,\text{W}$ 가 되지만, 여기서는 $\cos\theta = 0.8$ 이므로 그만큼 작아진다.
+
+<div style="border:1px solid #34d399;background:#ecfdf5;border-radius:8px;padding:10px 12px;margin:8px 0;">
+<strong style="color:#047857;">핵심 공식</strong><br>
+단상 소비전력: $$P = V I \cos\theta$$
+</div>
+
+회로 개념도는 아래와 같다.<br>
+<img src="elec_A_2022_01_21_exp1.png"></pre></div>
+  <div class="cell"><div class="cap capR">화면 결과</div>
+  <div class="render">이 문제는 단상 전력 공식을 적용한다. 소비전력은 전압·전류·역률의 곱이므로,
+$$P = V I \cos\theta = 220 \times 5 \times 0.8 = 880\,\text{W}$$
+따라서 정답은 <strong>약 880 W</strong> 이다. 역률이 $1$ 이라면 $P = VI = 1100\,\text{W}$ 가 되지만, 여기서는 $\cos\theta = 0.8$ 이므로 그만큼 작아진다.
+<div style="border:1px solid #34d399;background:#ecfdf5;border-radius:8px;padding:10px 12px;margin:8px 0;">
+<strong style="color:#047857;">핵심 공식</strong><br>
+단상 소비전력: $$P = V I \cos\theta$$
+</div>
+회로 개념도는 아래와 같다.<br>
+<span style="display:inline-block;border:1px dashed #94a3b8;background:#f8fafc;color:#64748b;font-size:12px;padding:20px 28px;border-radius:6px;">🖼 elec_A_2022_01_21_exp1.png<br>(업로드된 그림이 여기 표시됨)</span></div></div>
+</div>
+<p class="desc">→ <code>$$…$$</code> 는 가운데 정렬된 독립 줄 수식. 박스는 inline style. <code>&lt;img&gt;</code> 는 본문 어디든 가능(여기선 데모라 자리표시).</p>
+
+<!-- 3 오답분석 -->
+<h2>③ 오답분석 — <span class="bad">금지(&lt;ol&gt;)</span> vs <span class="good">올바른 방식</span></h2>
+<div class="row">
+  <div class="cell"><div class="cap capL"><span class="bad">✗ 금지</span> — 엑셀 입력</div>
+<pre>&lt;ol&gt;
+&lt;li&gt;보기1: 단위를 잘못 봄&lt;/li&gt;
+&lt;li&gt;보기2: $P=V/I$ 로 잘못 계산&lt;/li&gt;
+&lt;/ol&gt;</pre></div>
+  <div class="cell"><div class="cap capR"><span class="good">✓ 올바른 방식</span> — 엑셀 입력</div>
+<pre>① 보기1: 전류를 $5\,\text{A}$ 가 아닌 $5\,\text{mA}$ 로 보아 $1000$ 배 오차.&lt;br&gt;
+② 보기2: 전력 공식을 $P = V I \cos\theta$ 가 아니라 $P = V / I$ 로 잘못 적용.&lt;br&gt;
+③ 보기4: 역률 $0.8$ 을 곱하지 않아 값이 큼.</pre></div>
+</div>
+<div class="row">
+  <div class="cell"><div class="cap capR">화면 결과 (올바른 방식)</div>
+  <div class="render">① 보기1: 전류를 $5\,\text{A}$ 가 아닌 $5\,\text{mA}$ 로 보아 $1000$ 배 오차.<br>
+② 보기2: 전력 공식을 $P = V I \cos\theta$ 가 아니라 $P = V / I$ 로 잘못 적용.<br>
+③ 보기4: 역률 $0.8$ 을 곱하지 않아 값이 큼.</div></div>
+  <div class="cell"><div class="cap capL">설명</div>
+  <div class="render desc">번호는 <b>원문자(①②③④…)</b> 로 작성자가 직접 입력. 구조는 "<code>&lt;ol&gt;</code> 대신 <code>&lt;br&gt;</code> 로 줄만 나눔". 줄 안에 수식 자유롭게.</div></div>
+</div>
+
+<!-- 4 학습포인트 -->
+<h2>④ 학습포인트 — 핵심공식 박스 + 주의 박스 + LaTeX 표</h2>
+<div class="row">
+  <div class="cell"><div class="cap capL">엑셀 「학습포인트」 셀 입력</div>
+<pre>단상·삼상 전력 공식을 구분해서 외운다.
+
+<div style="border:1px solid #34d399;background:#ecfdf5;border-radius:8px;padding:10px 12px;margin:8px 0;">
+<strong style="color:#047857;">핵심 공식</strong><br>
+단상 $P = V I \cos\theta$ , 삼상 $P = \sqrt{3}\, V I \cos\theta$
+</div>
+
+<div style="border:1px solid #fbbf24;background:#fffbeb;border-radius:8px;padding:10px 12px;margin:8px 0;">
+<strong style="color:#b45309;">주의</strong><br>
+삼상은 $\sqrt{3}$ 배. 단상 공식에 그냥 $3$ 을 곱하지 말 것.
+</div>
+
+자주 쓰는 값 정리:
+$$\begin{array}{c|c|c}
+\cos\theta &amp; 단상\ P &amp; 비고 \\ \hline
+1.0 &amp; 1100\,\text{W} &amp; 무효분 0 \\
+0.8 &amp; 880\,\text{W} &amp; 일반 부하
+\end{array}$$</pre></div>
+  <div class="cell"><div class="cap capR">화면 결과</div>
+  <div class="render">단상·삼상 전력 공식을 구분해서 외운다.
+<div style="border:1px solid #34d399;background:#ecfdf5;border-radius:8px;padding:10px 12px;margin:8px 0;">
+<strong style="color:#047857;">핵심 공식</strong><br>
+단상 $P = V I \cos\theta$ , 삼상 $P = \sqrt{3}\, V I \cos\theta$
+</div>
+<div style="border:1px solid #fbbf24;background:#fffbeb;border-radius:8px;padding:10px 12px;margin:8px 0;">
+<strong style="color:#b45309;">주의</strong><br>
+삼상은 $\sqrt{3}$ 배. 단상 공식에 그냥 $3$ 을 곱하지 말 것.
+</div>
+자주 쓰는 값 정리:
+$$\begin{array}{c|c|c}
+\cos\theta & 단상\ P & 비고 \\ \hline
+1.0 & 1100\,\text{W} & 무효분\ 0 \\
+0.8 & 880\,\text{W} & 일반\ 부하
+\end{array}$$</div></div>
+</div>
+<p class="desc">→ 표를 <code>&lt;table&gt;</code> 없이 <code>$$\begin{array}$$</code> 로. KaTeX가 표처럼 그려줌(이건 KaTeX가 지원하는 환경).</p>
+
+<p class="desc" style="margin-top:30px;border-top:1px solid #e2e8f0;padding-top:10px;">
+이 예시모음은 작성규칙(<code>작성규칙서_v1초안.md</code>)을 실제 셀 입력 형태로 보여주는 데모입니다. 규칙이 바뀌면 함께 갱신됩니다.
+</p>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: "$$", right: "$$", display: true },
+        { left: "$", right: "$", display: false }
+      ],
+      throwOnError: false,
+      ignoredTags: ["script", "noscript", "style", "textarea", "pre", "code"]
+    });
+  });
+</script>
+</body>
+</html>

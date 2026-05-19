@@ -60,3 +60,6 @@ __pycache__/
 
 # intermediate PPT backups (kept on local disk, not in repo)
 /data/presentation/*.bak-*.pptx
+
+# Office temp lock files (created while a doc is open)
+~$*
