@@ -53,3 +53,10 @@ next-env.d.ts
 
 # runtime uploads (operator-uploaded question images)
 /public/questions/
+
+# python bytecode cache
+__pycache__/
+*.pyc
+
+# intermediate PPT backups (kept on local disk, not in repo)
+/data/presentation/*.bak-*.pptx
