@@ -18,7 +18,8 @@ import path from "node:path";
  *       block_N / 기타  → imgN
  *   - 문항코드 없으면 "uncoded"
  *   - 슬롯 없으면 "etc<timestamp>"
- *   - 동일 파일명 존재 시 _2, _3 … suffix (재업로드 안전망)
+ *   - 동일 문항코드+슬롯 재업로드 시 같은 이름으로 덮어씀
+ *     → 규칙 파일명이 항상 고정(엑셀/콘텐츠가 예측한 이름과 일치)
  *   - 확장자: png/jpg/jpeg/gif/webp/svg 만, 소문자. 그 외는 .png
  *
  * (작성규칙서 4-1 항목과 일치. data/templates/작성규칙서_v1초안.md)
@@ -97,14 +98,9 @@ export async function POST(req: NextRequest) {
 
   await mkdir(UPLOAD_DIR, { recursive: true });
 
-  // 충돌 방지: 같은 이름 있으면 _2, _3 … (재업로드/재편집 안전망)
-  const { existsSync } = await import("node:fs");
-  let filename = `${base}${ext}`;
-  let n = 2;
-  while (existsSync(path.join(UPLOAD_DIR, filename))) {
-    filename = `${base}_${n}${ext}`;
-    n += 1;
-  }
+  // 규칙 파일명 고정: 같은 문항코드+슬롯 재업로드 시 덮어씀.
+  // (suffix(_2)를 붙이면 셀/엑셀이 예측한 이름과 어긋나 <img>가 깨짐)
+  const filename = `${base}${ext}`;
 
   const buf = Buffer.from(await file.arrayBuffer());
   await writeFile(path.join(UPLOAD_DIR, filename), buf);

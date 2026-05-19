@@ -116,6 +116,18 @@ def _add_ids(blocks: list[dict]) -> list[dict]:
 _GROUP_HEADER_LABELS = {'번호', '출처', '코드', '강의', '분류', '속성', '발문',
                          '보기', '정답', '해설', '오답분석', '학습POINT'}
 
+
+def _code_from_source(row: dict) -> str:
+    """문항코드 폴백: 비었으면 출처로 재구성 (등록 페이지 규칙과 동일).
+    elec_<교재구분>_<연도>_<회차2>_<번호2>  (과정=전기기능사)."""
+    def g(k):
+        return str(row.get(k) or '').strip()
+    proc, book, year = g('과정'), g('교재구분'), g('연도')
+    rnd, no = g('회차'), g('번호')
+    if proc != '전기기능사' or not (book and year and rnd and no):
+        return ''
+    return f'elec_{book}_{year}_{rnd.zfill(2)}_{no.zfill(2)}'
+
 def xlsx_to_json_list(path: str) -> list[dict]:
     """엑셀 v2/v3 양식 → 문항 JSON 배열. 1행이 그룹 헤더이면 2행을 헤더로."""
     import openpyxl
@@ -145,6 +157,10 @@ def xlsx_to_json_list(path: str) -> list[dict]:
                 empty = False
             row[h] = v
         if not empty:
+            if not str(row.get('문항코드') or '').strip():
+                c = _code_from_source(row)
+                if c:
+                    row['문항코드'] = c
             out.append(row_to_json(row))
     return out
 

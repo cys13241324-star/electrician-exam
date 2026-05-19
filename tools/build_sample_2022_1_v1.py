@@ -151,12 +151,12 @@ RULES = [
  ('예시', 'elec_A_2022_01_01  (교재 A · 2022년 · 1회 · 1번)'),
  ('비고', '정렬·식별 키.'),
  ('', ''),
- ('[자동 생성 — 엑셀 수식]', ''),
- ('동작', '출처(교재구분·연도·회차·번호)만 채우면 「문항코드」와 「발문/보기 그림」 셀이 수식으로 자동 형성'),
- ('자동 셀', '연노랑 배경 = 수식 셀(직접 입력 금지). 13행~ = 빈 작성행(데모 포함)'),
- ('문항코드', '=IF(COUNTA(...)=4,"elec_"&교재구분&"_"&연도&"_"&TEXT(회차,"00")&"_"&TEXT(번호,"00"),"")'),
- ('이미지명', '=IF(문항코드="","",문항코드&"_stem1.png")  (보기는 _opt1~4.png)'),
- ('주의', '해당 슬롯에 그림이 없으면 그 이미지 셀 내용을 지운다(수식 덮어쓰기). 해설/학습포인트 안 그림은 본문에 <img src="문항코드_exp1.png"> 식으로.'),
+ ('[자동 생성 — 문항코드]', ''),
+ ('샘플(3~12행)', '문항코드 = 정적값(고정). 그대로 import 안전.'),
+ ('작성행(13행~)', '문항코드 = 수식(연노랑). 출처만 채우면 즉시 표시 — 작성 편의용.'),
+ ('수식', '=IF(COUNTA(...)=4,"elec_"&교재구분&"_"&연도&"_"&TEXT(회차,"00")&"_"&TEXT(번호,"00"),"")'),
+ ('안전장치', '엑셀 수식은 저장 전 미계산일 수 있으나, 서버(일괄등록)가 출처로 문항코드를 재계산하므로 비어도 안전.'),
+ ('이미지명', '엑셀에서 자동 생성하지 않음. 그림 업로드 시 서버가 {문항코드}_{슬롯}{순번}.png 로 부여(고정). 본문/그림셀엔 그 이름을 그대로 참조.'),
  ('', ''),
  ('[이미지 파일명 규칙]', ''),
  ('형식', '{문항코드}_{슬롯}{순번}.png  (업로드 시 자동 부여)'),
@@ -241,22 +241,10 @@ def build(out_path):
                 f'"elec_"&${L["교재구분"]}{r}&"_"&${L["연도"]}{r}&"_"&'
                 f'TEXT(${L["회차"]}{r},"00")&"_"&TEXT(${L["번호"]}{r},"00"),"")')
 
-    def img_formula(r, slot):
-        g = L['문항코드']
-        return f'=IF(${g}{r}="","",${g}{r}&"_{slot}.png")'
-
-    IMG_SLOT = {'발문그림': 'stem1', '보기1그림': 'opt1', '보기2그림': 'opt2',
-                '보기3그림': 'opt3', '보기4그림': 'opt4'}
-
-    # 3행~: 샘플 10문항 (문항코드는 수식 자동, 이미지 슬롯은 비움=이미지 없음)
+    # 3행~: 샘플 10문항 — 문항코드는 정적값(import 안전), 이미지 슬롯 비움
     for r, smp in enumerate(SAMPLES, 3):
         for idx, (name, w, tone, grp) in enumerate(COLS, 1):
-            if name == '문항코드':
-                cell = ws.cell(r, idx, code_formula(r))
-                cell.fill = AUTO_FILL
-            else:
-                v = smp.get(name, '')
-                cell = ws.cell(r, idx, v)
+            cell = ws.cell(r, idx, smp.get(name, ''))
             cell.font = CELL
             cell.border = BOX
             cell.alignment = CTR if (len(str(cell.value)) <= 8 and name != '발문') else WRAP
@@ -266,14 +254,12 @@ def build(out_path):
     base = 3 + len(SAMPLES)
     DEMO = {'과정': '전기기능사', '연도': 2022, '회차': 1, '번호': 11,
             '사용교재': '독끝 전기기능사 필기', '교재구분': 'A',
-            '비고': '← 출처만 채운 데모행: 코드·이미지명 자동 생성됨'}
+            '비고': '← 출처만 채운 데모행: 문항코드 자동 생성됨'}
     for k in range(5):
         r = base + k
         for idx, (name, w, tone, grp) in enumerate(COLS, 1):
             if name == '문항코드':
                 cell = ws.cell(r, idx, code_formula(r)); cell.fill = AUTO_FILL
-            elif name in IMG_SLOT:
-                cell = ws.cell(r, idx, img_formula(r, IMG_SLOT[name])); cell.fill = AUTO_FILL
             else:
                 cell = ws.cell(r, idx, DEMO.get(name, '') if k == 0 else '')
             cell.font = CELL

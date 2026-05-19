@@ -52,6 +52,22 @@ const BATCH_COLS_TO_BLOCKS = new Map([
   ["학습포인트", "학습포인트블록"],
 ]);
 
+/**
+ * 문항코드 폴백: 셀이 비어 있으면(엑셀 수식이 미계산 상태로 제출된 경우 등)
+ * 출처값으로 재구성한다. 등록 페이지의 코드 생성 규칙과 동일:
+ *   elec_<교재구분>_<연도>_<회차2자리>_<번호2자리>  (과정=전기기능사일 때)
+ */
+function codeFromSource(o: Record<string, unknown>): string {
+  const proc = String(o["과정"] ?? "").trim();
+  const book = String(o["교재구분"] ?? "").trim();
+  const year = String(o["연도"] ?? "").trim();
+  const round = String(o["회차"] ?? "").trim();
+  const no = String(o["번호"] ?? "").trim();
+  if (proc !== "전기기능사" || !book || !year || !round || !no) return "";
+  const pad2 = (s: string) => (s.length < 2 ? "0".repeat(2 - s.length) + s : s);
+  return `elec_${book}_${year}_${pad2(round)}_${pad2(no)}`;
+}
+
 export async function POST(req: NextRequest) {
   let form: FormData;
   try {
@@ -111,6 +127,12 @@ export async function POST(req: NextRequest) {
       if (!h) return;
       obj[h] = row[i] ?? "";
     });
+
+    // 문항코드 폴백 (수식 미계산·누락 대비)
+    if (!String(obj["문항코드"] ?? "").trim()) {
+      const c = codeFromSource(obj);
+      if (c) obj["문항코드"] = c;
+    }
 
     // 블록 시퀀스 변환
     for (const [col, key] of BATCH_COLS_TO_BLOCKS) {
