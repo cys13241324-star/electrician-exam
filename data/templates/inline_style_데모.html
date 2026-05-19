@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>왜 박스는 inline style로 써야 하나 — 데모</title>
+<style>
+  /* 이 페이지에는 Tailwind/앱 CSS를 일부러 넣지 않았습니다.
+     = 운영자가 엑셀에 쓴 class 이름이 CSS로 만들어지지 않는 실제 상황 재현 */
+  body{font-family:'Malgun Gothic',sans-serif;max-width:760px;margin:32px auto;padding:0 16px;color:#1e293b;line-height:1.7;}
+  h1{font-size:20px;border-bottom:2px solid #334155;padding-bottom:8px;}
+  h2{font-size:16px;margin-top:32px;}
+  .panel{border:1px dashed #94a3b8;border-radius:8px;padding:16px;margin:8px 0;background:#fff;}
+  .tag{display:inline-block;font-size:12px;font-weight:bold;padding:2px 8px;border-radius:4px;color:#fff;}
+  .bad{background:#dc2626;}
+  .good{background:#059669;}
+  code{background:#f1f5f9;padding:1px 5px;border-radius:3px;font-size:13px;}
+  .note{font-size:13px;color:#64748b;margin-top:6px;}
+</style>
+</head>
+<body>
+
+<h1>왜 박스(틀)는 class가 아니라 inline style로 써야 하나</h1>
+
+<p>운영자가 엑셀 셀에 쓴 내용은 <b>런타임 데이터</b>라, Tailwind가 빌드 때 스캔하지 못합니다.
+그래서 셀에 적은 <code>class</code> 이름은 CSS가 만들어지지 않습니다.
+<b>이 페이지는 그 상황(앱 CSS 없음)을 그대로 재현</b>한 것입니다 — 운영 화면에서도 동일하게 발생합니다.</p>
+
+<h2><span class="tag bad">방식 ①</span> class 로 박스를 그린 경우</h2>
+<p class="note">엑셀 셀 내용: <code>&lt;div class="rounded-xl border-l-4 border-emerald-600 bg-emerald-50 p-4"&gt; … &lt;/div&gt;</code></p>
+<div class="panel">
+
+  <div class="rounded-xl border-l-4 border-emerald-600 bg-emerald-50 p-4">
+    <strong>핵심 공식</strong><br>
+    옴의 법칙: V = I R<br>
+    전력: P = V I = I² R
+  </div>
+
+</div>
+<p class="note">→ 결과: <b>박스가 사라지고 그냥 글자만</b>. 색·테두리·여백·라운드 전부 무시됨.
+"핵심 공식"이 일반 문장에 묻혀 강조 효과가 없어집니다.</p>
+
+<h2><span class="tag good">방식 ②</span> inline style 로 박스를 그린 경우</h2>
+<p class="note">엑셀 셀 내용: <code>&lt;div style="border:1px solid #34d399;background:#ecfdf5;…"&gt; … &lt;/div&gt;</code></p>
+<div class="panel">
+
+  <div style="border:1px solid #34d399;background:#ecfdf5;border-radius:8px;padding:10px 12px;margin:8px 0;">
+    <strong style="color:#047857;">핵심 공식</strong><br>
+    옴의 법칙: V = I R<br>
+    전력: P = V I = I² R
+  </div>
+
+  <div style="border:1px solid #fbbf24;background:#fffbeb;border-radius:8px;padding:10px 12px;margin:8px 0;">
+    <strong style="color:#b45309;">주의</strong><br>
+    단위를 V 가 아니라 mV 로 두면 1000배 오차.
+  </div>
+
+</div>
+<p class="note">→ 결과: <b>CSS 환경과 무관하게 박스가 그대로</b>. 요소가 자기 모양을 들고 다니기 때문.
+관리자 미리보기·일괄등록 미리보기·PPT·다른 앱/내보내기 어디서든 동일.</p>
+
+<h2>정리</h2>
+<ul>
+  <li><b>class 방식</b> = 모양 정의가 앱 빌드에 의존 → 엑셀에 쓴 클래스는 Tailwind가 못 봐서 <b>CSS가 안 생김 → 박스 안 나옴</b>.</li>
+  <li><b>inline style 방식</b> = 모양이 콘텐츠에 같이 붙어 다님 → <b>어디서나 동일하게 렌더</b>.</li>
+  <li>그래서 학습POINT 안의 강조 박스는 <b>작성규칙서의 표준 inline 스니펫(3-A·3-B)</b>만 복사해 쓴다.</li>
+</ul>
+
+<p class="note">※ 독끝 학습 POINT의 <b>바깥 초록 박스</b>는 앱 코드(.tsx)가 직접 그리므로 정상입니다.
+문제는 운영자가 <b>콘텐츠 안에서</b> 박스를 만들 때만 발생합니다.</p>
+
+</body>
+</html>
