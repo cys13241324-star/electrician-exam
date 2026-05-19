@@ -32,7 +32,7 @@
 작업용 초안 — 확정 시 정식 양식(<code>build_template_v3.py</code>)에 반영.</div>
 
 <div class="toc">
-① <a href="#p">큰 원칙</a> &nbsp;|&nbsp; ② <a href="#code">문항코드 규칙</a> &nbsp;|&nbsp; ③ <a href="#img">이미지 파일명 규칙</a> &nbsp;|&nbsp;
+① <a href="#p">큰 원칙</a> &nbsp;|&nbsp; ② <a href="#code">문항코드 규칙</a> &nbsp;|&nbsp; ②-2 <a href="#subj">과목ID</a> &nbsp;|&nbsp; ③ <a href="#img">이미지 파일명 규칙</a> &nbsp;|&nbsp;
 ④ <a href="#tag">허용 태그</a> &nbsp;|&nbsp; ⑤ <a href="#ban">금지·대체</a> &nbsp;|&nbsp; ⑥ <a href="#tex">수식(LaTeX)</a> &nbsp;|&nbsp;
 ⑦ <a href="#box">박스(inline style)</a> &nbsp;|&nbsp; ⑧ <a href="#chk">제출 체크리스트</a>
 </div>
@@ -52,15 +52,35 @@
 샘플 행은 정적값. <b>제출 후 서버가 출처로 다시 계산</b>하므로 수식이 미계산이어도 안전.</td></tr>
 </table>
 
+<h2 id="subj">②-2 과목ID (전기기능사 한정 — 3종 고정)</h2>
+<table>
+<tr><th>과목 (한글)</th><th>과목ID 입력값 (영문)</th><th>설명</th></tr>
+<tr><td>전기이론</td><td><code>theory</code></td><td>전기·자기 이론, 회로 해석</td></tr>
+<tr><td>전기기기</td><td><code>machinery</code></td><td>발전기·전동기·변압기·정류 등</td></tr>
+<tr><td>전기설비</td><td><code>facility</code></td><td>옥내배선·전기기구·시설 규정</td></tr>
+</table>
+<div class="banner b-warn">전기기능사는 위 <b>3가지만</b> 사용한다. 「과목ID」 셀에는 반드시 <b>영문 입력값</b>(<code>theory</code> / <code>machinery</code> / <code>facility</code>)을 적는다. 한글(전기이론 등)을 그대로 넣지 않는다.</div>
+
 <h2 id="img">③ 이미지 파일명 규칙</h2>
 <table>
-<tr><th>형식</th><td><code>{문항코드}_{슬롯}{순번}.png</code></td></tr>
-<tr><th>슬롯 토큰</th><td>발문 <code>stem</code> · 보기 <code>opt1~opt4</code> · 해설 <code>exp</code> · 오답분석 <code>wrong</code> · 학습포인트 <code>lp</code></td></tr>
-<tr><th>예시</th><td><code>elec_A_2022_01_39_lp1.png</code> (39번 학습포인트 1번 그림)</td></tr>
-<tr><th>부여 주체</th><td><b>그림 업로드 시 서버가 자동 부여</b>(엑셀에서 자동 생성하지 않음).
-같은 슬롯 재업로드 시 같은 이름으로 <b>덮어써서</b> 파일명이 항상 고정.</td></tr>
-<tr><th>참조</th><td>본문 어디에나 <code>&lt;img src="elec_A_2022_01_39_lp1.png"&gt;</code>. 슬롯 토큰은 한글이 깨져 <b>영어 확정</b>.</td></tr>
+<tr><th>형식</th><td><code>{문항코드}_{슬롯}{순번}.png</code> &nbsp;(소문자·영문, 공백 없음)</td></tr>
+<tr><th>방식</th><td><b>작성자가 이 규칙대로 파일명을 지어서 저장한 뒤 업로드</b>한다.
+본문에서는 같은 이름으로 <code>&lt;img src="…"&gt;</code> 참조. (서버 자동 부여 여부와 무관하게, 작성자가 규칙명으로 올린다.)</td></tr>
+<tr><th>슬롯 토큰</th><td>발문 <code>stem</code> · 보기 <code>opt1~opt4</code> · 해설 <code>exp</code> · 오답분석 <code>wrong</code> · 학습포인트 <code>lp</code> &nbsp;(한글은 깨져서 영문 확정)</td></tr>
+<tr><th>순번</th><td>같은 슬롯에 그림이 여러 장이면 <code>1, 2, 3 …</code>. 보기는 슬롯에 번호가 있으므로(<code>opt1~4</code>) 보통 순번 생략.</td></tr>
 </table>
+
+<h3>예시 — 문항코드가 <code>elec_A_2022_01_13</code> 인 경우</h3>
+<table>
+<tr><th>그림 위치</th><th>파일명</th><th>본문 참조</th></tr>
+<tr><td>발문 그림</td><td><code>elec_A_2022_01_13_stem1.png</code></td><td><code>&lt;img src="elec_A_2022_01_13_stem1.png"&gt;</code></td></tr>
+<tr><td>보기 2 그림</td><td><code>elec_A_2022_01_13_opt2.png</code></td><td><code>&lt;img src="elec_A_2022_01_13_opt2.png"&gt;</code></td></tr>
+<tr><td>해설 첫째 그림</td><td><code>elec_A_2022_01_13_exp1.png</code></td><td>해설 셀: …설명… <code>&lt;img src="elec_A_2022_01_13_exp1.png"&gt;</code> …</td></tr>
+<tr><td>해설 둘째 그림</td><td><code>elec_A_2022_01_13_exp2.png</code></td><td><code>&lt;img src="elec_A_2022_01_13_exp2.png"&gt;</code></td></tr>
+<tr><td>오답분석 그림</td><td><code>elec_A_2022_01_13_wrong1.png</code></td><td><code>&lt;img src="elec_A_2022_01_13_wrong1.png"&gt;</code></td></tr>
+<tr><td>학습포인트 그림</td><td><code>elec_A_2022_01_13_lp1.png</code></td><td><code>&lt;img src="elec_A_2022_01_13_lp1.png"&gt;</code></td></tr>
+</table>
+<div class="banner b-warn">파일명을 임의로 짓지 말 것. 위 규칙(<code>{문항코드}_{슬롯}{순번}.png</code>)을 정확히 지켜 저장·업로드해야 본문 <code>&lt;img src&gt;</code> 가 그대로 연결된다. 그림이 아직 없으면 본문에 <code>&lt;img src="[필요: 설명]"&gt;</code> 마커.</div>
 
 <h2 id="tag">④ 허용 HTML 태그 (이 목록에 없으면 쓰지 않음)</h2>
 <table>
@@ -96,30 +116,25 @@
 </table>
 <div class="banner b-warn">⚠️ KaTeX는 수식 환경만 지원. 번호 목록을 LaTeX로 만들 수 없으므로 ⑤의 원문자 방식 사용.</div>
 
-<h2 id="box">⑦ 박스 — inline style 표준 스니펫</h2>
-<p class="note">독끝 학습 POINT의 <b>바깥 초록 박스는 앱이 자동으로 그림(셀에 쓰지 않음)</b>.
-아래는 학습포인트/해설 <b>안에</b> 넣는 작은 박스. 복사해서 내용만 교체. style 값 변경·박스 중첩 금지.</p>
+<h2 id="box">⑦ 박스 — inline style 표준 스니펫 (독끝 학습 Point · 회색)</h2>
+<p class="note">학습포인트/해설 안에 강조 박스가 필요하면 <b>아래 「독끝 학습 Point」 회색 박스 하나</b>로 통일한다.
+복사해서 내용만 교체. style 값 변경·박스 중첩 금지. (이전의 핵심공식/주의 2종은 폐기)</p>
 
-<h3>7-A. 핵심 공식 박스 (초록)</h3>
-<pre>&lt;div style="border:1px solid #34d399;background:#f0fdf4;border-radius:8px;padding:10px 14px;margin:8px 0;"&gt;
+<h3>표준 스니펫 — 독끝 학습 Point (회색)</h3>
+<pre>&lt;div style="border:1px solid #cbd5e1;background:#f1f5f9;border-radius:8px;padding:10px 14px;margin:8px 0;"&gt;
+&lt;strong style="color:#475569;"&gt;독끝 학습 Point&lt;/strong&gt;&lt;br&gt;
 $$C=\dfrac{\varepsilon S}{d}\;[\text{F}]$$
 &lt;/div&gt;</pre>
 <p class="note">→ 실제 렌더 (수식 자리는 KaTeX로 변환됨):</p>
 <div class="demo">
-  <div style="border:1px solid #34d399;background:#f0fdf4;border-radius:8px;padding:10px 14px;margin:8px 0;">
-  <b>핵심 공식</b><br>C = εS / d &nbsp;[F]
+  <div style="border:1px solid #cbd5e1;background:#f1f5f9;border-radius:8px;padding:10px 14px;margin:8px 0;">
+  <strong style="color:#475569;">독끝 학습 Point</strong><br>C = εS / d &nbsp;[F]
   </div>
 </div>
-
-<h3>7-B. 주의 박스 (호박색)</h3>
-<pre>&lt;div style="border:1px solid #fbbf24;background:#fffbeb;border-radius:8px;padding:10px 14px;margin:8px 0;"&gt;
-&lt;strong style="color:#b45309;"&gt;주의&lt;/strong&gt;&lt;br&gt;
-단위를 V 가 아니라 mV 로 두면 1000배 오차.
-&lt;/div&gt;</pre>
-<p class="note">→ 실제 렌더:</p>
+<p class="note">텍스트형 예 (수식 없이도 동일 박스 사용):</p>
 <div class="demo">
-  <div style="border:1px solid #fbbf24;background:#fffbeb;border-radius:8px;padding:10px 14px;margin:8px 0;">
-  <strong style="color:#b45309;">주의</strong><br>단위를 V 가 아니라 mV 로 두면 1000배 오차.
+  <div style="border:1px solid #cbd5e1;background:#f1f5f9;border-radius:8px;padding:10px 14px;margin:8px 0;">
+  <strong style="color:#475569;">독끝 학습 Point</strong><br>단위를 V 가 아니라 mV 로 두면 1000배 오차.
   </div>
 </div>
 
@@ -130,14 +145,14 @@ $$C=\dfrac{\varepsilon S}{d}\;[\text{F}]$$
 <li>번호는 <b>원문자 ①②③</b> 인가?</li>
 <li>표를 <code>&lt;table&gt;</code> 아니라 <code>$$\begin{array}$$</code> 로 했나?</li>
 <li>수식은 전부 <code>$…$</code> / <code>$$…$$</code> 안에 있나?</li>
-<li>박스는 7-A / 7-B 표준 그대로인가? (값 변경·중첩 없음)</li>
+<li>박스는 「독끝 학습 Point」 회색 표준 그대로인가? (값 변경·중첩 없음)</li>
 <li>그림 참조가 <code>{문항코드}_{슬롯}{순번}.png</code> 형식인가?</li>
 </ul>
 
 <p class="note" style="margin-top:28px;border-top:1px solid #e2e8f0;padding-top:10px;">
 함께 보기 — <code>예시모음.html</code>(셀입력↔결과) · <code>샘플_2022_1회_10문항.html</code>(원문⇄변환 토글) ·
 <code>inline_style_데모.html</code>(class vs inline) · <code>샘플_2022_1회_v1.xlsx</code>(동작 템플릿).
-미확정(이사님): 박스 색·종류, 추가 규칙 항목.
+박스 = 독끝 학습 Point 회색 단일(확정). 미확정(이사님): 추가 규칙 항목.
 </p>
 
 </body>

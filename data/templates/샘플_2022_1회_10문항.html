@@ -1,159 +1,144 @@
 <!DOCTYPE html>
-<html lang="ko">
-<head>
-<meta charset="UTF-8">
+<html lang="ko"><head><meta charset="UTF-8">
 <title>샘플 10문항 — 원문 ⇄ 변환 (2022년 1회)</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
 <style>
-  body{font-family:'Malgun Gothic',sans-serif;max-width:880px;margin:0 auto 40px;padding:0 20px;color:#1e293b;line-height:1.7;}
-  h1{font-size:21px;border-bottom:3px solid #334155;padding-bottom:10px;}
-  .topbar{position:sticky;top:0;background:#0f172a;color:#fff;padding:10px 16px;border-radius:0 0 10px 10px;z-index:10;display:flex;align-items:center;gap:14px;font-size:13px;margin-bottom:18px;}
-  .topbar button{background:#0ea5e9;color:#fff;border:0;padding:7px 14px;border-radius:6px;font-size:13px;font-weight:bold;cursor:pointer;}
-  .topbar button:hover{background:#0284c7;}
-  .legend{background:#fffbeb;border:1px solid #fbbf24;border-radius:8px;padding:10px 14px;font-size:13px;margin:14px 0 22px;}
-  .subj{font-size:15px;font-weight:bold;color:#fff;background:#0ea5e9;padding:6px 12px;border-radius:6px;margin:28px 0 10px;}
-  .q{border:1px solid #e2e8f0;border-radius:12px;padding:16px 18px;margin:16px 0;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.05);cursor:pointer;}
-  .qhead{font-size:12px;color:#64748b;font-family:monospace;}
-  .qno{font-size:17px;font-weight:bold;color:#db2777;margin:2px 0 8px;}
-  .flipbar{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:bold;margin-bottom:10px;user-select:none;}
-  .flipbar .lbl{padding:3px 10px;border-radius:12px;background:#e2e8f0;color:#94a3b8;}
-  .q .flipbar .src{background:#1e293b;color:#fff;}
-  .q.flip .flipbar .src{background:#e2e8f0;color:#94a3b8;}
-  .q.flip .flipbar .out{background:#0e7490;color:#fff;}
-  .flipbar .arrow{color:#94a3b8;}
-  .flipbar .hint{font-weight:normal;color:#94a3b8;margin-left:auto;}
-  .view-out{display:none;}
-  .q.flip .view-src{display:none;}
-  .q.flip .view-out{display:block;}
-  .col{font-size:11px;font-weight:bold;color:#0369a1;padding:8px 0 2px;}
-  pre{margin:0;padding:8px 12px;background:#0f172a;color:#e2e8f0;font-size:12px;white-space:pre-wrap;word-break:break-all;line-height:1.55;border-radius:6px;}
-  .stem{font-size:15px;margin-bottom:10px;}
-  .opt{margin:3px 0;}
-  .ans{display:inline-block;background:#0369a1;color:#fff;font-size:12px;font-weight:bold;padding:2px 10px;border-radius:12px;margin:8px 0;}
-  .sec{margin-top:12px;}
-  .sectag{font-size:12px;font-weight:bold;padding:2px 9px;border-radius:5px;}
-  .t-exp{background:#fff7ed;color:#c2410c;border:1px solid #fdba74;}
-  .t-wr{background:#faf5ff;color:#7c3aed;border:1px solid #d8b4fe;}
-  .lpbox{border-left:4px solid #059669;background:#ecfdf5;border-radius:12px;padding:12px 16px;margin-top:12px;}
-  .lptitle{font-size:13px;font-weight:bold;color:#047857;margin-bottom:6px;}
-  .body{font-size:14px;margin-top:5px;}
-  .imgph{display:inline-block;border:1px dashed #94a3b8;background:#f8fafc;color:#64748b;font-size:12px;padding:16px 24px;border-radius:6px;font-family:monospace;}
-  .note{font-size:11.5px;color:#94a3b8;}
-</style>
-</head>
-<body>
-
-<div class="topbar">
-  <button id="flipAll">전체 원문 ⇄ 변환 전환</button>
-  <span>각 문항 카드를 <b>클릭</b>하면 그 문항만 원문(엑셀 입력) ↔ 변환(화면 결과) 전환됩니다.</span>
-</div>
-
+ body{font-family:'Malgun Gothic',sans-serif;max-width:880px;margin:0 auto 40px;padding:0 20px;color:#1e293b;line-height:1.7;}
+ h1{font-size:21px;border-bottom:3px solid #334155;padding-bottom:10px;}
+ .topbar{position:sticky;top:0;background:#0f172a;color:#fff;padding:10px 16px;border-radius:0 0 10px 10px;z-index:10;display:flex;gap:14px;align-items:center;font-size:13px;margin-bottom:18px;}
+ .topbar button{background:#0ea5e9;color:#fff;border:0;padding:7px 14px;border-radius:6px;font-weight:bold;cursor:pointer;}
+ .legend{background:#fffbeb;border:1px solid #fbbf24;border-radius:8px;padding:10px 14px;font-size:13px;margin:14px 0 22px;}
+ .subj{font-size:15px;font-weight:bold;color:#fff;background:#0ea5e9;padding:6px 12px;border-radius:6px;margin:28px 0 10px;}
+ .q{border:1px solid #e2e8f0;border-radius:12px;padding:16px 18px;margin:16px 0;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.05);cursor:pointer;}
+ .qhead{font-size:12px;color:#64748b;font-family:monospace;}
+ .qno{font-size:17px;font-weight:bold;color:#db2777;margin:2px 0 8px;}
+ .flipbar{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:bold;margin-bottom:10px;user-select:none;}
+ .flipbar .lbl{padding:3px 10px;border-radius:12px;background:#e2e8f0;color:#94a3b8;}
+ .q .flipbar .src{background:#1e293b;color:#fff;}
+ .q.flip .flipbar .src{background:#e2e8f0;color:#94a3b8;}
+ .q.flip .flipbar .out{background:#0e7490;color:#fff;}
+ .flipbar .hint{font-weight:normal;color:#94a3b8;margin-left:auto;}
+ .view-out{display:none;} .q.flip .view-src{display:none;} .q.flip .view-out{display:block;}
+ .col{font-size:11px;font-weight:bold;color:#0369a1;padding:8px 0 2px;}
+ pre{margin:0;padding:8px 12px;background:#0f172a;color:#e2e8f0;font-size:12px;white-space:pre-wrap;word-break:break-all;line-height:1.55;border-radius:6px;}
+ .stem{font-size:15px;margin-bottom:10px;} .opt{margin:3px 0;}
+ .ans{display:inline-block;background:#0369a1;color:#fff;font-size:12px;font-weight:bold;padding:2px 10px;border-radius:12px;margin:8px 0;}
+ .sec{margin-top:12px;} .sectag{font-size:12px;font-weight:bold;padding:2px 9px;border-radius:5px;}
+ .t-exp{background:#fff7ed;color:#c2410c;border:1px solid #fdba74;}
+ .t-wr{background:#faf5ff;color:#7c3aed;border:1px solid #d8b4fe;}
+ .t-lp{background:#f1f5f9;color:#475569;border:1px solid #cbd5e1;}
+ .body{font-size:14px;margin-top:5px;}
+ .note{font-size:11.5px;color:#94a3b8;}
+</style></head><body>
+<div class="topbar"><button id="flipAll">전체 원문 ⇄ 변환 전환</button>
+<span>각 카드를 <b>클릭</b>하면 원문(엑셀 입력) ↔ 변환(화면 결과) 전환.</span></div>
 <h1>샘플 10문항 — 2022년 1회 CBT</h1>
-<div class="legend"><b>원문</b> = 운영자가 엑셀 셀에 치는 입력 코드(작성규칙대로) · <b>변환</b> = 학습자 화면 결과.
-독끝 바깥 초록박스는 앱이 자동 생성(셀엔 안 씀). <span class="note">수식 안 보이면 인터넷 확인.</span></div>
-
+<div class="legend"><b>원문</b> = 엑셀 셀 입력 코드(작성규칙대로·xlsx와 동일) · <b>변환</b> = 화면 결과.
+박스는 「독끝 학습 Point」 회색 단일. <span class="note">수식 안 보이면 인터넷 확인.</span></div>
 <div class="subj">▶ 전기이론</div>
-
-<!-- ===== Q01 ===== -->
 <div class="q">
-<div class="qhead">elec_A_2022_01_01 · 빈출 ★★★ · 전기이론</div>
-<div class="qno">01</div>
-<div class="flipbar"><span class="lbl src">원문(엑셀 입력)</span><span class="arrow">⇄</span><span class="lbl out">변환(화면 결과)</span><span class="hint">▶ 카드를 클릭해 전환</span></div>
-<div class="view-src">
-<div class="col">「발문」</div><pre>콘덴서의 정전용량에 대한 설명으로 &lt;strong&gt;틀린&lt;/strong&gt; 것은?</pre>
-<div class="col">「보기1」~「보기4」 / 「정답」</div><pre>전압에 반비례한다.
+<div class="qhead">elec_A_2022_01_01 · 빈출 ★★★★★ · 전기이론</div>
+<div class="qno">1</div>
+<div class="flipbar"><span class="lbl src">원문(엑셀 입력)</span><span>⇄</span><span class="lbl out">변환(화면 결과)</span><span class="hint">▶ 카드 클릭해 전환</span></div>
+<div class="view-src"><div class="col">「발문」</div><pre>콘덴서의 정전용량에 대한 설명으로 &lt;strong&gt;틀린&lt;/strong&gt; 것은?</pre>
+<div class="col">「보기1~4」 / 「정답」</div><pre>전압에 반비례한다.
 이동 전하량에 비례한다.
 극판의 넓이에 비례한다.
 극판의 간격에 비례한다.
 정답 = 4</pre>
-<div class="col">「해설」</div><pre>정전용량 $C$ 은 극판의 넓이 $A$ 에 비례하고 극판의 간격 $d$ 에 반비례한다. 따라서 ④ '극판의 간격에 비례한다'는 설명은 틀린 것이다.</pre>
+<div class="col">「해설」</div><pre>정전용량 $C$ 은 극판의 넓이 $A$ 에 비례하고 극판의 간격 $d$ 에 반비례한다. 따라서 ④ &#x27;극판의 간격에 비례한다&#x27;는 설명은 틀린 것이다.</pre>
 <div class="col">「오답분석」</div><pre>① $C=\dfrac{Q}{V}$ 관계에 의해 전압에 반비례한다.&lt;br&gt;
 ② $C=\dfrac{Q}{V}$ 관계에 의해 전하량에 비례한다.&lt;br&gt;
 ③ 정전용량 공식에 의해 넓이에 비례한다.</pre>
 <div class="col">「학습포인트」</div><pre>정전용량 공식
-&lt;div style="border:1px solid #34d399;background:#f0fdf4;border-radius:8px;padding:10px 14px;margin:8px 0;"&gt;
+&lt;div style=&quot;border:1px solid #cbd5e1;background:#f1f5f9;border-radius:8px;padding:10px 14px;margin:8px 0;&quot;&gt;
+&lt;strong style=&quot;color:#475569;&quot;&gt;독끝 학습 Point&lt;/strong&gt;&lt;br&gt;
 $$C=\dfrac{\varepsilon S}{d}\;[\text{F}]$$
 $\varepsilon$: 유전율[F/m] · $S$: 극판 단면적[m²] · $d$: 극판 간격[m]
-&lt;/div&gt;</pre>
-</div>
-<div class="view-out">
-<div class="stem">콘덴서의 정전용량에 대한 설명으로 <strong>틀린</strong> 것은?</div>
-<div class="opt">① 전압에 반비례한다.</div><div class="opt">② 이동 전하량에 비례한다.</div>
-<div class="opt">③ 극판의 넓이에 비례한다.</div><div class="opt">④ 극판의 간격에 비례한다.</div>
+&lt;/div&gt;</pre></div>
+<div class="view-out"><div class="stem">콘덴서의 정전용량에 대한 설명으로 <strong>틀린</strong> 것은?</div>
+<div class="opt">① 전압에 반비례한다.</div>
+<div class="opt">② 이동 전하량에 비례한다.</div>
+<div class="opt">③ 극판의 넓이에 비례한다.</div>
+<div class="opt">④ 극판의 간격에 비례한다.</div>
 <div class="ans">정답 ④</div>
 <div class="sec"><span class="sectag t-exp">해설</span><div class="body">정전용량 $C$ 은 극판의 넓이 $A$ 에 비례하고 극판의 간격 $d$ 에 반비례한다. 따라서 ④ '극판의 간격에 비례한다'는 설명은 틀린 것이다.</div></div>
-<div class="sec"><span class="sectag t-wr">오답분석</span><div class="body">① $C=\dfrac{Q}{V}$ 관계에 의해 전압에 반비례한다.<br>② $C=\dfrac{Q}{V}$ 관계에 의해 전하량에 비례한다.<br>③ 정전용량 공식에 의해 넓이에 비례한다.</div></div>
-<div class="lpbox"><div class="lptitle">🎯 독끝 학습 POINT</div><div class="body">정전용량 공식
-<div style="border:1px solid #34d399;background:#f0fdf4;border-radius:8px;padding:10px 14px;margin:8px 0;">$$C=\dfrac{\varepsilon S}{d}\;[\text{F}]$$ $\varepsilon$: 유전율[F/m] · $S$: 극판 단면적[m²] · $d$: 극판 간격[m]</div></div></div>
+<div class="sec"><span class="sectag t-wr">오답분석</span><div class="body">① $C=\dfrac{Q}{V}$ 관계에 의해 전압에 반비례한다.<br>
+② $C=\dfrac{Q}{V}$ 관계에 의해 전하량에 비례한다.<br>
+③ 정전용량 공식에 의해 넓이에 비례한다.</div></div>
+<div class="sec"><span class="sectag t-lp">학습포인트</span><div class="body">정전용량 공식
+<div style="border:1px solid #cbd5e1;background:#f1f5f9;border-radius:8px;padding:10px 14px;margin:8px 0;">
+<strong style="color:#475569;">독끝 학습 Point</strong><br>
+$$C=\dfrac{\varepsilon S}{d}\;[\text{F}]$$
+$\varepsilon$: 유전율[F/m] · $S$: 극판 단면적[m²] · $d$: 극판 간격[m]
+</div></div></div></div>
 </div>
-</div>
-
-<!-- ===== Q02 ===== -->
 <div class="q">
-<div class="qhead">elec_A_2022_01_02 · 빈출 ★★★ · 전기이론</div>
-<div class="qno">02</div>
-<div class="flipbar"><span class="lbl src">원문(엑셀 입력)</span><span class="arrow">⇄</span><span class="lbl out">변환(화면 결과)</span><span class="hint">▶ 카드를 클릭해 전환</span></div>
-<div class="view-src">
-<div class="col">「발문」</div><pre>정전에너지 $W[\text{J}]$ 를 구하는 식으로 옳은 것은? (단, $C$ 는 콘덴서용량 $[\text{F}]$, $V$ 는 공급전압 $[\text{V}]$ 이다.)</pre>
-<div class="col">「보기1」~「보기4」 / 「정답」</div><pre>$W=\dfrac{1}{2}CV^2$
+<div class="qhead">elec_A_2022_01_02 · 빈출 ★★★★★ · 전기이론</div>
+<div class="qno">2</div>
+<div class="flipbar"><span class="lbl src">원문(엑셀 입력)</span><span>⇄</span><span class="lbl out">변환(화면 결과)</span><span class="hint">▶ 카드 클릭해 전환</span></div>
+<div class="view-src"><div class="col">「발문」</div><pre>정전에너지 $W[\text{J}]$ 를 구하는 식으로 옳은 것은? (단, $C$ 는 콘덴서용량 $[\text{F}]$, $V$ 는 공급전압 $[\text{V}]$ 이다.)</pre>
+<div class="col">「보기1~4」 / 「정답」</div><pre>$W=\dfrac{1}{2}CV^2$
 $W=\dfrac{1}{2}CV$
 $W=\dfrac{1}{2}C^2 V$
 $W=2CV^2$
 정답 = 1</pre>
 <div class="col">「해설」</div><pre>정전에너지 공식
-&lt;div style="border:1px solid #34d399;background:#f0fdf4;border-radius:8px;padding:10px 14px;margin:8px 0;"&gt;
+&lt;div style=&quot;border:1px solid #cbd5e1;background:#f1f5f9;border-radius:8px;padding:10px 14px;margin:8px 0;&quot;&gt;
+&lt;strong style=&quot;color:#475569;&quot;&gt;독끝 학습 Point&lt;/strong&gt;&lt;br&gt;
 $$W=\dfrac{1}{2}CV^2\;[\text{J}]$$
 $W$: 정전에너지[J] · $C$: 정전용량[F] · $V$: 전압[V]
-&lt;/div&gt;</pre>
-</div>
-<div class="view-out">
-<div class="stem">정전에너지 $W[\text{J}]$ 를 구하는 식으로 옳은 것은? (단, $C$ 는 콘덴서용량 $[\text{F}]$, $V$ 는 공급전압 $[\text{V}]$ 이다.)</div>
-<div class="opt">① $W=\dfrac{1}{2}CV^2$</div><div class="opt">② $W=\dfrac{1}{2}CV$</div>
-<div class="opt">③ $W=\dfrac{1}{2}C^2 V$</div><div class="opt">④ $W=2CV^2$</div>
+&lt;/div&gt;</pre></div>
+<div class="view-out"><div class="stem">정전에너지 $W[\text{J}]$ 를 구하는 식으로 옳은 것은? (단, $C$ 는 콘덴서용량 $[\text{F}]$, $V$ 는 공급전압 $[\text{V}]$ 이다.)</div>
+<div class="opt">① $W=\dfrac{1}{2}CV^2$</div>
+<div class="opt">② $W=\dfrac{1}{2}CV$</div>
+<div class="opt">③ $W=\dfrac{1}{2}C^2 V$</div>
+<div class="opt">④ $W=2CV^2$</div>
 <div class="ans">정답 ①</div>
 <div class="sec"><span class="sectag t-exp">해설</span><div class="body">정전에너지 공식
-<div style="border:1px solid #34d399;background:#f0fdf4;border-radius:8px;padding:10px 14px;margin:8px 0;">$$W=\dfrac{1}{2}CV^2\;[\text{J}]$$ $W$: 정전에너지[J] · $C$: 정전용량[F] · $V$: 전압[V]</div></div></div>
+<div style="border:1px solid #cbd5e1;background:#f1f5f9;border-radius:8px;padding:10px 14px;margin:8px 0;">
+<strong style="color:#475569;">독끝 학습 Point</strong><br>
+$$W=\dfrac{1}{2}CV^2\;[\text{J}]$$
+$W$: 정전에너지[J] · $C$: 정전용량[F] · $V$: 전압[V]
+</div></div></div></div>
 </div>
-</div>
-
-<!-- ===== Q05 ===== -->
 <div class="q">
-<div class="qhead">elec_A_2022_01_05 · 빈출 ★★★ · 전기이론</div>
-<div class="qno">05</div>
-<div class="flipbar"><span class="lbl src">원문(엑셀 입력)</span><span class="arrow">⇄</span><span class="lbl out">변환(화면 결과)</span><span class="hint">▶ 카드를 클릭해 전환</span></div>
-<div class="view-src">
-<div class="col">「발문」</div><pre>평형 3상 교류회로에서 Y결선할 때 선간전압 $V_l$ 과 상전압 $V_p$ 의 관계는?</pre>
-<div class="col">「보기1」~「보기4」 / 「정답」</div><pre>$V_l=V_p$
+<div class="qhead">elec_A_2022_01_05 · 빈출 ★★★★★ · 전기이론</div>
+<div class="qno">3</div>
+<div class="flipbar"><span class="lbl src">원문(엑셀 입력)</span><span>⇄</span><span class="lbl out">변환(화면 결과)</span><span class="hint">▶ 카드 클릭해 전환</span></div>
+<div class="view-src"><div class="col">「발문」</div><pre>평형 3상 교류회로에서 Y결선할 때 선간전압 $V_l$ 과 상전압 $V_p$ 의 관계는?</pre>
+<div class="col">「보기1~4」 / 「정답」</div><pre>$V_l=V_p$
 $V_l=\sqrt{2}\,V_p$
 $V_l=\sqrt{3}\,V_p$
 $V_l=\dfrac{1}{\sqrt{3}}V_p$
 정답 = 3</pre>
 <div class="col">「해설」</div><pre>Y 결선에서는 선간전압이 상전압의 $\sqrt{3}$ 배이다.
-&lt;div style="border:1px solid #34d399;background:#f0fdf4;border-radius:8px;padding:10px 14px;margin:8px 0;"&gt;
+&lt;div style=&quot;border:1px solid #cbd5e1;background:#f1f5f9;border-radius:8px;padding:10px 14px;margin:8px 0;&quot;&gt;
+&lt;strong style=&quot;color:#475569;&quot;&gt;독끝 학습 Point&lt;/strong&gt;&lt;br&gt;
 $$V_l=\sqrt{3}\,V_p$$
 $V_l$: 선간전압[V] · $V_p$: 상전압[V]
-&lt;/div&gt;</pre>
-</div>
-<div class="view-out">
-<div class="stem">평형 3상 교류회로에서 Y결선할 때 선간전압 $V_l$ 과 상전압 $V_p$ 의 관계는?</div>
-<div class="opt">① $V_l=V_p$</div><div class="opt">② $V_l=\sqrt{2}\,V_p$</div>
-<div class="opt">③ $V_l=\sqrt{3}\,V_p$</div><div class="opt">④ $V_l=\dfrac{1}{\sqrt{3}}V_p$</div>
+&lt;/div&gt;</pre></div>
+<div class="view-out"><div class="stem">평형 3상 교류회로에서 Y결선할 때 선간전압 $V_l$ 과 상전압 $V_p$ 의 관계는?</div>
+<div class="opt">① $V_l=V_p$</div>
+<div class="opt">② $V_l=\sqrt{2}\,V_p$</div>
+<div class="opt">③ $V_l=\sqrt{3}\,V_p$</div>
+<div class="opt">④ $V_l=\dfrac{1}{\sqrt{3}}V_p$</div>
 <div class="ans">정답 ③</div>
 <div class="sec"><span class="sectag t-exp">해설</span><div class="body">Y 결선에서는 선간전압이 상전압의 $\sqrt{3}$ 배이다.
-<div style="border:1px solid #34d399;background:#f0fdf4;border-radius:8px;padding:10px 14px;margin:8px 0;">$$V_l=\sqrt{3}\,V_p$$ $V_l$: 선간전압[V] · $V_p$: 상전압[V]</div></div></div>
+<div style="border:1px solid #cbd5e1;background:#f1f5f9;border-radius:8px;padding:10px 14px;margin:8px 0;">
+<strong style="color:#475569;">독끝 학습 Point</strong><br>
+$$V_l=\sqrt{3}\,V_p$$
+$V_l$: 선간전압[V] · $V_p$: 상전압[V]
+</div></div></div></div>
 </div>
-</div>
-
-<!-- ===== Q07 ===== -->
 <div class="q">
-<div class="qhead">elec_A_2022_01_07 · 빈출 ★★★ · 전기이론</div>
-<div class="qno">07</div>
-<div class="flipbar"><span class="lbl src">원문(엑셀 입력)</span><span class="arrow">⇄</span><span class="lbl out">변환(화면 결과)</span><span class="hint">▶ 카드를 클릭해 전환</span></div>
-<div class="view-src">
-<div class="col">「발문」</div><pre>20분간 $876{,}000[\text{J}]$ 의 일을 할 때 전력은 약 몇 $[\text{kW}]$ 인가?</pre>
-<div class="col">「보기1」~「보기4」 / 「정답」</div><pre>0.73
+<div class="qhead">elec_A_2022_01_07 · 빈출 ★★★★★ · 전기이론</div>
+<div class="qno">4</div>
+<div class="flipbar"><span class="lbl src">원문(엑셀 입력)</span><span>⇄</span><span class="lbl out">변환(화면 결과)</span><span class="hint">▶ 카드 클릭해 전환</span></div>
+<div class="view-src"><div class="col">「발문」</div><pre>20분간 $876{,}000[\text{J}]$ 의 일을 할 때 전력은 약 몇 $[\text{kW}]$ 인가?</pre>
+<div class="col">「보기1~4」 / 「정답」</div><pre>0.73
 7.3
 73
 730
@@ -161,31 +146,33 @@ $V_l$: 선간전압[V] · $V_p$: 상전압[V]
 <div class="col">「해설」</div><pre>전력량이 $[\text{J}]$ 단위이므로 시간을 초 $[\text{s}]$ 로 환산해 공식에 대입한다.
 $$P=\dfrac{876{,}000}{20\times 60}=730\,[\text{W}]=0.73\,[\text{kW}]$$</pre>
 <div class="col">「학습포인트」</div><pre>전력량과 전력
-&lt;div style="border:1px solid #34d399;background:#f0fdf4;border-radius:8px;padding:10px 14px;margin:8px 0;"&gt;
+&lt;div style=&quot;border:1px solid #cbd5e1;background:#f1f5f9;border-radius:8px;padding:10px 14px;margin:8px 0;&quot;&gt;
+&lt;strong style=&quot;color:#475569;&quot;&gt;독끝 학습 Point&lt;/strong&gt;&lt;br&gt;
 $$P=\dfrac{W}{t}\;[\text{W}]$$
 $W$: 전력량[J] · $t$: 시간[s] · $P$: 전력[W]
-&lt;/div&gt;</pre>
-</div>
-<div class="view-out">
-<div class="stem">20분간 $876{,}000[\text{J}]$ 의 일을 할 때 전력은 약 몇 $[\text{kW}]$ 인가?</div>
-<div class="opt">① 0.73 &nbsp;&nbsp; ② 7.3 &nbsp;&nbsp; ③ 73 &nbsp;&nbsp; ④ 730</div>
+&lt;/div&gt;</pre></div>
+<div class="view-out"><div class="stem">20분간 $876{,}000[\text{J}]$ 의 일을 할 때 전력은 약 몇 $[\text{kW}]$ 인가?</div>
+<div class="opt">① 0.73</div>
+<div class="opt">② 7.3</div>
+<div class="opt">③ 73</div>
+<div class="opt">④ 730</div>
 <div class="ans">정답 ①</div>
 <div class="sec"><span class="sectag t-exp">해설</span><div class="body">전력량이 $[\text{J}]$ 단위이므로 시간을 초 $[\text{s}]$ 로 환산해 공식에 대입한다.
 $$P=\dfrac{876{,}000}{20\times 60}=730\,[\text{W}]=0.73\,[\text{kW}]$$</div></div>
-<div class="lpbox"><div class="lptitle">🎯 독끝 학습 POINT</div><div class="body">전력량과 전력
-<div style="border:1px solid #34d399;background:#f0fdf4;border-radius:8px;padding:10px 14px;margin:8px 0;">$$P=\dfrac{W}{t}\;[\text{W}]$$ $W$: 전력량[J] · $t$: 시간[s] · $P$: 전력[W]</div></div></div>
+<div class="sec"><span class="sectag t-lp">학습포인트</span><div class="body">전력량과 전력
+<div style="border:1px solid #cbd5e1;background:#f1f5f9;border-radius:8px;padding:10px 14px;margin:8px 0;">
+<strong style="color:#475569;">독끝 학습 Point</strong><br>
+$$P=\dfrac{W}{t}\;[\text{W}]$$
+$W$: 전력량[J] · $t$: 시간[s] · $P$: 전력[W]
+</div></div></div></div>
 </div>
-</div>
-
-<!-- ===== Q11 ===== -->
 <div class="q">
-<div class="qhead">elec_A_2022_01_11 · 빈출 ★★★ · 전기이론</div>
-<div class="qno">11</div>
-<div class="flipbar"><span class="lbl src">원문(엑셀 입력)</span><span class="arrow">⇄</span><span class="lbl out">변환(화면 결과)</span><span class="hint">▶ 카드를 클릭해 전환</span></div>
-<div class="view-src">
-<div class="col">「발문」</div><pre>다음 전압 파형의 주파수는 약 몇 $[\text{Hz}]$ 인가?
+<div class="qhead">elec_A_2022_01_11 · 빈출 ★★★★★ · 전기이론</div>
+<div class="qno">5</div>
+<div class="flipbar"><span class="lbl src">원문(엑셀 입력)</span><span>⇄</span><span class="lbl out">변환(화면 결과)</span><span class="hint">▶ 카드 클릭해 전환</span></div>
+<div class="view-src"><div class="col">「발문」</div><pre>다음 전압 파형의 주파수는 약 몇 $[\text{Hz}]$ 인가?
 $$e=100\sin\!\left(377t-\dfrac{\pi}{5}\right)[\text{V}]$$</pre>
-<div class="col">「보기1」~「보기4」 / 「정답」</div><pre>50
+<div class="col">「보기1~4」 / 「정답」</div><pre>50
 60
 80
 100
@@ -193,31 +180,33 @@ $$e=100\sin\!\left(377t-\dfrac{\pi}{5}\right)[\text{V}]$$</pre>
 <div class="col">「해설」</div><pre>주어진 식에서 각속도 $\omega=2\pi f=377$ 임을 알 수 있다. 따라서
 $$f=\dfrac{377}{2\pi}\approx 60\,[\text{Hz}]$$</pre>
 <div class="col">「학습포인트」</div><pre>교류 순시값 표현식
-&lt;div style="border:1px solid #34d399;background:#f0fdf4;border-radius:8px;padding:10px 14px;margin:8px 0;"&gt;
+&lt;div style=&quot;border:1px solid #cbd5e1;background:#f1f5f9;border-radius:8px;padding:10px 14px;margin:8px 0;&quot;&gt;
+&lt;strong style=&quot;color:#475569;&quot;&gt;독끝 학습 Point&lt;/strong&gt;&lt;br&gt;
 $$e=V_m\sin(\omega t+\theta)=V_m\sin(2\pi f t+\theta)\;[\text{V}]$$
 $V_m$: 전압 최댓값[V] · $\omega$: 각속도[rad/s] · $\theta$: 위상 · $f$: 주파수[Hz]
-&lt;/div&gt;</pre>
-</div>
-<div class="view-out">
-<div class="stem">다음 전압 파형의 주파수는 약 몇 $[\text{Hz}]$ 인가?
+&lt;/div&gt;</pre></div>
+<div class="view-out"><div class="stem">다음 전압 파형의 주파수는 약 몇 $[\text{Hz}]$ 인가?
 $$e=100\sin\!\left(377t-\dfrac{\pi}{5}\right)[\text{V}]$$</div>
-<div class="opt">① 50 &nbsp;&nbsp; ② 60 &nbsp;&nbsp; ③ 80 &nbsp;&nbsp; ④ 100</div>
+<div class="opt">① 50</div>
+<div class="opt">② 60</div>
+<div class="opt">③ 80</div>
+<div class="opt">④ 100</div>
 <div class="ans">정답 ②</div>
 <div class="sec"><span class="sectag t-exp">해설</span><div class="body">주어진 식에서 각속도 $\omega=2\pi f=377$ 임을 알 수 있다. 따라서
 $$f=\dfrac{377}{2\pi}\approx 60\,[\text{Hz}]$$</div></div>
-<div class="lpbox"><div class="lptitle">🎯 독끝 학습 POINT</div><div class="body">교류 순시값 표현식
-<div style="border:1px solid #34d399;background:#f0fdf4;border-radius:8px;padding:10px 14px;margin:8px 0;">$$e=V_m\sin(\omega t+\theta)=V_m\sin(2\pi f t+\theta)\;[\text{V}]$$ $V_m$: 전압 최댓값[V] · $\omega$: 각속도[rad/s] · $\theta$: 위상 · $f$: 주파수[Hz]</div></div></div>
+<div class="sec"><span class="sectag t-lp">학습포인트</span><div class="body">교류 순시값 표현식
+<div style="border:1px solid #cbd5e1;background:#f1f5f9;border-radius:8px;padding:10px 14px;margin:8px 0;">
+<strong style="color:#475569;">독끝 학습 Point</strong><br>
+$$e=V_m\sin(\omega t+\theta)=V_m\sin(2\pi f t+\theta)\;[\text{V}]$$
+$V_m$: 전압 최댓값[V] · $\omega$: 각속도[rad/s] · $\theta$: 위상 · $f$: 주파수[Hz]
+</div></div></div></div>
 </div>
-</div>
-
-<!-- ===== Q13 ===== -->
 <div class="q">
-<div class="qhead">elec_A_2022_01_13 · 빈출 ★★☆ · 전기이론</div>
-<div class="qno">13</div>
-<div class="flipbar"><span class="lbl src">원문(엑셀 입력)</span><span class="arrow">⇄</span><span class="lbl out">변환(화면 결과)</span><span class="hint">▶ 카드를 클릭해 전환</span></div>
-<div class="view-src">
-<div class="col">「발문」</div><pre>$m_1=4\times10^{-5}[\text{Wb}]$, $m_2=6\times10^{-3}[\text{Wb}]$, $r=10[\text{cm}]$ 이면, 두 자극 $m_1,\,m_2$ 사이에 작용하는 힘은 약 몇 $[\text{N}]$ 인가?</pre>
-<div class="col">「보기1」~「보기4」 / 「정답」</div><pre>1.52
+<div class="qhead">elec_A_2022_01_13 · 빈출 ★★★ · 전기이론</div>
+<div class="qno">6</div>
+<div class="flipbar"><span class="lbl src">원문(엑셀 입력)</span><span>⇄</span><span class="lbl out">변환(화면 결과)</span><span class="hint">▶ 카드 클릭해 전환</span></div>
+<div class="view-src"><div class="col">「발문」</div><pre>$m_1=4\times10^{-5}[\text{Wb}]$, $m_2=6\times10^{-3}[\text{Wb}]$, $r=10[\text{cm}]$ 이면, 두 자극 $m_1,\,m_2$ 사이에 작용하는 힘은 약 몇 $[\text{N}]$ 인가?</pre>
+<div class="col">「보기1~4」 / 「정답」</div><pre>1.52
 2.4
 24
 152
@@ -225,37 +214,38 @@ $$f=\dfrac{377}{2\pi}\approx 60\,[\text{Hz}]$$</div></div>
 <div class="col">「해설」</div><pre>길이를 $[\text{m}]$ 단위로 환산해 쿨롱의 법칙에 대입한다.
 $$F=6.33\times10^{4}\times\dfrac{4\times10^{-5}\times 6\times10^{-3}}{(10\times10^{-2})^2}\approx 1.52\,[\text{N}]$$</pre>
 <div class="col">「학습포인트」</div><pre>쿨롱의 법칙 (자기장)
-&lt;div style="border:1px solid #34d399;background:#f0fdf4;border-radius:8px;padding:10px 14px;margin:8px 0;"&gt;
+&lt;div style=&quot;border:1px solid #cbd5e1;background:#f1f5f9;border-radius:8px;padding:10px 14px;margin:8px 0;&quot;&gt;
+&lt;strong style=&quot;color:#475569;&quot;&gt;독끝 학습 Point&lt;/strong&gt;&lt;br&gt;
 $$F=k\dfrac{m_1 m_2}{r^2}=6.33\times10^{4}\times\dfrac{m_1 m_2}{r^2}\;[\text{N}]$$
 $k$: 쿨롱 상수 $(6.33\times10^4)$ · $m_1,m_2$: 자극의 세기[Wb] · $r$: 거리[m]
-&lt;/div&gt;</pre>
-</div>
-<div class="view-out">
-<div class="stem">$m_1=4\times10^{-5}[\text{Wb}]$, $m_2=6\times10^{-3}[\text{Wb}]$, $r=10[\text{cm}]$ 이면, 두 자극 $m_1,\,m_2$ 사이에 작용하는 힘은 약 몇 $[\text{N}]$ 인가?</div>
-<div class="opt">① 1.52 &nbsp;&nbsp; ② 2.4 &nbsp;&nbsp; ③ 24 &nbsp;&nbsp; ④ 152</div>
+&lt;/div&gt;</pre></div>
+<div class="view-out"><div class="stem">$m_1=4\times10^{-5}[\text{Wb}]$, $m_2=6\times10^{-3}[\text{Wb}]$, $r=10[\text{cm}]$ 이면, 두 자극 $m_1,\,m_2$ 사이에 작용하는 힘은 약 몇 $[\text{N}]$ 인가?</div>
+<div class="opt">① 1.52</div>
+<div class="opt">② 2.4</div>
+<div class="opt">③ 24</div>
+<div class="opt">④ 152</div>
 <div class="ans">정답 ①</div>
 <div class="sec"><span class="sectag t-exp">해설</span><div class="body">길이를 $[\text{m}]$ 단위로 환산해 쿨롱의 법칙에 대입한다.
 $$F=6.33\times10^{4}\times\dfrac{4\times10^{-5}\times 6\times10^{-3}}{(10\times10^{-2})^2}\approx 1.52\,[\text{N}]$$</div></div>
-<div class="lpbox"><div class="lptitle">🎯 독끝 학습 POINT</div><div class="body">쿨롱의 법칙 (자기장)
-<div style="border:1px solid #34d399;background:#f0fdf4;border-radius:8px;padding:10px 14px;margin:8px 0;">$$F=k\dfrac{m_1 m_2}{r^2}=6.33\times10^{4}\times\dfrac{m_1 m_2}{r^2}\;[\text{N}]$$ $k$: 쿨롱 상수 $(6.33\times10^4)$ · $m_1,m_2$: 자극의 세기[Wb] · $r$: 거리[m]</div></div></div>
+<div class="sec"><span class="sectag t-lp">학습포인트</span><div class="body">쿨롱의 법칙 (자기장)
+<div style="border:1px solid #cbd5e1;background:#f1f5f9;border-radius:8px;padding:10px 14px;margin:8px 0;">
+<strong style="color:#475569;">독끝 학습 Point</strong><br>
+$$F=k\dfrac{m_1 m_2}{r^2}=6.33\times10^{4}\times\dfrac{m_1 m_2}{r^2}\;[\text{N}]$$
+$k$: 쿨롱 상수 $(6.33\times10^4)$ · $m_1,m_2$: 자극의 세기[Wb] · $r$: 거리[m]
+</div></div></div></div>
 </div>
-</div>
-
 <div class="subj">▶ 전기 기기</div>
-
-<!-- ===== Q23 ===== -->
 <div class="q">
-<div class="qhead">elec_A_2022_01_23 · 빈출 ★★☆ · 전기기기</div>
-<div class="qno">23</div>
-<div class="flipbar"><span class="lbl src">원문(엑셀 입력)</span><span class="arrow">⇄</span><span class="lbl out">변환(화면 결과)</span><span class="hint">▶ 카드를 클릭해 전환</span></div>
-<div class="view-src">
-<div class="col">「발문」</div><pre>동기 전동기 전기자 반작용에 대한 설명이다. 공급전압에 대한 &lt;strong&gt;앞선 전류&lt;/strong&gt;의 전기자 반작용은?</pre>
-<div class="col">「보기1」~「보기4」 / 「정답」</div><pre>감자 작용
+<div class="qhead">elec_A_2022_01_23 · 빈출 ★★★ · 전기 기기</div>
+<div class="qno">7</div>
+<div class="flipbar"><span class="lbl src">원문(엑셀 입력)</span><span>⇄</span><span class="lbl out">변환(화면 결과)</span><span class="hint">▶ 카드 클릭해 전환</span></div>
+<div class="view-src"><div class="col">「발문」</div><pre>동기 전동기 전기자 반작용에 대한 설명이다. 공급전압에 대한 &lt;strong&gt;앞선 전류&lt;/strong&gt;의 전기자 반작용은?</pre>
+<div class="col">「보기1~4」 / 「정답」</div><pre>감자 작용
 증자 작용
 교차 자화 작용
 편자 작용
 정답 = 1</pre>
-<div class="col">「해설」 (표를 &lt;table&gt; 없이 LaTeX array로)</div><pre>동기 전동기의 전기자 반작용은 부하 전류의 위상(역률)에 따라 다음과 같이 구분된다.
+<div class="col">「해설」</div><pre>동기 전동기의 전기자 반작용은 부하 전류의 위상(역률)에 따라 다음과 같이 구분된다.
 $$\begin{array}{c|c|c|c}
 \text{전류 위상} &amp; \text{부하} &amp; \text{작용} &amp; \text{현상} \\ \hline
 \text{동상} &amp; R &amp; \text{교차 자화} &amp; \text{주자속 찌그러짐} \\
@@ -263,15 +253,16 @@ $$\begin{array}{c|c|c|c}
 90^\circ\text{ 진상} &amp; C &amp; \text{증자 작용} &amp; \text{기전력 증가}
 \end{array}$$
 문제에서는 $90^\circ$ 앞선(진상) 전류가 흐르므로 &lt;strong&gt;감자 작용&lt;/strong&gt;을 하여 기전력을 감소시킨다.</pre>
-<div class="col">「학습포인트」 (주의 박스 = inline style 3-B)</div><pre>동기 발전기와 전동기는 $L,\,C$ 부하에 대해 반작용 특성이 서로 반대로 발생한다.
-&lt;div style="border:1px solid #fbbf24;background:#fffbeb;border-radius:8px;padding:10px 14px;margin:8px 0;"&gt;
-&lt;strong style="color:#b45309;"&gt;주의&lt;/strong&gt;&lt;br&gt;
+<div class="col">「학습포인트」</div><pre>동기 발전기와 전동기는 $L,\,C$ 부하에 대해 반작용 특성이 서로 반대로 발생한다.
+&lt;div style=&quot;border:1px solid #cbd5e1;background:#f1f5f9;border-radius:8px;padding:10px 14px;margin:8px 0;&quot;&gt;
+&lt;strong style=&quot;color:#475569;&quot;&gt;독끝 학습 Point&lt;/strong&gt;&lt;br&gt;
 발전기의 지상(L)=감자, 전동기의 지상(L)=증자. 발전기 기준으로만 외우면 전동기에서 반대로 틀린다.
-&lt;/div&gt;</pre>
-</div>
-<div class="view-out">
-<div class="stem">동기 전동기 전기자 반작용에 대한 설명이다. 공급전압에 대한 <strong>앞선 전류</strong>의 전기자 반작용은?</div>
-<div class="opt">① 감자 작용 &nbsp;&nbsp; ② 증자 작용 &nbsp;&nbsp; ③ 교차 자화 작용 &nbsp;&nbsp; ④ 편자 작용</div>
+&lt;/div&gt;</pre></div>
+<div class="view-out"><div class="stem">동기 전동기 전기자 반작용에 대한 설명이다. 공급전압에 대한 <strong>앞선 전류</strong>의 전기자 반작용은?</div>
+<div class="opt">① 감자 작용</div>
+<div class="opt">② 증자 작용</div>
+<div class="opt">③ 교차 자화 작용</div>
+<div class="opt">④ 편자 작용</div>
 <div class="ans">정답 ①</div>
 <div class="sec"><span class="sectag t-exp">해설</span><div class="body">동기 전동기의 전기자 반작용은 부하 전류의 위상(역률)에 따라 다음과 같이 구분된다.
 $$\begin{array}{c|c|c|c}
@@ -281,19 +272,18 @@ $$\begin{array}{c|c|c|c}
 90^\circ\text{ 진상} & C & \text{증자 작용} & \text{기전력 증가}
 \end{array}$$
 문제에서는 $90^\circ$ 앞선(진상) 전류가 흐르므로 <strong>감자 작용</strong>을 하여 기전력을 감소시킨다.</div></div>
-<div class="lpbox"><div class="lptitle">🎯 독끝 학습 POINT</div><div class="body">동기 발전기와 전동기는 $L,\,C$ 부하에 대해 반작용 특성이 서로 반대로 발생한다.
-<div style="border:1px solid #fbbf24;background:#fffbeb;border-radius:8px;padding:10px 14px;margin:8px 0;"><strong style="color:#b45309;">주의</strong><br>발전기의 지상(L)=감자, 전동기의 지상(L)=증자. 발전기 기준으로만 외우면 전동기에서 반대로 틀린다.</div></div></div>
+<div class="sec"><span class="sectag t-lp">학습포인트</span><div class="body">동기 발전기와 전동기는 $L,\,C$ 부하에 대해 반작용 특성이 서로 반대로 발생한다.
+<div style="border:1px solid #cbd5e1;background:#f1f5f9;border-radius:8px;padding:10px 14px;margin:8px 0;">
+<strong style="color:#475569;">독끝 학습 Point</strong><br>
+발전기의 지상(L)=감자, 전동기의 지상(L)=증자. 발전기 기준으로만 외우면 전동기에서 반대로 틀린다.
+</div></div></div></div>
 </div>
-</div>
-
-<!-- ===== Q32 ===== -->
 <div class="q">
-<div class="qhead">elec_A_2022_01_32 · 빈출 ★★☆ · 전기기기</div>
-<div class="qno">32</div>
-<div class="flipbar"><span class="lbl src">원문(엑셀 입력)</span><span class="arrow">⇄</span><span class="lbl out">변환(화면 결과)</span><span class="hint">▶ 카드를 클릭해 전환</span></div>
-<div class="view-src">
-<div class="col">「발문」</div><pre>$200[\text{kVA}]$ 의 단상 변압기가 있다. 철손이 $1.6[\text{kW}]$, 전부하 동손이 $2.4[\text{kW}]$ 이다. 변압기의 역률이 $0.8$ 일 때 전부하 시의 효율 $[\%]$ 은 약 얼마인가?</pre>
-<div class="col">「보기1」~「보기4」 / 「정답」</div><pre>96.6
+<div class="qhead">elec_A_2022_01_32 · 빈출 ★★★ · 전기 기기</div>
+<div class="qno">8</div>
+<div class="flipbar"><span class="lbl src">원문(엑셀 입력)</span><span>⇄</span><span class="lbl out">변환(화면 결과)</span><span class="hint">▶ 카드 클릭해 전환</span></div>
+<div class="view-src"><div class="col">「발문」</div><pre>$200[\text{kVA}]$ 의 단상 변압기가 있다. 철손이 $1.6[\text{kW}]$, 전부하 동손이 $2.4[\text{kW}]$ 이다. 변압기의 역률이 $0.8$ 일 때 전부하 시의 효율 $[\%]$ 은 약 얼마인가?</pre>
+<div class="col">「보기1~4」 / 「정답」</div><pre>96.6
 97.6
 98.6
 99.6
@@ -301,32 +291,33 @@ $$\begin{array}{c|c|c|c}
 <div class="col">「해설」</div><pre>출력 $=200\times0.8$, 손실 $=$ 철손 $+$ 동손 으로 두고 효율 공식에 대입한다.
 $$\eta=\dfrac{200\times0.8}{200\times0.8+1.6+2.4}\times100\approx 97.6\,[\%]$$</pre>
 <div class="col">「학습포인트」</div><pre>변압기의 효율
-&lt;div style="border:1px solid #34d399;background:#f0fdf4;border-radius:8px;padding:10px 14px;margin:8px 0;"&gt;
+&lt;div style=&quot;border:1px solid #cbd5e1;background:#f1f5f9;border-radius:8px;padding:10px 14px;margin:8px 0;&quot;&gt;
+&lt;strong style=&quot;color:#475569;&quot;&gt;독끝 학습 Point&lt;/strong&gt;&lt;br&gt;
 $$\eta=\dfrac{P}{P+P_c+P_i}\times100\;[\%]$$
 $P$: 출력 · $P_c$: 동손 · $P_i$: 철손
-&lt;/div&gt;</pre>
-</div>
-<div class="view-out">
-<div class="stem">$200[\text{kVA}]$ 의 단상 변압기가 있다. 철손이 $1.6[\text{kW}]$, 전부하 동손이 $2.4[\text{kW}]$ 이다. 변압기의 역률이 $0.8$ 일 때 전부하 시의 효율 $[\%]$ 은 약 얼마인가?</div>
-<div class="opt">① 96.6 &nbsp;&nbsp; ② 97.6 &nbsp;&nbsp; ③ 98.6 &nbsp;&nbsp; ④ 99.6</div>
+&lt;/div&gt;</pre></div>
+<div class="view-out"><div class="stem">$200[\text{kVA}]$ 의 단상 변압기가 있다. 철손이 $1.6[\text{kW}]$, 전부하 동손이 $2.4[\text{kW}]$ 이다. 변압기의 역률이 $0.8$ 일 때 전부하 시의 효율 $[\%]$ 은 약 얼마인가?</div>
+<div class="opt">① 96.6</div>
+<div class="opt">② 97.6</div>
+<div class="opt">③ 98.6</div>
+<div class="opt">④ 99.6</div>
 <div class="ans">정답 ②</div>
 <div class="sec"><span class="sectag t-exp">해설</span><div class="body">출력 $=200\times0.8$, 손실 $=$ 철손 $+$ 동손 으로 두고 효율 공식에 대입한다.
 $$\eta=\dfrac{200\times0.8}{200\times0.8+1.6+2.4}\times100\approx 97.6\,[\%]$$</div></div>
-<div class="lpbox"><div class="lptitle">🎯 독끝 학습 POINT</div><div class="body">변압기의 효율
-<div style="border:1px solid #34d399;background:#f0fdf4;border-radius:8px;padding:10px 14px;margin:8px 0;">$$\eta=\dfrac{P}{P+P_c+P_i}\times100\;[\%]$$ $P$: 출력 · $P_c$: 동손 · $P_i$: 철손</div></div></div>
+<div class="sec"><span class="sectag t-lp">학습포인트</span><div class="body">변압기의 효율
+<div style="border:1px solid #cbd5e1;background:#f1f5f9;border-radius:8px;padding:10px 14px;margin:8px 0;">
+<strong style="color:#475569;">독끝 학습 Point</strong><br>
+$$\eta=\dfrac{P}{P+P_c+P_i}\times100\;[\%]$$
+$P$: 출력 · $P_c$: 동손 · $P_i$: 철손
+</div></div></div></div>
 </div>
-</div>
-
 <div class="subj">▶ 전기 설비</div>
-
-<!-- ===== Q39 ===== -->
 <div class="q">
-<div class="qhead">elec_A_2022_01_39 · 빈출 ★★★ · 전기설비</div>
-<div class="qno">39</div>
-<div class="flipbar"><span class="lbl src">원문(엑셀 입력)</span><span class="arrow">⇄</span><span class="lbl out">변환(화면 결과)</span><span class="hint">▶ 카드를 클릭해 전환</span></div>
-<div class="view-src">
-<div class="col">「발문」</div><pre>역병렬 결합의 SCR의 특성과 같은 반도체 소자는?</pre>
-<div class="col">「보기1」~「보기4」 / 「정답」</div><pre>PUT
+<div class="qhead">elec_A_2022_01_39 · 빈출 ★★★★★ · 전기 설비</div>
+<div class="qno">9</div>
+<div class="flipbar"><span class="lbl src">원문(엑셀 입력)</span><span>⇄</span><span class="lbl out">변환(화면 결과)</span><span class="hint">▶ 카드 클릭해 전환</span></div>
+<div class="view-src"><div class="col">「발문」</div><pre>역병렬 결합의 SCR의 특성과 같은 반도체 소자는?</pre>
+<div class="col">「보기1~4」 / 「정답」</div><pre>PUT
 UJT
 Diac
 Triac
@@ -334,72 +325,46 @@ Triac
 <div class="col">「해설」</div><pre>역병렬 결합의 SCR과 동일한 특성을 가지며, 쌍방향성 3단자 사이리스터라고 불리는 소자는 &lt;strong&gt;TRIAC(트라이액)&lt;/strong&gt;이다.</pre>
 <div class="col">「오답분석」</div><pre>① ② 발진 회로 등에 사용되는 소자이다.&lt;br&gt;
 ③ 양방향성 2단자 소자로, 주로 TRIAC의 트리거용으로 사용된다.</pre>
-<div class="col">「학습포인트」 + 「학습포인트그림」</div><pre>TRIAC의 심볼&lt;br&gt;
-&lt;img src="elec_A_2022_01_39_lp1.png"&gt;
-
-  ※ 파일명 = 문항코드(39) + 슬롯(lp) + 순번(1) — 작성규칙 4-1
-    그림 업로드 시 자동 부여됨</pre>
-</div>
-<div class="view-out">
-<div class="stem">역병렬 결합의 SCR의 특성과 같은 반도체 소자는?</div>
-<div class="opt">① PUT &nbsp;&nbsp; ② UJT &nbsp;&nbsp; ③ Diac &nbsp;&nbsp; ④ Triac</div>
+<div class="col">「학습포인트」</div><pre>TRIAC의 심볼&lt;br&gt;
+&lt;img src=&quot;elec_A_2022_01_39_lp1.png&quot;&gt;</pre></div>
+<div class="view-out"><div class="stem">역병렬 결합의 SCR의 특성과 같은 반도체 소자는?</div>
+<div class="opt">① PUT</div>
+<div class="opt">② UJT</div>
+<div class="opt">③ Diac</div>
+<div class="opt">④ Triac</div>
 <div class="ans">정답 ④</div>
 <div class="sec"><span class="sectag t-exp">해설</span><div class="body">역병렬 결합의 SCR과 동일한 특성을 가지며, 쌍방향성 3단자 사이리스터라고 불리는 소자는 <strong>TRIAC(트라이액)</strong>이다.</div></div>
-<div class="sec"><span class="sectag t-wr">오답분석</span><div class="body">① ② 발진 회로 등에 사용되는 소자이다.<br>③ 양방향성 2단자 소자로, 주로 TRIAC의 트리거용으로 사용된다.</div></div>
-<div class="lpbox"><div class="lptitle">🎯 독끝 학습 POINT</div><div class="body">TRIAC의 심볼<br>
-<span class="imgph">🖼 elec_A_2022_01_39_lp1.png</span><br>
-<span class="note">※ 그림 파일명이 문항코드(39)+슬롯(lp)에서 자동 유도됨 — 작성규칙 4-1</span></div></div>
+<div class="sec"><span class="sectag t-wr">오답분석</span><div class="body">① ② 발진 회로 등에 사용되는 소자이다.<br>
+③ 양방향성 2단자 소자로, 주로 TRIAC의 트리거용으로 사용된다.</div></div>
+<div class="sec"><span class="sectag t-lp">학습포인트</span><div class="body">TRIAC의 심볼<br>
+<img src="elec_A_2022_01_39_lp1.png"></div></div></div>
 </div>
-</div>
-
-<!-- ===== Q60 ===== -->
 <div class="q">
-<div class="qhead">elec_A_2022_01_60 · 빈출 ★★☆ · 전기설비</div>
-<div class="qno">60</div>
-<div class="flipbar"><span class="lbl src">원문(엑셀 입력)</span><span class="arrow">⇄</span><span class="lbl out">변환(화면 결과)</span><span class="hint">▶ 카드를 클릭해 전환</span></div>
-<div class="view-src">
-<div class="col">「발문」</div><pre>소맥분, 전분 기타 가연성의 분진이 존재하는 곳의 저압 옥내 배선 공사 방법에 해당되는 것으로 짝지어진 것은?</pre>
-<div class="col">「보기1」~「보기4」 / 「정답」</div><pre>케이블 공사, 애자 사용 공사
+<div class="qhead">elec_A_2022_01_60 · 빈출 ★★★ · 전기 설비</div>
+<div class="qno">10</div>
+<div class="flipbar"><span class="lbl src">원문(엑셀 입력)</span><span>⇄</span><span class="lbl out">변환(화면 결과)</span><span class="hint">▶ 카드 클릭해 전환</span></div>
+<div class="view-src"><div class="col">「발문」</div><pre>소맥분, 전분 기타 가연성의 분진이 존재하는 곳의 저압 옥내 배선 공사 방법에 해당되는 것으로 짝지어진 것은?</pre>
+<div class="col">「보기1~4」 / 「정답」</div><pre>케이블 공사, 애자 사용 공사
 금속관 공사, 콤바인 덕트관, 애자 사용 공사
 케이블 공사, 금속관 공사, 애자 사용 공사
 케이블 공사, 금속관 공사, 합성수지관 공사
 정답 = 4</pre>
-<div class="col">「해설」 (순수 텍스트 — 수식·박스·그림 없음)</div><pre>가연성 분진(밀가루·전분 등)이 있는 장소는 폭발·화재 위험이 크므로 가장 튼튼하고 밀폐성이 좋은 공사 방법을 써야 한다. 밀폐성이 좋은 공사는 &lt;strong&gt;금속관 공사·합성수지관 공사·케이블 공사&lt;/strong&gt;이므로 정답은 ④이다.</pre>
-</div>
-<div class="view-out">
-<div class="stem">소맥분, 전분 기타 가연성의 분진이 존재하는 곳의 저압 옥내 배선 공사 방법에 해당되는 것으로 짝지어진 것은?</div>
+<div class="col">「해설」</div><pre>가연성 분진(밀가루·전분 등)이 있는 장소는 폭발·화재 위험이 크므로 가장 튼튼하고 밀폐성이 좋은 공사 방법을 써야 한다. 밀폐성이 좋은 공사는 &lt;strong&gt;금속관 공사·합성수지관 공사·케이블 공사&lt;/strong&gt;이므로 정답은 ④이다.</pre></div>
+<div class="view-out"><div class="stem">소맥분, 전분 기타 가연성의 분진이 존재하는 곳의 저압 옥내 배선 공사 방법에 해당되는 것으로 짝지어진 것은?</div>
 <div class="opt">① 케이블 공사, 애자 사용 공사</div>
 <div class="opt">② 금속관 공사, 콤바인 덕트관, 애자 사용 공사</div>
 <div class="opt">③ 케이블 공사, 금속관 공사, 애자 사용 공사</div>
 <div class="opt">④ 케이블 공사, 금속관 공사, 합성수지관 공사</div>
 <div class="ans">정답 ④</div>
-<div class="sec"><span class="sectag t-exp">해설</span><div class="body">가연성 분진(밀가루·전분 등)이 있는 장소는 폭발·화재 위험이 크므로 가장 튼튼하고 밀폐성이 좋은 공사 방법을 써야 한다. 밀폐성이 좋은 공사는 <strong>금속관 공사·합성수지관 공사·케이블 공사</strong>이므로 정답은 ④이다.</div></div>
+<div class="sec"><span class="sectag t-exp">해설</span><div class="body">가연성 분진(밀가루·전분 등)이 있는 장소는 폭발·화재 위험이 크므로 가장 튼튼하고 밀폐성이 좋은 공사 방법을 써야 한다. 밀폐성이 좋은 공사는 <strong>금속관 공사·합성수지관 공사·케이블 공사</strong>이므로 정답은 ④이다.</div></div></div>
 </div>
-</div>
-
-<p class="note" style="margin-top:30px;border-top:1px solid #e2e8f0;padding-top:10px;">
-출처: 2022년 1회 기출(전기기능사 필기). 작성규칙서 v1 적용 샘플 — 규칙 변경 시 함께 갱신.
-</p>
-
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    renderMathInElement(document.body, {
-      delimiters: [
-        { left: "$$", right: "$$", display: true },
-        { left: "$", right: "$", display: false }
-      ],
-      throwOnError: false,
-      ignoredTags: ["script", "noscript", "style", "textarea", "pre", "code"]
-    });
-    document.querySelectorAll(".q").forEach(function (q) {
-      q.addEventListener("click", function () { q.classList.toggle("flip"); });
-    });
-    document.getElementById("flipAll").addEventListener("click", function () {
-      var cards = document.querySelectorAll(".q");
-      var anyUnflipped = Array.prototype.some.call(cards, function (c) { return !c.classList.contains("flip"); });
-      cards.forEach(function (c) { c.classList.toggle("flip", anyUnflipped); });
-    });
-  });
-</script>
-</body>
-</html>
+document.addEventListener("DOMContentLoaded",function(){
+ renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:true},{left:"$",right:"$",display:false}],throwOnError:false,ignoredTags:["script","noscript","style","textarea","pre","code"]});
+ document.querySelectorAll(".q").forEach(function(q){q.addEventListener("click",function(){q.classList.toggle("flip");});});
+ document.getElementById("flipAll").addEventListener("click",function(){
+  var cs=document.querySelectorAll(".q");
+  var any=Array.prototype.some.call(cs,function(c){return !c.classList.contains("flip");});
+  cs.forEach(function(c){c.classList.toggle("flip",any);});});
+});
+</script></body></html>

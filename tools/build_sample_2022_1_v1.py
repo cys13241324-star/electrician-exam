@@ -52,9 +52,12 @@ BOX = Border(left=THIN, right=THIN, top=THIN, bottom=THIN)
 WRAP = Alignment(horizontal='left', vertical='top', wrap_text=True)
 CTR = Alignment(horizontal='center', vertical='center', wrap_text=True)
 
-# 박스 스니펫 (작성규칙 3-A / 3-B, inline style)
-F = '<div style="border:1px solid #34d399;background:#f0fdf4;border-radius:8px;padding:10px 14px;margin:8px 0;">'
-W = '<div style="border:1px solid #fbbf24;background:#fffbeb;border-radius:8px;padding:10px 14px;margin:8px 0;">'
+# 박스 스니펫 — 독끝 학습 Point 회색 단일(작성규칙 ⑦, inline style)
+P = ('<div style="border:1px solid #cbd5e1;background:#f1f5f9;border-radius:8px;'
+     'padding:10px 14px;margin:8px 0;">\n'
+     '<strong style="color:#475569;">독끝 학습 Point</strong><br>')
+F = P   # 기존 핵심공식 자리 → 동일 회색 박스
+W = P   # 기존 주의 자리 → 동일 회색 박스
 E = '</div>'
 
 # ---- 샘플 10문항 (HTML 원문과 동일, 규칙 적용) ----
@@ -119,7 +122,7 @@ SAMPLES = [
    "문제에서는 $90^\\circ$ 앞선(진상) 전류가 흐르므로 <strong>감자 작용</strong>을 하여 기전력을 감소시킨다.",
    '',
    "동기 발전기와 전동기는 $L,\\,C$ 부하에 대해 반작용 특성이 서로 반대로 발생한다.\n"
-   +W+"\n<strong style=\"color:#b45309;\">주의</strong><br>\n발전기의 지상(L)=감자, 전동기의 지상(L)=증자. 발전기 기준으로만 외우면 전동기에서 반대로 틀린다.\n"+E),
+   +W+"\n발전기의 지상(L)=감자, 전동기의 지상(L)=증자. 발전기 기준으로만 외우면 전동기에서 반대로 틀린다.\n"+E),
 
  q(8,'32','machinery','변압기','효율','전부하 효율','효율 계산',3,3,'계산형',
    '$200[\\text{kVA}]$ 의 단상 변압기가 있다. 철손이 $1.6[\\text{kW}]$, 전부하 동손이 $2.4[\\text{kW}]$ 이다. 변압기의 역률이 $0.8$ 일 때 전부하 시의 효율 $[\\%]$ 은 약 얼마인가?',
@@ -183,10 +186,9 @@ RULES = [
  ('가능 환경', 'array · matrix · cases · aligned'),
  ('불가 환경', 'enumerate · itemize · tabular  (목록은 <br>+원문자)'),
  ('', ''),
- ('[박스 표준 스니펫 — inline style]', ''),
- ('핵심공식(초록)', F + ' $$...$$  ... ' + E),
- ('주의(호박)', W + ' <strong style="color:#b45309;">주의</strong><br> ... ' + E),
- ('규칙', 'style 값 변경·박스 중첩 금지. 독끝 바깥 박스는 앱이 자동(셀에 안 씀).'),
+ ('[박스 표준 스니펫 — 독끝 학습 Point · 회색]', ''),
+ ('스니펫', P + ' $$...$$ 또는 텍스트 ' + E),
+ ('규칙', '핵심공식/주의 2종 폐기 → 회색 「독끝 학습 Point」 박스 하나로 통일. style 값 변경·박스 중첩 금지.'),
  ('', ''),
  ('[제출 전 체크]', ''),
  ('1', '<ol> <ul> <li> <table> <p> 안 썼나?'),
@@ -286,11 +288,157 @@ def build(out_path):
         cb.alignment = Alignment(horizontal='left', vertical='top', wrap_text=True)
     gs.freeze_panes = 'A2'
 
+    # ===== 시트 3: 색인 (문항 빠른 찾기 — 정렬·필터) =====
+    import re as _re
+    SUBJ_KO = {'theory': '전기이론', 'machinery': '전기기기', 'facility': '전기설비'}
+
+    def _short(s):
+        s = _re.sub(r'<[^>]+>', '', str(s or ''))
+        s = _re.sub(r'\$+', '', s).replace('\n', ' ').strip()
+        return s[:45] + ('…' if len(s) > 45 else '')
+
+    ix = wb.create_sheet('색인')
+    ix_cols = [('번호', 8), ('문항코드', 22), ('과목', 12), ('발문 요약', 72)]
+    for c, (nm, w) in enumerate(ix_cols, 1):
+        cell = ix.cell(1, c, nm)
+        cell.font = WHITE
+        cell.fill = PatternFill('solid', fgColor='475569')
+        cell.alignment = CTR
+        cell.border = BOX
+        ix.column_dimensions[get_column_letter(c)].width = w
+    for r, smp in enumerate(SAMPLES, 2):
+        vals = [smp.get('번호'), smp.get('문항코드'),
+                SUBJ_KO.get(smp.get('과목ID'), smp.get('과목ID')),
+                _short(smp.get('발문'))]
+        for c, v in enumerate(vals, 1):
+            cl = ix.cell(r, c, v)
+            cl.font = CELL
+            cl.border = BOX
+            cl.alignment = WRAP if c == 4 else CTR
+    ix.auto_filter.ref = f'A1:D{1 + len(SAMPLES)}'
+    ix.freeze_panes = 'A2'
+
     wb.save(out_path)
+    print('saved:', out_path)
+
+
+import html as _htmlmod
+
+_CIRC = {1: '①', 2: '②', 3: '③', 4: '④'}
+_SUBJ_KO = {'theory': '▶ 전기이론', 'machinery': '▶ 전기 기기', 'facility': '▶ 전기 설비'}
+
+_PAGE = """<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8">
+<title>샘플 10문항 — 원문 ⇄ 변환 (2022년 1회)</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<style>
+ body{font-family:'Malgun Gothic',sans-serif;max-width:880px;margin:0 auto 40px;padding:0 20px;color:#1e293b;line-height:1.7;}
+ h1{font-size:21px;border-bottom:3px solid #334155;padding-bottom:10px;}
+ .topbar{position:sticky;top:0;background:#0f172a;color:#fff;padding:10px 16px;border-radius:0 0 10px 10px;z-index:10;display:flex;gap:14px;align-items:center;font-size:13px;margin-bottom:18px;}
+ .topbar button{background:#0ea5e9;color:#fff;border:0;padding:7px 14px;border-radius:6px;font-weight:bold;cursor:pointer;}
+ .legend{background:#fffbeb;border:1px solid #fbbf24;border-radius:8px;padding:10px 14px;font-size:13px;margin:14px 0 22px;}
+ .subj{font-size:15px;font-weight:bold;color:#fff;background:#0ea5e9;padding:6px 12px;border-radius:6px;margin:28px 0 10px;}
+ .q{border:1px solid #e2e8f0;border-radius:12px;padding:16px 18px;margin:16px 0;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.05);cursor:pointer;}
+ .qhead{font-size:12px;color:#64748b;font-family:monospace;}
+ .qno{font-size:17px;font-weight:bold;color:#db2777;margin:2px 0 8px;}
+ .flipbar{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:bold;margin-bottom:10px;user-select:none;}
+ .flipbar .lbl{padding:3px 10px;border-radius:12px;background:#e2e8f0;color:#94a3b8;}
+ .q .flipbar .src{background:#1e293b;color:#fff;}
+ .q.flip .flipbar .src{background:#e2e8f0;color:#94a3b8;}
+ .q.flip .flipbar .out{background:#0e7490;color:#fff;}
+ .flipbar .hint{font-weight:normal;color:#94a3b8;margin-left:auto;}
+ .view-out{display:none;} .q.flip .view-src{display:none;} .q.flip .view-out{display:block;}
+ .col{font-size:11px;font-weight:bold;color:#0369a1;padding:8px 0 2px;}
+ pre{margin:0;padding:8px 12px;background:#0f172a;color:#e2e8f0;font-size:12px;white-space:pre-wrap;word-break:break-all;line-height:1.55;border-radius:6px;}
+ .stem{font-size:15px;margin-bottom:10px;} .opt{margin:3px 0;}
+ .ans{display:inline-block;background:#0369a1;color:#fff;font-size:12px;font-weight:bold;padding:2px 10px;border-radius:12px;margin:8px 0;}
+ .sec{margin-top:12px;} .sectag{font-size:12px;font-weight:bold;padding:2px 9px;border-radius:5px;}
+ .t-exp{background:#fff7ed;color:#c2410c;border:1px solid #fdba74;}
+ .t-wr{background:#faf5ff;color:#7c3aed;border:1px solid #d8b4fe;}
+ .t-lp{background:#f1f5f9;color:#475569;border:1px solid #cbd5e1;}
+ .body{font-size:14px;margin-top:5px;}
+ .note{font-size:11.5px;color:#94a3b8;}
+</style></head><body>
+<div class="topbar"><button id="flipAll">전체 원문 ⇄ 변환 전환</button>
+<span>각 카드를 <b>클릭</b>하면 원문(엑셀 입력) ↔ 변환(화면 결과) 전환.</span></div>
+<h1>샘플 10문항 — 2022년 1회 CBT</h1>
+<div class="legend"><b>원문</b> = 엑셀 셀 입력 코드(작성규칙대로·xlsx와 동일) · <b>변환</b> = 화면 결과.
+박스는 「독끝 학습 Point」 회색 단일. <span class="note">수식 안 보이면 인터넷 확인.</span></div>
+##BODY##
+<script>
+document.addEventListener("DOMContentLoaded",function(){
+ renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:true},{left:"$",right:"$",display:false}],throwOnError:false,ignoredTags:["script","noscript","style","textarea","pre","code"]});
+ document.querySelectorAll(".q").forEach(function(q){q.addEventListener("click",function(){q.classList.toggle("flip");});});
+ document.getElementById("flipAll").addEventListener("click",function(){
+  var cs=document.querySelectorAll(".q");
+  var any=Array.prototype.some.call(cs,function(c){return !c.classList.contains("flip");});
+  cs.forEach(function(c){c.classList.toggle("flip",any);});});
+});
+</script></body></html>"""
+
+_CARD = """<div class="q">
+<div class="qhead">##CODE## · 빈출 ##BND## · ##SUBJ##</div>
+<div class="qno">##NO##</div>
+<div class="flipbar"><span class="lbl src">원문(엑셀 입력)</span><span>⇄</span><span class="lbl out">변환(화면 결과)</span><span class="hint">▶ 카드 클릭해 전환</span></div>
+<div class="view-src">##SRC##</div>
+<div class="view-out">##OUT##</div>
+</div>"""
+
+
+def _esc(s):
+    return _htmlmod.escape(str(s if s is not None else ''))
+
+
+def build_html(out_path):
+    cards, cur = [], None
+    for smp in SAMPLES:
+        sj = smp['과목ID']
+        if sj != cur:
+            cards.append(f'<div class="subj">{_SUBJ_KO.get(sj, sj)}</div>')
+            cur = sj
+        ans = int(smp['정답(1~4)'])
+        bnd = '★' * int(smp.get('빈출도') or 0) or '—'
+
+        src = ['<div class="col">「발문」</div><pre>' + _esc(smp['발문']) + '</pre>']
+        opts = '\n'.join(_esc(smp[f'보기{i}']) for i in range(1, 5))
+        src.append('<div class="col">「보기1~4」 / 「정답」</div><pre>' + opts
+                   + '\n정답 = ' + _esc(smp['정답(1~4)']) + '</pre>')
+        src.append('<div class="col">「해설」</div><pre>' + _esc(smp['해설']) + '</pre>')
+        if smp.get('오답분석'):
+            src.append('<div class="col">「오답분석」</div><pre>' + _esc(smp['오답분석']) + '</pre>')
+        if smp.get('학습포인트'):
+            src.append('<div class="col">「학습포인트」</div><pre>' + _esc(smp['학습포인트']) + '</pre>')
+
+        out = ['<div class="stem">' + smp['발문'] + '</div>']
+        for i in range(1, 5):
+            out.append(f'<div class="opt">{_CIRC[i]} ' + smp[f'보기{i}'] + '</div>')
+        out.append(f'<div class="ans">정답 {_CIRC[ans]}</div>')
+        out.append('<div class="sec"><span class="sectag t-exp">해설</span>'
+                   '<div class="body">' + smp['해설'] + '</div></div>')
+        if smp.get('오답분석'):
+            out.append('<div class="sec"><span class="sectag t-wr">오답분석</span>'
+                       '<div class="body">' + smp['오답분석'] + '</div></div>')
+        if smp.get('학습포인트'):
+            out.append('<div class="sec"><span class="sectag t-lp">학습포인트</span>'
+                       '<div class="body">' + smp['학습포인트'] + '</div></div>')
+
+        card = (_CARD.replace('##CODE##', smp['문항코드'])
+                .replace('##BND##', bnd)
+                .replace('##SUBJ##', _SUBJ_KO.get(sj, sj).replace('▶ ', ''))
+                .replace('##NO##', str(smp['번호']))
+                .replace('##SRC##', '\n'.join(src))
+                .replace('##OUT##', '\n'.join(out)))
+        cards.append(card)
+
+    with open(out_path, 'w', encoding='utf-8') as f:
+        f.write(_PAGE.replace('##BODY##', '\n'.join(cards)))
     print('saved:', out_path)
 
 
 if __name__ == '__main__':
     here = os.path.dirname(os.path.abspath(__file__))
-    out = os.path.join(here, '..', 'data', 'templates', '샘플_2022_1회_v1.xlsx')
-    build(os.path.normpath(out))
+    tdir = os.path.normpath(os.path.join(here, '..', 'data', 'templates'))
+    build(os.path.join(tdir, '샘플_2022_1회_v1.xlsx'))
+    build_html(os.path.join(tdir, '샘플_2022_1회_10문항.html'))
