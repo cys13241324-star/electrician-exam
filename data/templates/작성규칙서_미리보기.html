@@ -2,113 +2,142 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<title>CBT 문항 콘텐츠 작성 규칙서 (v1 초안) — 미리보기</title>
+<title>CBT 문항 작성 규칙 — 정리 (v1, 현재 확정)</title>
 <style>
-  body{font-family:'Malgun Gothic',sans-serif;max-width:860px;margin:32px auto;padding:0 20px;color:#1e293b;line-height:1.7;}
+  body{font-family:'Malgun Gothic',sans-serif;max-width:900px;margin:30px auto;padding:0 22px;color:#1e293b;line-height:1.75;}
   h1{font-size:22px;border-bottom:3px solid #334155;padding-bottom:10px;}
-  h2{font-size:17px;margin-top:34px;border-left:4px solid #0ea5e9;padding-left:10px;}
-  h3{font-size:14px;margin-top:20px;color:#0369a1;}
-  table{border-collapse:collapse;width:100%;margin:10px 0;font-size:13px;}
-  th,td{border:1px solid #cbd5e1;padding:6px 9px;text-align:left;vertical-align:top;}
+  h2{font-size:17px;margin-top:34px;background:#0f172a;color:#fff;padding:7px 14px;border-radius:6px;}
+  h3{font-size:14px;color:#0369a1;margin:18px 0 6px;}
+  table{border-collapse:collapse;width:100%;margin:8px 0;font-size:13px;}
+  th,td{border:1px solid #cbd5e1;padding:7px 10px;text-align:left;vertical-align:top;}
   th{background:#f1f5f9;}
-  code{background:#f1f5f9;padding:1px 5px;border-radius:3px;font-size:13px;}
-  pre{background:#0f172a;color:#e2e8f0;padding:12px;border-radius:8px;overflow:auto;font-size:12.5px;}
-  .banner{background:#fffbeb;border:1px solid #fbbf24;border-radius:8px;padding:10px 14px;font-size:13px;margin:14px 0;}
-  .ok{color:#059669;font-weight:bold;} .no{color:#dc2626;font-weight:bold;}
+  code{background:#f1f5f9;padding:1px 5px;border-radius:3px;font-size:12.5px;}
+  pre{background:#0f172a;color:#e2e8f0;padding:11px 14px;border-radius:8px;font-size:12.5px;white-space:pre-wrap;word-break:break-all;}
+  .ok{color:#059669;font-weight:bold;}.no{color:#dc2626;font-weight:bold;}
+  .banner{border-radius:8px;padding:11px 15px;font-size:13px;margin:14px 0;}
+  .b-info{background:#eff6ff;border:1px solid #93c5fd;}
+  .b-warn{background:#fffbeb;border:1px solid #fbbf24;}
   .demo{border:1px dashed #94a3b8;border-radius:8px;padding:14px;margin:8px 0;background:#fff;}
-  .note{font-size:12.5px;color:#64748b;}
+  .note{font-size:12px;color:#64748b;}
+  .toc{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:12px 18px;font-size:13px;}
+  .toc a{color:#0369a1;text-decoration:none;}
 </style>
 </head>
 <body>
 
-<h1>CBT 문항 콘텐츠 작성 규칙서 <span style="font-size:14px;color:#64748b;">(v1 초안 · 미리보기)</span></h1>
+<h1>CBT 문항 작성 규칙 — 정리 <span style="font-size:13px;color:#64748b;">(v1 · 현재 확정 상태)</span></h1>
 
-<div class="banner">⚙️ <b>작업용 초안</b>입니다. 만들며 조정·수정하고, 모든 게 확정되면 그 상태를 최종 규칙으로 고정(엑셀 양식의 <code>사용가이드</code> 시트에 반영).
-대상 셀: <b>발문 · 해설 · 오답분석 · 학습포인트</b>. 화면엔 셀 내용이 HTML 그대로 나오고 <code>$…$</code> 안 수식만 변환됨.</div>
+<div class="banner b-info">대상 셀: <b>발문 · 보기 · 해설 · 오답분석 · 학습포인트</b>.
+화면에는 셀 내용이 <b>HTML 그대로</b> 표시되고, <code>$…$</code> 안의 수식만 KaTeX로 변환됩니다.
+작업용 초안 — 확정 시 정식 양식(<code>build_template_v3.py</code>)에 반영.</div>
 
-<h2>0. 큰 원칙 3가지</h2>
+<div class="toc">
+① <a href="#p">큰 원칙</a> &nbsp;|&nbsp; ② <a href="#code">문항코드 규칙</a> &nbsp;|&nbsp; ③ <a href="#img">이미지 파일명 규칙</a> &nbsp;|&nbsp;
+④ <a href="#tag">허용 태그</a> &nbsp;|&nbsp; ⑤ <a href="#ban">금지·대체</a> &nbsp;|&nbsp; ⑥ <a href="#tex">수식(LaTeX)</a> &nbsp;|&nbsp;
+⑦ <a href="#box">박스(inline style)</a> &nbsp;|&nbsp; ⑧ <a href="#chk">제출 체크리스트</a>
+</div>
+
+<h2 id="p">① 큰 원칙 3가지</h2>
 <ol>
-  <li><b>HTML은 최소한만.</b> 구조 만드는 태그(목록·표)는 안 씀.</li>
-  <li><b>수식·기호는 LaTeX로.</b> <code>$ … $</code>(인라인) / <code>$$ … $$</code>(독립 줄).</li>
-  <li><b>박스(틀)가 필요하면 inline style로 직접.</b> 앱 디자인에 기대지 않음.</li>
+<li><b>HTML은 최소한만.</b> 구조 만드는 태그(목록·표·문단)는 쓰지 않는다.</li>
+<li><b>수식·기호는 LaTeX로.</b> <code>$ … $</code>(인라인) / <code>$$ … $$</code>(독립 줄).</li>
+<li><b>박스(틀)가 필요하면 inline style로 직접.</b> 앱 디자인(class)에 기대지 않는다.</li>
 </ol>
 
-<h2>1. 허용 HTML 태그 (이 목록에 없으면 쓰지 않음)</h2>
+<h2 id="code">② 문항코드 규칙</h2>
+<table>
+<tr><th>형식</th><td><code>elec_&lt;교재구분&gt;_&lt;연도&gt;_&lt;회차2자리&gt;_&lt;번호2자리&gt;</code></td></tr>
+<tr><th>예시</th><td><code>elec_A_2022_01_01</code> &nbsp;(교재 A · 2022년 · 1회 · 1번)</td></tr>
+<tr><th>자동화</th><td>엑셀 작성행은 <b>수식</b>으로, 출처(교재구분·연도·회차·번호)만 채우면 자동 표시.
+샘플 행은 정적값. <b>제출 후 서버가 출처로 다시 계산</b>하므로 수식이 미계산이어도 안전.</td></tr>
+</table>
+
+<h2 id="img">③ 이미지 파일명 규칙</h2>
+<table>
+<tr><th>형식</th><td><code>{문항코드}_{슬롯}{순번}.png</code></td></tr>
+<tr><th>슬롯 토큰</th><td>발문 <code>stem</code> · 보기 <code>opt1~opt4</code> · 해설 <code>exp</code> · 오답분석 <code>wrong</code> · 학습포인트 <code>lp</code></td></tr>
+<tr><th>예시</th><td><code>elec_A_2022_01_39_lp1.png</code> (39번 학습포인트 1번 그림)</td></tr>
+<tr><th>부여 주체</th><td><b>그림 업로드 시 서버가 자동 부여</b>(엑셀에서 자동 생성하지 않음).
+같은 슬롯 재업로드 시 같은 이름으로 <b>덮어써서</b> 파일명이 항상 고정.</td></tr>
+<tr><th>참조</th><td>본문 어디에나 <code>&lt;img src="elec_A_2022_01_39_lp1.png"&gt;</code>. 슬롯 토큰은 한글이 깨져 <b>영어 확정</b>.</td></tr>
+</table>
+
+<h2 id="tag">④ 허용 HTML 태그 (이 목록에 없으면 쓰지 않음)</h2>
 <table>
 <tr><th>용도</th><th>허용 태그</th></tr>
 <tr><td>강조</td><td><code>&lt;strong&gt; &lt;em&gt; &lt;u&gt;</code></td></tr>
 <tr><td>위/아래첨자</td><td><code>&lt;sub&gt; &lt;sup&gt;</code></td></tr>
 <tr><td>줄바꿈</td><td><code>&lt;br&gt;</code></td></tr>
 <tr><td>그림</td><td><code>&lt;img src="파일명"&gt;</code></td></tr>
-<tr><td>박스(틀)</td><td><code>&lt;div style="…"&gt;</code> — 3번 규격대로만</td></tr>
+<tr><td>박스(틀)</td><td><code>&lt;div style="…"&gt;</code> — ⑦의 표준 스니펫만</td></tr>
 </table>
 <p class="note"><code>&lt;</code> <code>&gt;</code> <code>&amp;</code> 자체를 글자로 → <code>&amp;lt; &amp;gt; &amp;amp;</code></p>
 
-<h2>2. 금지 태그와 대체 방법 ★ 이사님 지시</h2>
+<h2 id="ban">⑤ 금지 태그와 대체 방법</h2>
 <table>
-<tr><th>금지</th><th>대신 이렇게</th></tr>
-<tr><td><code>&lt;ol&gt; &lt;ul&gt; &lt;li&gt;</code></td><td>줄마다 <code>&lt;br&gt;</code>, 번호는 <b>원문자(①②③④…)</b> 로 직접 입력</td></tr>
+<tr><th><span class="no">금지</span></th><th><span class="ok">대신 이렇게</span></th></tr>
+<tr><td><code>&lt;ol&gt; &lt;ul&gt; &lt;li&gt;</code></td><td>줄마다 <code>&lt;br&gt;</code>, 번호는 <b>원문자 ①②③④…</b> 로 작성자가 직접 입력</td></tr>
 <tr><td><code>&lt;table&gt; &lt;tr&gt; &lt;td&gt;</code></td><td>표·행렬은 LaTeX <code>$$\begin{array}{…}\end{array}$$</code></td></tr>
 <tr><td><code>&lt;p&gt;</code></td><td>문단 구분은 <code>&lt;br&gt;&lt;br&gt;</code></td></tr>
-<tr><td><code>class="…"</code></td><td>모양은 <code>style="…"</code> inline으로 (3번 참고)</td></tr>
+<tr><td><code>class="…"</code></td><td>모양은 전부 <code>style="…"</code> inline (⑦)</td></tr>
 </table>
-<div class="banner">⚠️ KaTeX는 <code>array/matrix/cases/aligned</code>는 되지만 <code>enumerate/itemize/tabular</code>는 <b>안 됨</b>. 그래서 목록은 LaTeX가 아니라 <code>&lt;br&gt;</code>+번호글자 방식.</div>
 
-<h2>3. 박스 — inline style 표준 스니펫 ★ 이사님 지시</h2>
-<p class="note">독끝 학습 POINT의 <b>바깥 초록 박스는 시스템이 자동으로 그림(운영자 손 안 댐)</b>. 아래는 <b>학습포인트/해설 안에</b> 넣는 작은 박스. 복사해서 내용만 교체.</p>
+<h3>오답분석 예시 (원문자)</h3>
+<pre>① 보기1은 단위가 달라 오답.&lt;br&gt;
+② 보기2는 공식 $P=VI$ 를 $P=V/I$ 로 잘못 적용.&lt;br&gt;
+③ 보기4는 부호 반대.</pre>
 
-<h3>3-A. 핵심 공식 박스 (초록)</h3>
-<pre>&lt;div style="border:1px solid #34d399;background:#ecfdf5;border-radius:8px;padding:10px 12px;margin:8px 0;"&gt;
-&lt;strong style="color:#047857;"&gt;핵심 공식&lt;/strong&gt;&lt;br&gt;
-V = I R
+<h2 id="tex">⑥ 수식 — LaTeX (KaTeX)</h2>
+<table>
+<tr><th>인라인</th><td><code>$ ... $</code> &nbsp; 예) 저항 <code>$R=\dfrac{V}{I}$</code></td></tr>
+<tr><td><b>디스플레이</b></td><td><code>$$ ... $$</code> &nbsp; 예) <code>$$P=VI=I^2 R$$</code></td></tr>
+<tr><td>가능 환경</td><td><code>array · matrix · cases · aligned</code></td></tr>
+<tr><td>불가 환경</td><td><code>enumerate · itemize · tabular</code> → 목록은 <code>&lt;br&gt;</code>+원문자</td></tr>
+</table>
+<div class="banner b-warn">⚠️ KaTeX는 수식 환경만 지원. 번호 목록을 LaTeX로 만들 수 없으므로 ⑤의 원문자 방식 사용.</div>
+
+<h2 id="box">⑦ 박스 — inline style 표준 스니펫</h2>
+<p class="note">독끝 학습 POINT의 <b>바깥 초록 박스는 앱이 자동으로 그림(셀에 쓰지 않음)</b>.
+아래는 학습포인트/해설 <b>안에</b> 넣는 작은 박스. 복사해서 내용만 교체. style 값 변경·박스 중첩 금지.</p>
+
+<h3>7-A. 핵심 공식 박스 (초록)</h3>
+<pre>&lt;div style="border:1px solid #34d399;background:#f0fdf4;border-radius:8px;padding:10px 14px;margin:8px 0;"&gt;
+$$C=\dfrac{\varepsilon S}{d}\;[\text{F}]$$
 &lt;/div&gt;</pre>
-<p class="note">→ 실제 렌더 결과:</p>
+<p class="note">→ 실제 렌더 (수식 자리는 KaTeX로 변환됨):</p>
 <div class="demo">
-  <div style="border:1px solid #34d399;background:#ecfdf5;border-radius:8px;padding:10px 12px;margin:8px 0;">
-  <strong style="color:#047857;">핵심 공식</strong><br>
-  V = I R
+  <div style="border:1px solid #34d399;background:#f0fdf4;border-radius:8px;padding:10px 14px;margin:8px 0;">
+  <b>핵심 공식</b><br>C = εS / d &nbsp;[F]
   </div>
 </div>
 
-<h3>3-B. 주의 박스 (호박색)</h3>
-<pre>&lt;div style="border:1px solid #fbbf24;background:#fffbeb;border-radius:8px;padding:10px 12px;margin:8px 0;"&gt;
+<h3>7-B. 주의 박스 (호박색)</h3>
+<pre>&lt;div style="border:1px solid #fbbf24;background:#fffbeb;border-radius:8px;padding:10px 14px;margin:8px 0;"&gt;
 &lt;strong style="color:#b45309;"&gt;주의&lt;/strong&gt;&lt;br&gt;
 단위를 V 가 아니라 mV 로 두면 1000배 오차.
 &lt;/div&gt;</pre>
-<p class="note">→ 실제 렌더 결과:</p>
+<p class="note">→ 실제 렌더:</p>
 <div class="demo">
-  <div style="border:1px solid #fbbf24;background:#fffbeb;border-radius:8px;padding:10px 12px;margin:8px 0;">
-  <strong style="color:#b45309;">주의</strong><br>
-  단위를 V 가 아니라 mV 로 두면 1000배 오차.
+  <div style="border:1px solid #fbbf24;background:#fffbeb;border-radius:8px;padding:10px 14px;margin:8px 0;">
+  <strong style="color:#b45309;">주의</strong><br>단위를 V 가 아니라 mV 로 두면 1000배 오차.
   </div>
 </div>
-<p class="note">규칙: style 값은 임의 변경 금지(위 2종만), 박스 중첩 금지, 박스 안에서도 1·2번 규칙 동일 적용.</p>
 
-<h2>4. 그림 & 파일명 규칙 ★ 이사님 지시</h2>
-<p>본문 어디에나 <code>&lt;img src="파일명"&gt;</code>. 파일 없으면 <code>&lt;img src="[필요: 설명]"&gt;</code>.</p>
-<p><b>파일명 형식:</b> <code>{문항코드}_{슬롯}{순번}.png</code> &nbsp; (문항코드 = <code>elec_&lt;교재&gt;_&lt;연도&gt;_&lt;회차&gt;_&lt;번호&gt;</code>)</p>
-<table>
-<tr><th>그림 위치</th><th>슬롯 토큰</th><th>예시 파일명</th></tr>
-<tr><td>발문</td><td><code>stem</code></td><td><code>elec_A_2022_01_21_stem1.png</code></td></tr>
-<tr><td>보기 1~4</td><td><code>opt1~opt4</code></td><td><code>elec_A_2022_01_21_opt1.png</code></td></tr>
-<tr><td>해설</td><td><code>exp</code></td><td><code>elec_A_2022_01_21_exp1.png</code></td></tr>
-<tr><td>오답분석</td><td><code>wrong</code></td><td><code>elec_A_2022_01_21_wrong1.png</code></td></tr>
-<tr><td>학습포인트</td><td><code>lp</code></td><td><code>elec_A_2022_01_21_lp1.png</code></td></tr>
-</table>
-<p class="note">슬롯 토큰 <b>영어 확정</b>(업로드 서버가 한글→<code>_</code> 치환). 업로드 코드는 이 규칙대로 <b>수정 완료</b>. 기존 파일은 옛 이름 유지.</p>
-
-<h2>5. 제출 전 셀프 체크리스트</h2>
+<h2 id="chk">⑧ 제출 전 셀프 체크리스트</h2>
 <ul>
 <li><code>&lt;ol&gt; &lt;ul&gt; &lt;li&gt; &lt;table&gt; &lt;p&gt;</code> 안 썼나?</li>
 <li><code>class=</code> 안 썼나? 모양은 전부 <code>style=</code> 인가?</li>
-<li>박스는 3-A / 3-B 표준 그대로인가? (값 변경·중첩 없음)</li>
-<li>수식은 전부 <code>$…$</code> / <code>$$…$$</code> 안에 있나?</li>
+<li>번호는 <b>원문자 ①②③</b> 인가?</li>
 <li>표를 <code>&lt;table&gt;</code> 아니라 <code>$$\begin{array}$$</code> 로 했나?</li>
-<li>이미지 파일명이 <code>{문항코드}_{슬롯}{순번}.png</code> 규칙인가?</li>
+<li>수식은 전부 <code>$…$</code> / <code>$$…$$</code> 안에 있나?</li>
+<li>박스는 7-A / 7-B 표준 그대로인가? (값 변경·중첩 없음)</li>
+<li>그림 참조가 <code>{문항코드}_{슬롯}{순번}.png</code> 형식인가?</li>
 </ul>
 
-<p class="note" style="margin-top:30px;border-top:1px solid #e2e8f0;padding-top:10px;">
-이 미리보기는 <code>작성규칙서_v1초안.md</code> 내용을 읽기 좋게 옮긴 것입니다. 원본 문서·코멘트(<code>작성규칙서_코멘트.md</code>)와 함께 갱신됩니다.
+<p class="note" style="margin-top:28px;border-top:1px solid #e2e8f0;padding-top:10px;">
+함께 보기 — <code>예시모음.html</code>(셀입력↔결과) · <code>샘플_2022_1회_10문항.html</code>(원문⇄변환 토글) ·
+<code>inline_style_데모.html</code>(class vs inline) · <code>샘플_2022_1회_v1.xlsx</code>(동작 템플릿).
+미확정(이사님): 박스 색·종류, 추가 규칙 항목.
 </p>
 
 </body>
